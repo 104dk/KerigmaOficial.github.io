@@ -1,107 +1,205 @@
-/* Estilos para o botão "Menu" */
-#menu-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    z-index: 1000;
+/* Define o estilo padrão para o corpo do documento */
+body {
+    background-color: #adc8df6e; /* Define a cor de fundo */
+    font-family: Arial, sans-serif; /* Define a fonte */
+    margin: 0; /* Remove as margens */
+    padding: 0; /* Remove o preenchimento */
 }
 
-#menu-list {
-    display: none; /* Inicialmente oculta */
-    list-style: none;
-    padding: 0;
-    margin: 0;
+/* Define as cores personalizadas usando variáveis CSS */
+:root {
+    --primary-color: #68a5e6d5; /* Azul turquesa */
+    --secondary-color: #474545ee; /* Prata */
+    --accent-color: #4a4eab; /* Turquesa */
 }
 
-#menu-list li {
-    padding: 5px 0;
-}
-
-#menu-list a {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Estilos para o cabeçalho */
+/* Estilos para o cabeçalho, onde está o logotipo "Kerigma oficial" */
 header {
-    text-align: center;
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
+    position: center; /* Define a posição */
+    padding: 10px; /* Adiciona preenchimento interno */
+    background-color: #e0e0e0ee; /* Define a cor de fundo */
+    text-align: center; /* Centraliza o texto */
 }
 
-/* Estilos para a barra de pesquisa */
-#search-bar {
-    text-align: center;
-    margin-top: 20px;
+/* Estilos para o logotipo "Kerigma oficial" */
+#logo {
+    margin: 0; /* Remove as margens */
+    font-size: 46px; /* Define o tamanho da fonte */
+    color: var(--accent-color); /* Define a cor do texto usando uma variável */
 }
 
-#search-bar input[type="text"] {
-    padding: 10px;
-    width: 300px;
+/* Estilos para a navegação */
+nav {
+    display: inline-block; /* Define o display como bloco */
 }
 
-#search-bar button {
-    padding: 10px 20px;
-    background-color: #1e6fc5;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+/* Estilos para a lista de itens de navegação */
+nav ul {
+    list-style-type: none; /* Remove os estilos padrão da lista */
+    margin: 10; /* Define a margem */
+    padding: 0; /* Remove o preenchimento */
 }
 
-/* Estilos para o conteúdo principal */
+/* Estilos para os itens da lista de navegação */
+nav ul li {
+    display: inline; /* Exibe os itens lado a lado */
+    margin-left: 20px; /* Define a margem à esquerda */
+}
+
+/* Estilos para o primeiro item da lista de navegação */
+nav ul li:first-child {
+    margin-left: 0; /* Remove a margem à esquerda */
+}
+
+/* Estilos para os botões */
+.btn {
+    text-decoration: none; /* Remove a decoração do texto */
+    color: var(--secondary-color); /* Define a cor do texto usando uma variável */
+    font-weight: bold; /* Define o peso da fonte como negrito */
+    padding: 10px 20px; /* Adiciona preenchimento interno */
+    border-radius: 5px; /* Adiciona bordas arredondadas */
+    background-color: var(--primary-color); /* Define a cor de fundo usando uma variável */
+    transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+}
+
+/* Estilos para os botões quando hover */
+.btn:hover {
+    background-color: #ffc400; /* Define a cor de fundo ao passar o mouse */
+}
+
+/* Estilos para o conteúdo */
+.container {
+    max-width: none; /* Define a largura máxima como ilimitada */
+    width: auto; /* Define a largura como automática */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 0; /* Remove o preenchimento */
+}
+
+/* Estilos para a seção principal */
 main {
-    margin-top: 20px;
-}
-
-/* Estilos para a seção de vídeos */
-#videos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 20px;
-    padding: 0 20px;
-}
-
-/* Estilos para os vídeos */
-#videos iframe {
-    width: 100%;
-    height: 200px;
-}
-
-/* Estilos para a barra de menu */
-#menu-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 10px;
-    background-color: #333;
-    z-index: 1000;
-}
-
-#menu-bar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-#menu-bar li {
-    display: inline;
-    margin-right: 20px;
-}
-
-#menu-bar li a {
-    color: #fff;
-    text-decoration: none;
+    margin-top: 60px; /* Adiciona espaço para o conteúdo abaixo do cabeçalho fixo */
+    text-align: center; /* Centraliza o texto */
 }
 
 /* Estilos para o rodapé */
 footer {
-    text-align: center;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
+    position: fixed; /* Define a posição como fixa */
+    bottom: 0; /* Alinha no rodapé */
+    width: 100%; /* Define a largura como 100% */
+    text-align: center; /* Centraliza o texto */
+    background-color: #000000a6; /* Define a cor de fundo */
+    padding: 8px; /* Adiciona preenchimento */
+}
+
+/* Estilos para o texto do rodapé */
+footer p {
+    margin: 0; /* Remove as margens */
+    font-size: 14px; /* Define o tamanho da fonte */
+    color: #caac00; /* Define a cor do texto */
+}
+
+/* Estilos para os vídeos */
+#videos {
+    display: flex; /* Define o display como flexível */
+    flex-wrap: wrap; /* Permite que os itens envolvam para a próxima linha */
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    gap: 20px; /* Define o espaçamento entre os itens */
+}
+
+/* Estilos para os cursos */
+.course {
+    width: 300px; /* Define a largura fixa para os cursos */
+    background-color: #f9f9f9; /* Define a cor de fundo */
+    border-radius: 10px; /* Adiciona bordas arredondadas */
+    padding: 20px; /* Adiciona preenchimento */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra */
+    transition: all 0.3s ease; /* Adiciona uma transição suave */
+    position: relative; /* Define a posição como relativa */
+}
+
+/* Estilos para os cursos quando hover */
+.course:hover {
+    transform: translateY(-5px); /* Move para cima ao passar o mouse */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra maior */
+}
+
+/* Estilos para o título dos cursos */
+.course h2 {
+    margin-bottom: 15px; /* Define a margem inferior */
+    font-size: 20px; /* Define o tamanho da fonte */
+    color: #333; /* Define a cor do texto */
+}
+
+/* Estilos para a lista de vídeos */
+.video-list {
+    list-style: none; /* Remove os estilos padrão da lista */
+    padding: 0; /* Remove o preenchimento */
+}
+
+/* Estilos para os itens da lista de vídeos */
+.video-list li {
+    margin-bottom: 10px; /* Define a margem inferior */
+}
+
+/* Estilos para os links de vídeo */
+.video-list a {
+    color: #4a4eab; /* Define a cor do texto */
+    text-decoration: none; /* Remove a decoração do texto */
+    transition: color 0.3s ease; /* Adiciona uma transição suave */
+    display: flex; /* Define o display como flexível */
+    align-items: center; /* Alinha verticalmente */
+}
+
+/* Estilos para os links de vídeo quando hover */
+.video-list a:hover {
+    color: #1e208d; /* Define a cor do texto ao passar o mouse */
+}
+
+/* Estilos para o ícone antes dos links */
+.video-list a::before {
+    content: "\25B6"; /* Adiciona um ícone de seta para a direita */
+    margin-right: 5px; /* Define a margem à direita */
+    font-size: 12px; /* Define o tamanho da fonte */
+}
+
+/* Estilos para a barra de rolagem personalizada */
+#videos {
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+    max-height: calc(100vh - 200px); /* Define a altura máxima */
+    scrollbar-width: thin; /* Define a largura da barra de rolagem */
+    scrollbar-color: #4a4eab #f9f9f9; /* Define as cores da barra de rolagem */
+}
+
+/* Estilos para a barra de rolagem no navegador Chrome */
+#videos::-webkit-scrollbar {
+    width: 8px; /* Define a largura da barra de rolagem */
+}
+
+/* Estilos para a área de fundo da barra de rolagem no navegador Chrome */
+#videos::-webkit-scrollbar-track {
+    background: #f9f9f9; /* Define a cor de fundo */
+}
+
+/* Estilos para o preenchimento da barra de rolagem no navegador Chrome */
+#videos::-webkit-scrollbar-thumb {
+    background-color: #4a4eab; /* Define a cor do preenchimento */
+    border-radius: 4px; /* Adiciona bordas arredondadas */
+    border: 2px solid #f9f9f9; /* Adiciona uma borda */
+}
+
+/* Estilos para os links de vídeo */
+.video-list a {
+    color: #8d600c; /* Define a cor do texto */
+    text-decoration: none; /* Remove a decoração do texto */
+    display: inline-block; /* Define o display como bloco */
+    padding: 10px 20px; /* Adiciona preenchimento interno */
+    border: 2px solid #4a4eab; /* Adiciona uma borda */
+    border-radius: 5px; /* Adiciona bordas arredondadas */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Adiciona uma transição suave */
+}
+
+/* Estilos para os links de vídeo quando hover */
+.video-list a:hover {
+    background-color: #4a4eab; /* Define a cor de fundo ao passar o mouse */
+    color: #fff; /* Define a cor do texto ao passar o mouse */
 }
