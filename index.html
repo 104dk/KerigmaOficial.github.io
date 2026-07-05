@@ -1,37 +1,466 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kerigma oficial</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Escola de Teologia Kerigma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1f2937;
+      background: #fafafa;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 380px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #2d1b69 0%, #1a0a3e 100%);
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background:
+        radial-gradient(circle at 20% 50%, #fbbf24 1px, transparent 1px),
+        radial-gradient(circle at 80% 30%, #fbbf24 1px, transparent 1px),
+        radial-gradient(circle at 50% 80%, #fbbf24 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      background: #ffffff;
+      padding: 48px 24px;
+      text-align: center;
+      color: #1f2937;
+      max-width: 100%;
+    }
+    .hero-content h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 12px; line-height: 1.2; color: #2d1b69; }
+    .hero-content p { font-size: 1.125rem; color: #6b7280; margin-bottom: 32px; line-height: 1.6; }
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #7c3aed;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+    }
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(124,58,237,0.5);
+    }
+
+    .section { padding: 64px 24px; max-width: 960px; margin: 0 auto; }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #7c3aed;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      align-items: start;
+    }
+    .service-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid #f0f0f0;
+      border-left: 4px solid transparent;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    .service-card:hover { box-shadow: 0 4px 16px rgba(124,58,237,0.12); border-left-color: #7c3aed; }
+    .service-card:active { transform: scale(0.98); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      user-select: none;
+    }
+    .card-header i:first-child {
+      font-size: 24px;
+      color: #7c3aed;
+      background: rgba(124,58,237,0.1);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .card-header h3 { font-size: 1.05rem; font-weight: 600; flex: 1; }
+    .card-header i:last-child {
+      font-size: 14px;
+      color: #9ca3af;
+      flex-shrink: 0;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      animation: modalIn .25s ease;
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #9ca3af;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: #f3f4f6; color: #374151; }
+    .modal-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: block;
+      background: #2d1b69;
+    }
+    .modal h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+    .modal-desc { color: #6b7280; font-size: 0.9rem; line-height: 1.5; margin-bottom: 4px; }
+    .modal-note {
+      color: #6b7280;
+      font-size: 0.875rem;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+    .modal ul { list-style: none; margin: 16px 0 24px; }
+    .modal ul li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      color: #4b5563;
+      font-size: 0.925rem;
+      line-height: 1.5;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .modal ul li:last-child { border-bottom: none; }
+    .modal ul li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      color: #7c3aed;
+      font-size: 0.8rem;
+    }
+    .btn-modal-whatsapp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #7c3aed;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-modal-whatsapp:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+    }
+
+    .trust-bar {
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 40px 24px;
+    }
+    .trust-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      text-align: center;
+    }
+    .trust-item i { font-size: 28px; color: #7c3aed; margin-bottom: 8px; }
+    .trust-item h4 { font-size: 1.125rem; font-weight: 600; }
+    .trust-item p { color: #6b7280; font-size: 0.875rem; }
+
+    .cta-section {
+      background: linear-gradient(135deg, #2d1b69, #1a0a3e);
+      color: white;
+      text-align: center;
+      padding: 64px 24px;
+    }
+    .cta-section h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 12px; }
+    .cta-section p { color: rgba(255,255,255,0.85); margin-bottom: 28px; }
+
+    .whatsapp-fab {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #25D366;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      z-index: 999;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .whatsapp-fab:hover {
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+    }
+
+    footer {
+      background: #111827;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.875rem;
+    }
+    footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    footer a:hover { color: white; }
+
+    @media (max-width: 640px) {
+      .hero-content h1 { font-size: 1.75rem; }
+      .section { padding: 48px 20px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1 id="logo">Kerigma oficial</h1>
-      <nav>
-        <ul>
-          <li><a href="#" class="btn">Perfil</a></li>
-          <li><a href="#" class="btn">Cursos</a></li>
-          <li><a href="#" class="btn">Contato</a></li>
-          <li><a href="#" class="btn">Sobre</a></li>
-        </ul>
-      </nav>
-    </header>
 
-    <main>
-      <section id="videos">
-        <!-- Aqui serão exibidos os vídeos -->
-      </section>
-    </main>
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-overlay"></div>
+  </section>
+  <div class="hero-content">
+      <h1>Escola de Teologia Kerigma</h1>
+      <p>Transformando vidas através do conhecimento bíblico. Livros, e-books e cursos teológicos.</p>
+      <a href="https://wa.me/5561995663288?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="btn-whatsapp">
+        <i class="fab fa-whatsapp"></i> Fale conosco
+      </a>
+    </div>
+  <section class="section">
+    <h2 class="section-title">Nossos produtos e cursos</h2>
+    <p class="section-subtitle">Clique em cada categoria para ver os detalhes</p>
+    <div class="services-grid">
 
-    <footer>
-      <p>Kerigma oficial 2024&copy;</p>
-    </footer>
+      <div class="service-card" onclick="openModal(this)" data-image="https://picsum.photos/seed/kerigma-livros/600/340" data-desc="Livros teológicos para aprofundar seu conhecimento da Palavra." data-title="Livros Teológicos" data-whatsapp="Olá! Tenho interesse nos Livros Teológicos. Poderia me enviar mais informações?" data-items='["Bíblias de estudo e comentários bíblicos","Teologia sistemática e doutrinária","História da Igreja e dos reformadores","Hermenêutica e exegese bíblica","Aconselhamento pastoral e discipulado","Livros infantis cristãos"]'>
+        <div class="card-header">
+          <i class="fas fa-book-bible"></i>
+          <h3>Livros Teológicos</h3>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="openModal(this)" data-image="https://picsum.photos/seed/kerigma-ebooks/600/340" data-desc="E-books práticos e acessíveis para estudo em qualquer lugar." data-title="E-books" data-whatsapp="Olá! Tenho interesse nos E-books. Poderia me enviar mais informações?" data-items='["E-books de teologia e espiritualidade","Guias de estudo bíblico","Devocionais e meditações","Apostilas de cursos teológicos","Livros digitais sobre liderança cristã"]'>
+        <div class="card-header">
+          <i class="fas fa-tablet-alt"></i>
+          <h3>E-books</h3>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="openModal(this)" data-image="https://picsum.photos/seed/kerigma-cursos/600/340" data-desc="Cursos online com certificado para sua formação teológica." data-title="Cursos Online" data-whatsapp="Olá! Tenho interesse nos Cursos Online. Poderia me enviar mais informações?" data-items='["Curso de Teologia Básica","Curso de Hermenêutica e Exegese","Curso de Aconselhamento Cristão","Curso de Liderança e Ministério","Curso de História da Igreja","Curso de Escatologia Bíblica"]' data-note="Todos os cursos com certificado de conclusão e suporte de tutores.">
+        <div class="card-header">
+          <i class="fas fa-video"></i>
+          <h3>Cursos Online</h3>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="openModal(this)" data-image="https://picsum.photos/seed/kerigma-estudos/600/340" data-desc="Materiais complementares para grupos de estudo e células." data-title="Materiais de Estudo" data-whatsapp="Olá! Tenho interesse nos Materiais de Estudo. Poderia me enviar mais informações?" data-items='["Guias de estudo para grupos pequenos","Lições de escola dominical","Mapas e linhas do tempo bíblicas","Recursos para discipulado","Plano de leitura anual da Bíblia"]'>
+        <div class="card-header">
+          <i class="fas fa-pen-fancy"></i>
+          <h3>Materiais de Estudo</h3>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="openModal(this)" data-image="https://picsum.photos/seed/kerigma-palestras/600/340" data-desc="Palestras e seminários ao vivo para edificação e ensino." data-title="Palestras e Seminários" data-whatsapp="Olá! Tenho interesse nas Palestras e Seminários. Poderia me enviar mais informações?" data-items='["Seminários de teologia prática","Palestras sobre família e casamento","Congressos de avivamento e missões","Encontros de liderança pastoral","Workshops de ensino bíblico"]'>
+        <div class="card-header">
+          <i class="fas fa-church"></i>
+          <h3>Palestras e Seminários</h3>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="openModal(this)" data-image="https://picsum.photos/seed/kerigma-kids/600/340" data-desc="Conteúdo cristão especializado para crianças e adolescentes." data-title="Infantil e Juvenil" data-whatsapp="Olá! Tenho interesse no conteúdo Infantil e Juvenil. Poderia me enviar mais informações?" data-items='["Livros infantis com histórias bíblicas","Devocionais para crianças","Revistas de escola bíblica","Material para jovens e adolescentes","Kits de atividades gospel"]'>
+        <div class="card-header">
+          <i class="fas fa-child"></i>
+          <h3>Infantil e Juvenil</h3>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="modalContent">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <img id="modalImage" class="modal-image" src="" alt="">
+      <h3 id="modalTitle"></h3>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-note" id="modalNote" style="display:none;"></div>
+      <ul id="modalList"></ul>
+      <a id="modalWhatsapp" href="#" target="_blank" class="btn-modal-whatsapp">
+        <i class="fab fa-whatsapp"></i> Quero saber mais
+      </a>
+    </div>
   </div>
 
-  <!-- Código JavaScript -->
-  <script src="script.js"></script>
+  <section class="trust-bar">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <i class="fas fa-certificate"></i>
+        <h4>Conteúdo de qualidade</h4>
+        <p>Material revisado por teólogos capacitados</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-hand-holding-heart"></i>
+        <h4>Ensino cristocêntrico</h4>
+        <p>Todo conteúdo baseado na Palavra de Deus</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-users"></i>
+        <h4>Suporte ao aluno</h4>
+        <p>Acompanhamento e mentoria durante os cursos</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Comece sua jornada teológica hoje</h2>
+    <p>Entre em contato e descubra como podemos ajudar no seu crescimento espiritual e acadêmico.</p>
+    <a href="https://wa.me/5561995663288?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="btn-whatsapp" style="background:#fbbf24;color:#1f2937;box-shadow:0 4px 16px rgba(251,191,36,0.35);">
+      <i class="fab fa-whatsapp"></i> Quero saber mais
+    </a>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Escola de Teologia Kerigma — Todos os direitos reservados</p>
+    <p style="margin-top:4px;"><i class="fas fa-map-marker-alt"></i> Rua 43, Quadra 149, Lote E — Parque Mingone II — Luziânia, GO</p>
+  </footer>
+
+  <a href="https://wa.me/5561995663288?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="whatsapp-fab" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script>
+    function openModal(el) {
+      const title = el.dataset.title;
+      const items = JSON.parse(el.dataset.items);
+      const whatsapp = el.dataset.whatsapp;
+      const note = el.dataset.note;
+      const image = el.dataset.image;
+
+      document.getElementById('modalImage').src = image;
+      document.getElementById('modalImage').alt = title;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = el.dataset.desc || '';
+
+      const noteEl = document.getElementById('modalNote');
+      if (note) {
+        noteEl.textContent = note;
+        noteEl.style.display = 'block';
+      } else {
+        noteEl.style.display = 'none';
+      }
+
+      const listEl = document.getElementById('modalList');
+      listEl.innerHTML = items.map(function(item) {
+        return '<li>' + item + '</li>';
+      }).join('');
+
+      document.getElementById('modalWhatsapp').href = 'https://wa.me/5561995663288?text=' + encodeURIComponent(whatsapp);
+
+      document.getElementById('modalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('modalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+
 </body>
 </html>
