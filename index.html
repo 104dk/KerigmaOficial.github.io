@@ -15,7 +15,9 @@
       font-family: 'Inter', sans-serif;
       color: #1f2937;
       background: #fafafa;
+      overflow-x: hidden;
     }
+
     .hero {
       position: relative;
       overflow: hidden;
@@ -48,8 +50,6 @@
       background: #ffffff;
       padding: 48px 24px;
       text-align: center;
-      color: #1f2937;
-      max-width: 100%;
     }
     .hero-content h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 12px; line-height: 1.2; color: #001a47; }
     .hero-content p { font-size: 1.125rem; color: #6b7280; margin-bottom: 32px; line-height: 1.6; }
@@ -58,7 +58,7 @@
       align-items: center;
       gap: 10px;
       background: #25D366;
-      color: #ffffff;
+      color: #fff;
       padding: 14px 32px;
       border-radius: 50px;
       font-size: 1.125rem;
@@ -72,7 +72,9 @@
       background: #128c7e;
       box-shadow: 0 6px 24px rgba(37,211,102,0.5);
     }
+
     .section { padding: 64px 24px; max-width: 960px; margin: 0 auto; }
+    #carouselSection { padding-top: 40px; padding-bottom: 20px; }
     .section-title {
       font-size: 1.75rem;
       font-weight: 700;
@@ -86,6 +88,152 @@
       margin-bottom: 40px;
       font-size: 1rem;
     }
+
+    /* ── Carrossel 3D (Cover Flow) ── */
+    .carousel3d-wrap {
+      position: relative;
+      height: 480px;
+      perspective: 1600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .carousel3d-wrap .carousel3d {
+      position: relative;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+    }
+      .carousel3d-wrap .carousel3d .card3d {
+        position: absolute;
+        width: 280px;
+        height: 400px;
+        left: -140px;
+        top: -200px;
+        border-radius: 18px;
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        backface-visibility: hidden;
+        user-select: none;
+        overflow: hidden;
+        transition: border-color .3s;
+      }
+      .carousel3d-wrap .carousel3d .card3d .thumb {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        flex-shrink: 0;
+        display: block;
+        background: #001a47;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body {
+        flex: 1;
+        padding: 10px 12px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #1f2937;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title i {
+        width: 16px;
+        color: #001a47;
+        margin-right: 6px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-desc {
+        font-size: 0.65rem;
+        color: #6b7280;
+        line-height: 1.25;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li {
+        font-size: 0.6rem;
+        color: #4b5563;
+        padding: 0;
+        line-height: 1.3;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li::before {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 0.5rem;
+        color: #001a47;
+        margin-right: 4px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: #25D366;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background .2s;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta:hover { background: #128c7e; }
+      .carousel3d-wrap .carousel3d .card3d.active {
+        border-color: #001a47;
+        box-shadow: 0 10px 40px rgba(0,26,71,0.22);
+      }
+      .carousel3d-wrap .carousel3d .card3d.active .thumb { filter: brightness(1.05); }
+
+    .carousel3d-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 0;
+    }
+    .carousel3d-controls .arr {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      color: #374151;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .carousel3d-controls .arr:hover { border-color: #001a47; color: #001a47; background: #eef2ff; }
+    .carousel3d-controls .dots { display: flex; gap: 8px; }
+    .carousel3d-controls .dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .carousel3d-controls .dots .dot.active { background: #001a47; width: 24px; border-radius: 4px; }
+    .carousel3d-controls .dots .dot:hover { background: #001a47; }
+
     .trust-bar {
       background: white;
       border-top: 1px solid #e5e7eb;
@@ -103,6 +251,7 @@
     .trust-item i { font-size: 28px; color: #001a47; margin-bottom: 8px; }
     .trust-item h4 { font-size: 1.125rem; font-weight: 600; }
     .trust-item p { color: #6b7280; font-size: 0.875rem; }
+
     .cta-section {
       background: linear-gradient(135deg, #001a47, #000d1f);
       color: white;
@@ -111,6 +260,7 @@
     }
     .cta-section h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 12px; }
     .cta-section p { color: rgba(255,255,255,0.85); margin-bottom: 28px; }
+
     .whatsapp-fab {
       position: fixed;
       right: 24px;
@@ -134,6 +284,7 @@
       transform: translateY(-50%) scale(1.08);
       box-shadow: 0 6px 28px rgba(37,211,102,0.5);
     }
+
     footer {
       background: #111827;
       color: rgba(255,255,255,0.6);
@@ -143,171 +294,17 @@
     }
     footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
     footer a:hover { color: white; }
-    /* ── Carrossel (tamanhos padronizados) ── */
-    .carousel {
-      max-width: 900px;
-      margin: 0 auto;
-      position: relative;
-    }
-    .details-stage {
-      position: relative;
-      min-height: 340px;
-      overflow: hidden;
-      border-radius: 16px;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      border: 1px solid #f0f0f0;
-    }
-    .details-panel {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      gap: 24px;
-      padding: 28px;
-      pointer-events: none;
-      opacity: 0;
-    }
-    .details-panel.active {
-      pointer-events: auto;
-      opacity: 1;
-      position: relative;
-    }
-    .details-image {
-      width: 240px;
-      height: 200px;
-      border-radius: 12px;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: #001a47;
-    }
-    .details-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .details-body .title-1 {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #001a47;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .details-body .title-2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #1f2937;
-      margin-bottom: 8px;
-    }
-    .details-body .text {
-      color: #6b7280;
-      font-size: 0.875rem;
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .details-body .dec {
-      list-style: none;
-      margin-bottom: 16px;
-    }
-    .details-body .dec li {
-      padding: 4px 0 4px 20px;
-      position: relative;
-      color: #4b5563;
-      font-size: 0.8125rem;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .details-body .dec li::before {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      left: 0;
-      color: #001a47;
-      font-size: 0.75rem;
-    }
-    .details-body .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #25D366;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-size: 0.875rem;
-      font-weight: 700;
-      text-decoration: none;
-      align-self: flex-start;
-      transition: background .2s, transform .2s;
-    }
-    .details-body .cta:hover { background: #128c7e; transform: translateY(-1px); }
-    .carousel-footer {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    .progress-bar {
-      flex: 1;
-      height: 4px;
-      background: #e5e7eb;
-      border-radius: 4px;
-      min-width: 80px;
-    }
-    .progress-sub-foreground {
-      height: 100%;
-      background: #001a47;
-      border-radius: 4px;
-      width: 0%;
-    }
-    .carousel-thumbs {
-      display: flex;
-      gap: 8px;
-      order: -1;
-      width: 100%;
-      justify-content: center;
-    }
-    .carousel-thumbs .thumb {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      background: #f3f4f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: #9ca3af;
-      cursor: pointer;
-      transition: all .25s;
-    }
-    .carousel-thumbs .thumb:hover { border-color: #001a47; color: #001a47; background: #eef2ff; }
-    .carousel-thumbs .thumb.active { border-color: #001a47; color: #001a47; background: #eef2ff; }
-    .carousel-arrows { display: flex; gap: 8px; }
-    .carousel-arrows .arrow {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid #e5e7eb;
-      background: #fff;
-      color: #374151;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all .2s;
-    }
-    .carousel-arrows .arrow:hover { border-color: #001a47; color: #001a47; background: #eef2ff; }
+
     @media (max-width: 700px) {
-      .details-panel { flex-direction: row; padding: 16px; gap: 12px; }
-      .details-image { width: 130px; height: 160px; border-radius: 10px; }
-      .details-body .title-1 { font-size: 0.6875rem; margin-bottom: 2px; }
-      .details-body .title-2 { font-size: 1rem; margin-bottom: 4px; }
-      .details-body .text { font-size: 0.75rem; margin-bottom: 8px; }
-      .details-body .dec { margin-bottom: 8px; }
-      .details-body .dec li { font-size: 0.6875rem; padding: 2px 0 2px 16px; }
-      .details-body .dec li::before { font-size: 0.625rem; }
-      .details-body .cta { font-size: 0.75rem; padding: 6px 14px; }
-      .carousel-footer { gap: 10px; margin-top: 14px; }
-      .carousel-thumbs .thumb { width: 36px; height: 36px; font-size: 13px; border-radius: 8px; }
-      .carousel-arrows .arrow { width: 34px; height: 34px; font-size: 13px; }
+      .carousel3d-wrap { height: 360px; perspective: 1200px; }
+      .carousel3d-wrap .carousel3d .card3d { width: 190px; height: 280px; left: -95px; top: -140px; border-radius: 14px; }
+      .carousel3d-wrap .carousel3d .card3d .thumb { height: 100px; }
+      .carousel3d-wrap .carousel3d .card3d .card-body { padding: 6px 10px 10px; gap: 2px; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title { font-size: 0.7rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-desc { font-size: 0.6rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li { font-size: 0.55rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta { font-size: 0.6rem; padding: 5px 10px; }
+      #carouselSection { padding-top: 32px; padding-bottom: 16px; }
     }
     @media (max-width: 640px) {
       .hero { min-height: 240px; }
@@ -322,30 +319,24 @@
     <div class="hero-overlay"></div>
   </section>
   <div class="hero-content">
-      <h1>Escola de Teologia Kerigma</h1>
-      <p>Transformando vidas através do conhecimento bíblico. Livros, e-books e cursos teológicos.</p>
-      <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="btn-whatsapp">
-        <i class="fab fa-whatsapp"></i> Fale conosco
-      </a>
-    </div>
+    <h1>Escola de Teologia Kerigma</h1>
+    <p>Transformando vidas através do conhecimento bíblico. Livros, e-books e cursos teológicos.</p>
+    <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="btn-whatsapp">
+      <i class="fab fa-whatsapp"></i> Fale conosco
+    </a>
+  </div>
+
   <section class="section" id="carouselSection">
-    <h2 class="section-title">Nossos produtos e cursos</h2>
-    <p class="section-subtitle">Navegue pelos nossos serviços</p>
-    <div class="carousel" id="carousel">
-      <div class="details-stage" id="detailsStage">
-        <div class="details-panel active" id="detailsActive"></div>
-        <div class="details-panel inactive" id="detailsInactive"></div>
-      </div>
-      <div class="carousel-footer">
-        <div class="carousel-thumbs" id="carouselThumbs"></div>
-        <div class="progress-bar"><div class="progress-sub-foreground" id="progressFill"></div></div>
-        <div class="carousel-arrows">
-          <button class="arrow arrow-left" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
-          <button class="arrow arrow-right" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
+    <div class="carousel3d-wrap" id="carouselWrap">
+      <div class="carousel3d" id="carousel3d"></div>
+    </div>
+    <div class="carousel3d-controls">
+      <button class="arr" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+      <div class="dots" id="dots"></div>
+      <button class="arr" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
     </div>
   </section>
+
   <section class="trust-bar">
     <div class="trust-grid">
       <div class="trust-item">
@@ -365,6 +356,7 @@
       </div>
     </div>
   </section>
+
   <section class="cta-section">
     <h2>Comece sua jornada teológica hoje</h2>
     <p>Entre em contato e descubra como podemos ajudar no seu crescimento espiritual e acadêmico.</p>
@@ -372,198 +364,166 @@
       <i class="fab fa-whatsapp"></i> Quero saber mais
     </a>
   </section>
+
   <footer>
     <p>&copy; 2026 Escola de Teologia Kerigma — Todos os direitos reservados</p>
     <p style="margin-top:4px;"><i class="fas fa-map-marker-alt"></i> Rua 2, Quadra 34, Lote 30 — Jardim Europa — Luziânia, GO — CEP 72855-852</p>
   </footer>
+
   <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="whatsapp-fab" aria-label="WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
+
   <script>
-    // ── Dados dos serviços ──
     const services = [
-      { icon: 'fa-book-bible', title: 'Livros Teológicos', desc: 'Livros teológicos para aprofundar seu conhecimento da Palavra.', image: 'https://picsum.photos/seed/kerigma-livros/520/400', whatsapp: 'Olá! Tenho interesse nos Livros Teológicos. Poderia me enviar mais informações?', items: ['Bíblias de estudo e comentários bíblicos','Teologia sistemática e doutrinária','História da Igreja e dos reformadores','Hermenêutica e exegese bíblica','Aconselhamento pastoral e discipulado'] },
-      { icon: 'fa-tablet-alt', title: 'E-books', desc: 'E-books práticos e acessíveis para estudo em qualquer lugar.', image: 'https://picsum.photos/seed/kerigma-ebooks/520/400', whatsapp: 'Olá! Tenho interesse nos E-books. Poderia me enviar mais informações?', items: ['E-books de teologia e espiritualidade','Guias de estudo bíblico','Devocionais e meditações','Apostilas de cursos teológicos','Livros digitais sobre liderança cristã'] },
-      { icon: 'fa-video', title: 'Cursos Online', desc: 'Cursos online com certificado para sua formação teológica.', image: 'https://picsum.photos/seed/kerigma-cursos/520/400', whatsapp: 'Olá! Tenho interesse nos Cursos Online. Poderia me enviar mais informações?', items: ['Curso de Teologia Básica','Curso de Hermenêutica e Exegese','Curso de Liderança e Ministério','Curso de História da Igreja','Curso de Escatologia Bíblica'] },
-      { icon: 'fa-pen-fancy', title: 'Materiais de Estudo', desc: 'Materiais complementares para grupos de estudo e células.', image: 'https://picsum.photos/seed/kerigma-estudos/520/400', whatsapp: 'Olá! Tenho interesse nos Materiais de Estudo. Poderia me enviar mais informações?', items: ['Guias de estudo para grupos pequenos','Lições de escola dominical','Mapas e linhas do tempo bíblicas','Recursos para discipulado','Plano de leitura anual da Bíblia'] },
-      { icon: 'fa-church', title: 'Palestras e Seminários', desc: 'Palestras e seminários ao vivo para edificação e ensino.', image: 'https://picsum.photos/seed/kerigma-palestras/520/400', whatsapp: 'Olá! Tenho interesse nas Palestras e Seminários. Poderia me enviar mais informações?', items: ['Seminários de teologia prática','Palestras sobre família e casamento','Congressos de avivamento e missões','Encontros de liderança pastoral','Workshops de ensino bíblico'] },
-      { icon: 'fa-child', title: 'Infantil e Juvenil', desc: 'Conteúdo cristão especializado para crianças e adolescentes.', image: 'https://picsum.photos/seed/kerigma-kids/520/400', whatsapp: 'Olá! Tenho interesse no conteúdo Infantil e Juvenil. Poderia me enviar mais informações?', items: ['Livros infantis com histórias bíblicas','Devocionais para crianças','Revistas de escola bíblica','Material para jovens e adolescentes','Kits de atividades gospel'] }
+      { icon: 'fa-book-bible', title: 'Livros Teol\u00f3gicos', desc: 'Livros teol\u00f3gicos para aprofundar seu conhecimento da Palavra.', image: 'https://picsum.photos/seed/kerigma-livros/520/400', whatsapp: 'Ol\u00e1! Tenho interesse nos Livros Teol\u00f3gicos. Poderia me enviar mais informa\u00e7\u00f5es?', items: ['B\u00edblias de estudo','Teologia sistem\u00e1tica','Hist\u00f3ria da Igreja','Hermen\u00eautica b\u00edblica','Aconselhamento pastoral'] },
+      { icon: 'fa-tablet-alt', title: 'E-books', desc: 'E-books pr\u00e1ticos e acess\u00edveis para estudo em qualquer lugar.', image: 'https://picsum.photos/seed/kerigma-ebooks/520/400', whatsapp: 'Ol\u00e1! Tenho interesse nos E-books. Poderia me enviar mais informa\u00e7\u00f5es?', items: ['E-books de teologia','Guias de estudo b\u00edblico','Devocionais','Apostilas de cursos','Lideran\u00e7a crist\u00e3'] },
+      { icon: 'fa-video', title: 'Cursos Online', desc: 'Cursos online com certificado para sua forma\u00e7\u00e3o teol\u00f3gica.', image: 'https://picsum.photos/seed/kerigma-cursos/520/400', whatsapp: 'Ol\u00e1! Tenho interesse nos Cursos Online. Poderia me enviar mais informa\u00e7\u00f5es?', items: ['Teologia B\u00e1sica','Hermen\u00eautica','Lideran\u00e7a','Hist\u00f3ria da Igreja','Escatologia'] },
+      { icon: 'fa-pen-fancy', title: 'Materiais de Estudo', desc: 'Materiais complementares para grupos de estudo.', image: 'https://picsum.photos/seed/kerigma-estudos/520/400', whatsapp: 'Ol\u00e1! Tenho interesse nos Materiais de Estudo.', items: ['Guias para grupos','Li\u00e7\u00f5es','Mapas b\u00edblicos','Discipulado','Plano de leitura'] },
+      { icon: 'fa-church', title: 'Palestras', desc: 'Palestras e semin\u00e1rios ao vivo.', image: 'https://picsum.photos/seed/kerigma-palestras/520/400', whatsapp: 'Ol\u00e1! Tenho interesse nas Palestras.', items: ['Semin\u00e1rios','Palestras fam\u00edlia','Congressos','Encontros','Workshops'] },
+      { icon: 'fa-child', title: 'Infantil', desc: 'Conte\u00fado crist\u00e3o para crian\u00e7as.', image: 'https://picsum.photos/seed/kerigma-kids/520/400', whatsapp: 'Ol\u00e1! Tenho interesse no Infantil.', items: ['Livros infantis','Devocionais','Revistas','Jovens','Atividades'] }
     ];
-    const order = services;
+
+    const N = services.length;
+    const SPREAD = 240;
+    const Z_DEPTH = 320;
+    const SCALE_MIN = 0.6;
+    const OPACITY_MIN = 0.3;
+
     let active = 0;
     let isAnimating = false;
-    const AUTOPLAY_MS = 4000;
-    let autoplayTimer = null;
+    let autoTimer = null;
+    let touchData = null;
+
     const $ = s => document.querySelector(s);
-    const $$ = s => document.querySelectorAll(s);
-    const elActive = () => $('#detailsActive');
-    const elInactive = () => $('#detailsInactive');
-    // ── helper: get card thumb element (matches card.js getCardContent) ──
-    function getCardContent(index) {
-      return $(`.thumb[data-index="${index}"]`);
-    }
-    // ── helper: build panel HTML ──
-    function panelHTML(data) {
-      return '<img class="details-image" src="' + data.image + '" alt="' + data.title + '" loading="lazy">' +
-        '<div class="details-body">' +
-          '<div class="title-1"><i class="fas ' + data.icon + '"></i> Categoria</div>' +
-          '<div class="title-2">' + data.title + '</div>' +
-          '<p class="text">' + data.desc + '</p>' +
-          '<ul class="dec">' + data.items.map(function(i) { return '<li>' + i + '</li>'; }).join('') + '</ul>' +
-          '<a class="cta" href="https://wa.me/5561981897079?text=' + encodeURIComponent(data.whatsapp) + '" target="_blank">' +
-            '<i class="fab fa-whatsapp"></i> Quero saber mais' +
-          '</a>' +
-        '</div>';
-    }
-    // ── populate panel & set initial GSAP positions (matches card.js) ──
-    function stagePanel(panel, data, xPos) {
-      panel.innerHTML = panelHTML(data);
-      gsap.set(panel, { opacity: 0, x: xPos });
-      gsap.set(panel.querySelector('.text'),   { y: 80, opacity: 0 });
-      gsap.set(panel.querySelector('.title-1'),{ y: 80, opacity: 0 });
-      gsap.set(panel.querySelector('.title-2'),{ y: 80, opacity: 0 });
-      gsap.set(panel.querySelector('.dec'),    { y: 40, opacity: 0 });
-      gsap.set(panel.querySelector('.cta'),    { y: 50, opacity: 0 });
-    }
-    // ── animate panel entrance ──
-    function animatePanelIn(panel) {
-      const tl = gsap.timeline();
-      tl.to(panel, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' });
-      tl.to(panel.querySelector('.title-1'), { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.25');
-      tl.to(panel.querySelector('.title-2'), { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.2');
-      tl.to(panel.querySelector('.text'),    { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.2');
-      tl.to(panel.querySelector('.dec'),     { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.2');
-      tl.to(panel.querySelector('.cta'),     { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.15');
-      return tl;
-    }
-    // ── progress bar ──
-    function updateProgress() {
-      var pct = ((active + 1) / order.length) * 100;
-      gsap.to('#progressFill', { width: pct + '%', duration: 0.5, ease: 'power2.out' });
-    }
-    // ── thumbnails ──
-    function buildThumbs() {
-      var container = $('#carouselThumbs');
-      var html = '';
-      for (var i = 0; i < services.length; i++) {
-        html += '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" title="' + services[i].title + '">' +
-          '<i class="fas ' + services[i].icon + '"></i></div>';
+    const carousel = $('#carousel3d');
+    const dotsEl = $('#dots');
+
+    function build() {
+      for (let i = 0; i < N; i++) {
+        const d = services[i];
+        const el = document.createElement('div');
+        el.className = 'card3d' + (i === 0 ? ' active' : '');
+        el.dataset.index = i;
+        el.innerHTML = '<img class="thumb" src="' + d.image + '" alt="' + d.title + '" loading="lazy">' +
+          '<div class="card-body">' +
+            '<div class="card-title"><i class="fas ' + d.icon + '"></i>' + d.title + '</div>' +
+            '<div class="card-desc">' + d.desc + '</div>' +
+            '<ul class="card-items">' + d.items.map(it => '<li>' + it + '</li>').join('') + '</ul>' +
+            '<a class="card-cta" href="https://wa.me/5561981897079?text=' + encodeURIComponent(d.whatsapp) + '" target="_blank">' +
+              '<i class="fab fa-whatsapp"></i> Saiba mais</a>' +
+          '</div>';
+        el.addEventListener('click', (e) => {
+          if (e.target.closest('.card-cta')) return;
+          select(i);
+        });
+        carousel.appendChild(el);
+
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => select(i));
+        dotsEl.appendChild(dot);
       }
-      container.innerHTML = html;
-      container.addEventListener('click', function(e) {
-        var thumb = e.target.closest('.thumb');
-        if (thumb) slideTo(parseInt(thumb.dataset.index));
-      });
     }
-    function updateThumbs() {
-      $$('.thumb').forEach(function(el) {
-        el.classList.toggle('active', parseInt(el.dataset.index) === active);
-      });
+
+    function circularDist(i, pivot) {
+      let d = i - pivot;
+      if (d > N / 2) d -= N;
+      if (d < -N / 2) d += N;
+      return d;
     }
-    // ── slide navigation (com loop infinito) ──
-    function slideTo(index) {
-      if (order.length === 0) return;
-      if (index < 0) index = order.length - 1;
-      if (index >= order.length) index = 0;
+
+    function positionAll(animate) {
+      for (let i = 0; i < N; i++) {
+        const el = carousel.children[i];
+        const offset = circularDist(i, active);
+        const absOff = Math.abs(offset);
+        const maxOff = N / 2;
+        const x = offset * SPREAD;
+        const z = absOff * Z_DEPTH;
+        const t = Math.min(1, absOff / maxOff);
+        const scale = 1 - (1 - SCALE_MIN) * t;
+        const opacity = 1 - (1 - OPACITY_MIN) * t;
+        const rotateY = offset * -9;
+        const zIndex = 100 - absOff;
+
+        const transform = 'translateX(' + x + 'px) translateZ(-' + z + 'px) rotateY(' + rotateY + 'deg) scale(' + scale + ')';
+        const props = { zIndex: zIndex, opacity: opacity };
+
+        if (animate) {
+          gsap.to(el, { transform: transform, opacity: opacity, zIndex: zIndex, duration: 0.7, ease: 'power3.out' });
+        } else {
+          el.style.transform = transform;
+          el.style.opacity = opacity;
+          el.style.zIndex = zIndex;
+        }
+      }
+    }
+
+    function select(index) {
       if (isAnimating || index === active) return;
       isAnimating = true;
-      var dir = index > active ? 1 : -1;
-      var outX = dir * -280;
-      var inX = dir * 200;
-      var outPanel = elActive();
-      var inPanel = elInactive();
-      stagePanel(inPanel, order[index], inX);
-      gsap.to(outPanel, {
-        x: outX,
-        opacity: 0,
-        duration: 0.4,
-        ease: 'power2.in',
-        onComplete: function() {
-          outPanel.classList.remove('active');
-          inPanel.classList.add('active');
-          animatePanelIn(inPanel).then(function() {
-            active = index;
-            updateThumbs();
-            updateProgress();
-            isAnimating = false;
-            resetAutoplay();
-          });
-        }
-      });
-    }
-    function nextSlide() { slideTo(active + 1); }
-    function prevSlide() { slideTo(active - 1); }
-
-    // ── autoplay ──
-    function startAutoplay() {
-      stopAutoplay();
-      autoplayTimer = setInterval(nextSlide, AUTOPLAY_MS);
-    }
-    function stopAutoplay() {
-      if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
-    }
-    function resetAutoplay() {
-      if (autoplayTimer) { stopAutoplay(); startAutoplay(); }
+      active = index;
+      updateUI(true);
+      isAnimating = false;
+      resetAuto();
     }
 
-    // ── touch drag ──
-    var touchData = null;
+    function updateUI(animate) {
+      const cards = carousel.querySelectorAll('.card3d');
+      cards.forEach((el, i) => el.classList.toggle('active', i === active));
+      dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === active));
+      positionAll(animate);
+    }
+
+    function next() { select((active + 1) % N); }
+    function prev() { select((active + N - 1) % N); }
+
+    function startAuto() { autoTimer = setInterval(next, 4500); }
+    function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+    function resetAuto() { stopAuto(); startAuto(); }
+
     function initTouch() {
-      var stage = $('#detailsStage');
-      stage.addEventListener('touchstart', function(e) {
+      const wrap = $('#carouselWrap');
+      let sx, sy, lastX;
+      wrap.addEventListener('touchstart', e => {
         if (isAnimating) return;
-        var t = e.touches[0];
-        touchData = { startX: t.clientX, startY: t.clientY };
-        stopAutoplay();
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        lastX = sx;
+        stopAuto();
       }, { passive: true });
-      stage.addEventListener('touchmove', function(e) {
-        if (!touchData || isAnimating) return;
-        var t = e.touches[0];
-        var dx = t.clientX - touchData.startX;
-        var dy = t.clientY - touchData.startY;
-        if (Math.abs(dy) > Math.abs(dx) * 1.2 && Math.abs(dy) > 10) { touchData = null; return; }
-        touchData.dx = dx;
-        gsap.set(elActive(), { x: dx, opacity: 1 - Math.min(1, Math.abs(dx) / 300) });
+      wrap.addEventListener('touchmove', e => {
+        if (!sx || isAnimating) return;
+        const t = e.touches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (Math.abs(dy) > Math.abs(dx) * 1.3 && Math.abs(dy) > 10) { sx = null; return; }
+        lastX = t.clientX;
       }, { passive: true });
-      stage.addEventListener('touchend', function() {
-        if (!touchData) return;
-        var dx = touchData.dx || 0;
-        touchData = null;
-        if (Math.abs(dx) > 60) {
-          if (dx < 0) slideTo(active + 1);
-          else slideTo(active - 1);
-        } else {
-          gsap.to(elActive(), { x: 0, opacity: 1, duration: 0.3, ease: 'power2.out' });
-        }
+      wrap.addEventListener('touchend', () => {
+        if (!sx) return;
+        const moved = lastX - sx;
+        sx = null;
+        if (Math.abs(moved) > 50) { if (moved < 0) next(); else prev(); }
       }, { passive: true });
     }
 
-    // ── keyboard ──
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowRight') nextSlide();
-      if (e.key === 'ArrowLeft') prevSlide();
-    });
-    // ── init ──
-    function initCarousel() {
-      buildThumbs();
-      stagePanel(elActive(), order[0], -200);
-      var nextIdx = order.length > 1 ? 1 : 0;
-      stagePanel(elInactive(), order[nextIdx], 200);
-      elActive().classList.add('active');
-      animatePanelIn(elActive());
-      updateThumbs();
-      updateProgress();
-      $('#prevBtn').addEventListener('click', function() { stopAutoplay(); prevSlide(); });
-      $('#nextBtn').addEventListener('click', function() { stopAutoplay(); nextSlide(); });
+    function init() {
+      build();
+      positionAll(false);
 
       initTouch();
-      var carouselEl = $('#carousel');
-      carouselEl.addEventListener('mouseenter', stopAutoplay);
-      carouselEl.addEventListener('mouseleave', startAutoplay);
+      $('#nextBtn').addEventListener('click', () => { stopAuto(); next(); });
+      $('#prevBtn').addEventListener('click', () => { stopAuto(); prev(); });
 
-      startAutoplay();
+      document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') { stopAuto(); next(); }
+        if (e.key === 'ArrowLeft') { stopAuto(); prev(); }
+      });
+      startAuto();
     }
-    document.addEventListener('DOMContentLoaded', initCarousel);
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
