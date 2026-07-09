@@ -25,7 +25,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url('hero_logo.jpeg') center/cover no-repeat;
+      background: url('hero_logo.jpeg') center 20%/cover no-repeat;
     }
     .hero-pattern {
       position: absolute;
@@ -310,6 +310,7 @@
       .carousel-arrows .arrow { width: 34px; height: 34px; font-size: 13px; }
     }
     @media (max-width: 640px) {
+      .hero { min-height: 240px; }
       .hero-content h1 { font-size: 1.75rem; }
       .section { padding: 48px 20px; }
     }
