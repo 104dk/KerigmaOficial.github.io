@@ -296,8 +296,18 @@
     }
     .carousel-arrows .arrow:hover { border-color: #001a47; color: #001a47; background: #eef2ff; }
     @media (max-width: 700px) {
-      .details-panel { flex-direction: column; padding: 20px; gap: 16px; }
-      .details-image { width: 100%; height: 180px; }
+      .details-panel { flex-direction: row; padding: 16px; gap: 12px; }
+      .details-image { width: 130px; height: 160px; border-radius: 10px; }
+      .details-body .title-1 { font-size: 0.6875rem; margin-bottom: 2px; }
+      .details-body .title-2 { font-size: 1rem; margin-bottom: 4px; }
+      .details-body .text { font-size: 0.75rem; margin-bottom: 8px; }
+      .details-body .dec { margin-bottom: 8px; }
+      .details-body .dec li { font-size: 0.6875rem; padding: 2px 0 2px 16px; }
+      .details-body .dec li::before { font-size: 0.625rem; }
+      .details-body .cta { font-size: 0.75rem; padding: 6px 14px; }
+      .carousel-footer { gap: 10px; margin-top: 14px; }
+      .carousel-thumbs .thumb { width: 36px; height: 36px; font-size: 13px; border-radius: 8px; }
+      .carousel-arrows .arrow { width: 34px; height: 34px; font-size: 13px; }
     }
     @media (max-width: 640px) {
       .hero-content h1 { font-size: 1.75rem; }
@@ -371,9 +381,9 @@
   <script>
     // ── Dados dos serviços ──
     const services = [
-      { icon: 'fa-book-bible', title: 'Livros Teológicos', desc: 'Livros teológicos para aprofundar seu conhecimento da Palavra.', image: 'https://picsum.photos/seed/kerigma-livros/520/400', whatsapp: 'Olá! Tenho interesse nos Livros Teológicos. Poderia me enviar mais informações?', items: ['Bíblias de estudo e comentários bíblicos','Teologia sistemática e doutrinária','História da Igreja e dos reformadores','Hermenêutica e exegese bíblica','Aconselhamento pastoral e discipulado','Livros infantis cristãos'] },
+      { icon: 'fa-book-bible', title: 'Livros Teológicos', desc: 'Livros teológicos para aprofundar seu conhecimento da Palavra.', image: 'https://picsum.photos/seed/kerigma-livros/520/400', whatsapp: 'Olá! Tenho interesse nos Livros Teológicos. Poderia me enviar mais informações?', items: ['Bíblias de estudo e comentários bíblicos','Teologia sistemática e doutrinária','História da Igreja e dos reformadores','Hermenêutica e exegese bíblica','Aconselhamento pastoral e discipulado'] },
       { icon: 'fa-tablet-alt', title: 'E-books', desc: 'E-books práticos e acessíveis para estudo em qualquer lugar.', image: 'https://picsum.photos/seed/kerigma-ebooks/520/400', whatsapp: 'Olá! Tenho interesse nos E-books. Poderia me enviar mais informações?', items: ['E-books de teologia e espiritualidade','Guias de estudo bíblico','Devocionais e meditações','Apostilas de cursos teológicos','Livros digitais sobre liderança cristã'] },
-      { icon: 'fa-video', title: 'Cursos Online', desc: 'Cursos online com certificado para sua formação teológica.', image: 'https://picsum.photos/seed/kerigma-cursos/520/400', whatsapp: 'Olá! Tenho interesse nos Cursos Online. Poderia me enviar mais informações?', items: ['Curso de Teologia Básica','Curso de Hermenêutica e Exegese','Curso de Aconselhamento Cristão','Curso de Liderança e Ministério','Curso de História da Igreja','Curso de Escatologia Bíblica'] },
+      { icon: 'fa-video', title: 'Cursos Online', desc: 'Cursos online com certificado para sua formação teológica.', image: 'https://picsum.photos/seed/kerigma-cursos/520/400', whatsapp: 'Olá! Tenho interesse nos Cursos Online. Poderia me enviar mais informações?', items: ['Curso de Teologia Básica','Curso de Hermenêutica e Exegese','Curso de Liderança e Ministério','Curso de História da Igreja','Curso de Escatologia Bíblica'] },
       { icon: 'fa-pen-fancy', title: 'Materiais de Estudo', desc: 'Materiais complementares para grupos de estudo e células.', image: 'https://picsum.photos/seed/kerigma-estudos/520/400', whatsapp: 'Olá! Tenho interesse nos Materiais de Estudo. Poderia me enviar mais informações?', items: ['Guias de estudo para grupos pequenos','Lições de escola dominical','Mapas e linhas do tempo bíblicas','Recursos para discipulado','Plano de leitura anual da Bíblia'] },
       { icon: 'fa-church', title: 'Palestras e Seminários', desc: 'Palestras e seminários ao vivo para edificação e ensino.', image: 'https://picsum.photos/seed/kerigma-palestras/520/400', whatsapp: 'Olá! Tenho interesse nas Palestras e Seminários. Poderia me enviar mais informações?', items: ['Seminários de teologia prática','Palestras sobre família e casamento','Congressos de avivamento e missões','Encontros de liderança pastoral','Workshops de ensino bíblico'] },
       { icon: 'fa-child', title: 'Infantil e Juvenil', desc: 'Conteúdo cristão especializado para crianças e adolescentes.', image: 'https://picsum.photos/seed/kerigma-kids/520/400', whatsapp: 'Olá! Tenho interesse no conteúdo Infantil e Juvenil. Poderia me enviar mais informações?', items: ['Livros infantis com histórias bíblicas','Devocionais para crianças','Revistas de escola bíblica','Material para jovens e adolescentes','Kits de atividades gospel'] }
