@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escola de Teologia Kerigma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1f2937;
+      background: #fafafa;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 380px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('hero_logo.jpeg') center/cover no-repeat;
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background:
+        radial-gradient(circle at 20% 50%, #fbbf24 1px, transparent 1px),
+        radial-gradient(circle at 80% 30%, #fbbf24 1px, transparent 1px),
+        radial-gradient(circle at 50% 80%, #fbbf24 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      background: #ffffff;
+      padding: 48px 24px;
+      text-align: center;
+      color: #1f2937;
+      max-width: 100%;
+    }
+    .hero-content h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 12px; line-height: 1.2; color: #001a47; }
+    .hero-content p { font-size: 1.125rem; color: #6b7280; margin-bottom: 32px; line-height: 1.6; }
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366;
+      color: #ffffff;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s, background .2s;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+    }
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      background: #128c7e;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+    }
+    .section { padding: 64px 24px; max-width: 960px; margin: 0 auto; }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #001a47;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+    .trust-bar {
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 40px 24px;
+    }
+    .trust-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      text-align: center;
+    }
+    .trust-item i { font-size: 28px; color: #001a47; margin-bottom: 8px; }
+    .trust-item h4 { font-size: 1.125rem; font-weight: 600; }
+    .trust-item p { color: #6b7280; font-size: 0.875rem; }
+    .cta-section {
+      background: linear-gradient(135deg, #001a47, #000d1f);
+      color: white;
+      text-align: center;
+      padding: 64px 24px;
+    }
+    .cta-section h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 12px; }
+    .cta-section p { color: rgba(255,255,255,0.85); margin-bottom: 28px; }
+    .whatsapp-fab {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #25D366;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      z-index: 999;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .whatsapp-fab:hover {
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+    }
+    footer {
+      background: #111827;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.875rem;
+    }
+    footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    footer a:hover { color: white; }
+    /* ── Carrossel (tamanhos padronizados) ── */
+    .carousel {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .details-stage {
+      position: relative;
+      min-height: 340px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid #f0f0f0;
+    }
+    .details-panel {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      gap: 24px;
+      padding: 28px;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .details-panel.active {
+      pointer-events: auto;
+      opacity: 1;
+      position: relative;
+    }
+    .details-image {
+      width: 240px;
+      height: 200px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #001a47;
+    }
+    .details-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .details-body .title-1 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #001a47;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .details-body .title-2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+    .details-body .text {
+      color: #6b7280;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .details-body .dec {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+    .details-body .dec li {
+      padding: 4px 0 4px 20px;
+      position: relative;
+      color: #4b5563;
+      font-size: 0.8125rem;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .details-body .dec li::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      color: #001a47;
+      font-size: 0.75rem;
+    }
+    .details-body .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #25D366;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: background .2s, transform .2s;
+    }
+    .details-body .cta:hover { background: #128c7e; transform: translateY(-1px); }
+    .carousel-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      min-width: 80px;
+    }
+    .progress-sub-foreground {
+      height: 100%;
+      background: #001a47;
+      border-radius: 4px;
+      width: 0%;
+    }
+    .carousel-thumbs {
+      display: flex;
+      gap: 8px;
+      order: -1;
+      width: 100%;
+      justify-content: center;
+    }
+    .carousel-thumbs .thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #9ca3af;
+      cursor: pointer;
+      transition: all .25s;
+    }
+    .carousel-thumbs .thumb:hover { border-color: #001a47; color: #001a47; background: #eef2ff; }
+    .carousel-thumbs .thumb.active { border-color: #001a47; color: #001a47; background: #eef2ff; }
+    .carousel-arrows { display: flex; gap: 8px; }
+    .carousel-arrows .arrow {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      color: #374151;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .carousel-arrows .arrow:hover { border-color: #001a47; color: #001a47; background: #eef2ff; }
+    @media (max-width: 700px) {
+      .details-panel { flex-direction: column; padding: 20px; gap: 16px; }
+      .details-image { width: 100%; height: 180px; }
+    }
+    @media (max-width: 640px) {
+      .hero-content h1 { font-size: 1.75rem; }
+      .section { padding: 48px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-overlay"></div>
+  </section>
+  <div class="hero-content">
+      <h1>Escola de Teologia Kerigma</h1>
+      <p>Transformando vidas através do conhecimento bíblico. Livros, e-books e cursos teológicos.</p>
+      <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="btn-whatsapp">
+        <i class="fab fa-whatsapp"></i> Fale conosco
+      </a>
+    </div>
+  <section class="section" id="carouselSection">
+    <h2 class="section-title">Nossos produtos e cursos</h2>
+    <p class="section-subtitle">Navegue pelos nossos serviços</p>
+    <div class="carousel" id="carousel">
+      <div class="details-stage" id="detailsStage">
+        <div class="details-panel active" id="detailsActive"></div>
+        <div class="details-panel inactive" id="detailsInactive"></div>
+      </div>
+      <div class="carousel-footer">
+        <div class="carousel-thumbs" id="carouselThumbs"></div>
+        <div class="progress-bar"><div class="progress-sub-foreground" id="progressFill"></div></div>
+        <div class="carousel-arrows">
+          <button class="arrow arrow-left" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+          <button class="arrow arrow-right" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="trust-bar">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <i class="fas fa-certificate"></i>
+        <h4>Conteúdo de qualidade</h4>
+        <p>Material revisado por teólogos capacitados</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-hand-holding-heart"></i>
+        <h4>Ensino cristocêntrico</h4>
+        <p>Todo conteúdo baseado na Palavra de Deus</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-users"></i>
+        <h4>Suporte ao aluno</h4>
+        <p>Acompanhamento e mentoria durante os cursos</p>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <h2>Comece sua jornada teológica hoje</h2>
+    <p>Entre em contato e descubra como podemos ajudar no seu crescimento espiritual e acadêmico.</p>
+    <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="btn-whatsapp" style="background:#25D366;box-shadow:0 4px 16px rgba(37,211,102,0.35);">
+      <i class="fab fa-whatsapp"></i> Quero saber mais
+    </a>
+  </section>
+  <footer>
+    <p>&copy; 2026 Escola de Teologia Kerigma — Todos os direitos reservados</p>
+    <p style="margin-top:4px;"><i class="fas fa-map-marker-alt"></i> Rua 2, Quadra 34, Lote 30 — Jardim Europa — Luziânia, GO — CEP 72855-852</p>
+  </footer>
+  <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" class="whatsapp-fab" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <script>
+    // ── Dados dos serviços ──
+    const services = [
+      { icon: 'fa-book-bible', title: 'Livros Teológicos', desc: 'Livros teológicos para aprofundar seu conhecimento da Palavra.', image: 'https://picsum.photos/seed/kerigma-livros/520/400', whatsapp: 'Olá! Tenho interesse nos Livros Teológicos. Poderia me enviar mais informações?', items: ['Bíblias de estudo e comentários bíblicos','Teologia sistemática e doutrinária','História da Igreja e dos reformadores','Hermenêutica e exegese bíblica','Aconselhamento pastoral e discipulado','Livros infantis cristãos'] },
+      { icon: 'fa-tablet-alt', title: 'E-books', desc: 'E-books práticos e acessíveis para estudo em qualquer lugar.', image: 'https://picsum.photos/seed/kerigma-ebooks/520/400', whatsapp: 'Olá! Tenho interesse nos E-books. Poderia me enviar mais informações?', items: ['E-books de teologia e espiritualidade','Guias de estudo bíblico','Devocionais e meditações','Apostilas de cursos teológicos','Livros digitais sobre liderança cristã'] },
+      { icon: 'fa-video', title: 'Cursos Online', desc: 'Cursos online com certificado para sua formação teológica.', image: 'https://picsum.photos/seed/kerigma-cursos/520/400', whatsapp: 'Olá! Tenho interesse nos Cursos Online. Poderia me enviar mais informações?', items: ['Curso de Teologia Básica','Curso de Hermenêutica e Exegese','Curso de Aconselhamento Cristão','Curso de Liderança e Ministério','Curso de História da Igreja','Curso de Escatologia Bíblica'] },
+      { icon: 'fa-pen-fancy', title: 'Materiais de Estudo', desc: 'Materiais complementares para grupos de estudo e células.', image: 'https://picsum.photos/seed/kerigma-estudos/520/400', whatsapp: 'Olá! Tenho interesse nos Materiais de Estudo. Poderia me enviar mais informações?', items: ['Guias de estudo para grupos pequenos','Lições de escola dominical','Mapas e linhas do tempo bíblicas','Recursos para discipulado','Plano de leitura anual da Bíblia'] },
+      { icon: 'fa-church', title: 'Palestras e Seminários', desc: 'Palestras e seminários ao vivo para edificação e ensino.', image: 'https://picsum.photos/seed/kerigma-palestras/520/400', whatsapp: 'Olá! Tenho interesse nas Palestras e Seminários. Poderia me enviar mais informações?', items: ['Seminários de teologia prática','Palestras sobre família e casamento','Congressos de avivamento e missões','Encontros de liderança pastoral','Workshops de ensino bíblico'] },
+      { icon: 'fa-child', title: 'Infantil e Juvenil', desc: 'Conteúdo cristão especializado para crianças e adolescentes.', image: 'https://picsum.photos/seed/kerigma-kids/520/400', whatsapp: 'Olá! Tenho interesse no conteúdo Infantil e Juvenil. Poderia me enviar mais informações?', items: ['Livros infantis com histórias bíblicas','Devocionais para crianças','Revistas de escola bíblica','Material para jovens e adolescentes','Kits de atividades gospel'] }
+    ];
+    const order = services;
+    let active = 0;
+    let isAnimating = false;
+    const AUTOPLAY_MS = 4000;
+    let autoplayTimer = null;
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    const elActive = () => $('#detailsActive');
+    const elInactive = () => $('#detailsInactive');
+    // ── helper: get card thumb element (matches card.js getCardContent) ──
+    function getCardContent(index) {
+      return $(`.thumb[data-index="${index}"]`);
+    }
+    // ── helper: build panel HTML ──
+    function panelHTML(data) {
+      return '<img class="details-image" src="' + data.image + '" alt="' + data.title + '" loading="lazy">' +
+        '<div class="details-body">' +
+          '<div class="title-1"><i class="fas ' + data.icon + '"></i> Categoria</div>' +
+          '<div class="title-2">' + data.title + '</div>' +
+          '<p class="text">' + data.desc + '</p>' +
+          '<ul class="dec">' + data.items.map(function(i) { return '<li>' + i + '</li>'; }).join('') + '</ul>' +
+          '<a class="cta" href="https://wa.me/5561981897079?text=' + encodeURIComponent(data.whatsapp) + '" target="_blank">' +
+            '<i class="fab fa-whatsapp"></i> Quero saber mais' +
+          '</a>' +
+        '</div>';
+    }
+    // ── populate panel & set initial GSAP positions (matches card.js) ──
+    function stagePanel(panel, data, xPos) {
+      panel.innerHTML = panelHTML(data);
+      gsap.set(panel, { opacity: 0, x: xPos });
+      gsap.set(panel.querySelector('.text'),   { y: 80, opacity: 0 });
+      gsap.set(panel.querySelector('.title-1'),{ y: 80, opacity: 0 });
+      gsap.set(panel.querySelector('.title-2'),{ y: 80, opacity: 0 });
+      gsap.set(panel.querySelector('.dec'),    { y: 40, opacity: 0 });
+      gsap.set(panel.querySelector('.cta'),    { y: 50, opacity: 0 });
+    }
+    // ── animate panel entrance ──
+    function animatePanelIn(panel) {
+      const tl = gsap.timeline();
+      tl.to(panel, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' });
+      tl.to(panel.querySelector('.title-1'), { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.25');
+      tl.to(panel.querySelector('.title-2'), { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.2');
+      tl.to(panel.querySelector('.text'),    { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.2');
+      tl.to(panel.querySelector('.dec'),     { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.2');
+      tl.to(panel.querySelector('.cta'),     { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, '-=0.15');
+      return tl;
+    }
+    // ── progress bar ──
+    function updateProgress() {
+      var pct = ((active + 1) / order.length) * 100;
+      gsap.to('#progressFill', { width: pct + '%', duration: 0.5, ease: 'power2.out' });
+    }
+    // ── thumbnails ──
+    function buildThumbs() {
+      var container = $('#carouselThumbs');
+      var html = '';
+      for (var i = 0; i < services.length; i++) {
+        html += '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" title="' + services[i].title + '">' +
+          '<i class="fas ' + services[i].icon + '"></i></div>';
+      }
+      container.innerHTML = html;
+      container.addEventListener('click', function(e) {
+        var thumb = e.target.closest('.thumb');
+        if (thumb) slideTo(parseInt(thumb.dataset.index));
+      });
+    }
+    function updateThumbs() {
+      $$('.thumb').forEach(function(el) {
+        el.classList.toggle('active', parseInt(el.dataset.index) === active);
+      });
+    }
+    // ── slide navigation (com loop infinito) ──
+    function slideTo(index) {
+      if (order.length === 0) return;
+      if (index < 0) index = order.length - 1;
+      if (index >= order.length) index = 0;
+      if (isAnimating || index === active) return;
+      isAnimating = true;
+      var dir = index > active ? 1 : -1;
+      var outX = dir * -280;
+      var inX = dir * 200;
+      var outPanel = elActive();
+      var inPanel = elInactive();
+      stagePanel(inPanel, order[index], inX);
+      gsap.to(outPanel, {
+        x: outX,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.in',
+        onComplete: function() {
+          outPanel.classList.remove('active');
+          inPanel.classList.add('active');
+          animatePanelIn(inPanel).then(function() {
+            active = index;
+            updateThumbs();
+            updateProgress();
+            isAnimating = false;
+            resetAutoplay();
+          });
+        }
+      });
+    }
+    function nextSlide() { slideTo(active + 1); }
+    function prevSlide() { slideTo(active - 1); }
+
+    // ── autoplay ──
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayTimer = setInterval(nextSlide, AUTOPLAY_MS);
+    }
+    function stopAutoplay() {
+      if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+    }
+    function resetAutoplay() {
+      if (autoplayTimer) { stopAutoplay(); startAutoplay(); }
+    }
+
+    // ── touch drag ──
+    var touchData = null;
+    function initTouch() {
+      var stage = $('#detailsStage');
+      stage.addEventListener('touchstart', function(e) {
+        if (isAnimating) return;
+        var t = e.touches[0];
+        touchData = { startX: t.clientX, startY: t.clientY };
+        stopAutoplay();
+      }, { passive: true });
+      stage.addEventListener('touchmove', function(e) {
+        if (!touchData || isAnimating) return;
+        var t = e.touches[0];
+        var dx = t.clientX - touchData.startX;
+        var dy = t.clientY - touchData.startY;
+        if (Math.abs(dy) > Math.abs(dx) * 1.2 && Math.abs(dy) > 10) { touchData = null; return; }
+        touchData.dx = dx;
+        gsap.set(elActive(), { x: dx, opacity: 1 - Math.min(1, Math.abs(dx) / 300) });
+      }, { passive: true });
+      stage.addEventListener('touchend', function() {
+        if (!touchData) return;
+        var dx = touchData.dx || 0;
+        touchData = null;
+        if (Math.abs(dx) > 60) {
+          if (dx < 0) slideTo(active + 1);
+          else slideTo(active - 1);
+        } else {
+          gsap.to(elActive(), { x: 0, opacity: 1, duration: 0.3, ease: 'power2.out' });
+        }
+      }, { passive: true });
+    }
+
+    // ── keyboard ──
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+    // ── init ──
+    function initCarousel() {
+      buildThumbs();
+      stagePanel(elActive(), order[0], -200);
+      var nextIdx = order.length > 1 ? 1 : 0;
+      stagePanel(elInactive(), order[nextIdx], 200);
+      elActive().classList.add('active');
+      animatePanelIn(elActive());
+      updateThumbs();
+      updateProgress();
+      $('#prevBtn').addEventListener('click', function() { stopAutoplay(); prevSlide(); });
+      $('#nextBtn').addEventListener('click', function() { stopAutoplay(); nextSlide(); });
+
+      initTouch();
+      var carouselEl = $('#carousel');
+      carouselEl.addEventListener('mouseenter', stopAutoplay);
+      carouselEl.addEventListener('mouseleave', startAutoplay);
+
+      startAutoplay();
+    }
+    document.addEventListener('DOMContentLoaded', initCarousel);
+  </script>
+</body>
+</html>
