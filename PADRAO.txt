@@ -1,0 +1,68 @@
+=== PADRÃO DO PROJETO — Escola de Teologia Kerigma ===
+
+ESTRUTURA
+- Único arquivo: index.html (HTML + CSS + JS inline)
+- Sem frameworks ou bundlers
+- CDN: GSAP (animação), Font Awesome 6 (ícones)
+- Imagens: picsum.photos/seed/<nome>/520/400
+
+CARROSSEL 3D (CoverFlow)
+- 6 cards em arco 3D, todos virados para o usuário
+- Rotação infinita via circularDist() (caminho mais curto)
+- Navegação: setas, dots, swipe touch, setas do teclado
+- Autoplay contínuo (4.5s), não pausa no hover
+- Card ativo ganha borda #001a47 e shadow destacado
+
+CONSTANTES DO CARROSSEL
+  SPREAD = 240       (distância X entre cards adjacentes)
+  Z_DEPTH = 320      (distância Z por unidade de offset)
+  SCALE_MIN = 0.6    (escala do card mais distante)
+  OPACITY_MIN = 0.3  (opacidade do card mais distante)
+  DURAÇÃO = 0.7s     (animação GSAP, ease power3.out)
+  rotateY = offset * -9° (inclinação CoverFlow)
+
+CARD (DESKTOP)
+  Largura: 280px     Altura: 400px
+  Imagem topo: 280×150px (object-fit: cover)
+  Body: padding 10px 12px 12px, gap 3px
+  Título: 0.8rem bold
+  Descrição: 0.65rem, clamp 2 linhas
+  Itens: 0.6rem, bullet check azul
+  CTA: 0.65rem, botão verde (#25D366 → #128c7e hover), border-radius 50px
+
+CARD (MOBILE ≤ 700px)
+  Largura: 190px     Altura: 280px
+  Imagem: 100px altura
+  Body: padding 6px 10px 10px
+  Fontes reduzidas proporcionalmente
+
+LAYOUT
+  Section carrossel: max-width 960px, padding 40px 24px top, 20px bottom
+  Wrap 3D: height 480px, perspective 1600px, overflow hidden
+  Controles: centralizados, margin-top 0, gap 14px
+  Hero: background-size cover, center 20%, min-height 240px mobile
+
+PALETA
+  Primary: #001a47 (azul escuro)
+  CTA: #25D366 → #128c7e (verde WhatsApp)
+  Text: #1f2937 (título), #6b7280 (desc), #4b5563 (itens)
+  Card bg: #fff, border #e5e7eb
+
+GALERIA (Stage Carousel)
+  | Viewport | Spread | zDepth | Rotação | Visível | Perspectiva | Card (W×H) |
+  |---|---|---|---|---|---|---|
+  | >900px | 320 | 140 | 14° | 2 | 1200px | 300×200 |
+  | 641–900px | 240 | 110 | 12° | 2 | 1400px | 220×150 |
+  | ≤640px | 150 | 80 | 10° | 2 | 1200px | 170×120 |
+  Active scale: 1.12, side scale: 0.78, far scale: 0.55
+  Active opacity: 1, side opacity: 0.65, far opacity: 0.25
+  Animação: 0.5s power3.out (GSAP)
+
+SERVIÇOS (6)
+  Cada um com: icon, title, desc, image, whatsapp, items[]
+  Sem campo "note"
+
+DEPLOY
+  GitHub: https://github.com/104dk/kerigma-site
+  Vercel: https://escoladeteologiakerigma.vercel.app
+  Auto-deploy on push to master
