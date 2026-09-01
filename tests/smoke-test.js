@@ -96,7 +96,7 @@ test('Gallery form', hasContent(cfgPath, 'id="galleryForm"'));
 test('Drop zone', hasContent(cfgPath, 'drop-zone'));
 test('Card preview', hasContent(cfgPath, 'card-preview'));
 test('Photo preview', hasContent(cfgPath, 'photo-preview'));
-test('Tabs (Materiais/Galeria)', hasContent(cfgPath, 'data-tab'));
+test('Nav sections (data-view)', hasContent(cfgPath, 'data-view'));
 test('Clear all button', hasContent(cfgPath, 'clearAllBtn'));
 test('Supabase CRUD (sbInsert)', hasContent(cfgPath, 'function sbInsert'));
 test('Edit/reorder/remove buttons', hasContent(cfgPath, 'data-action'));
