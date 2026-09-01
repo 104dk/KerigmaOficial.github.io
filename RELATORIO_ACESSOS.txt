@@ -32,10 +32,10 @@
                              PLAINTEXT no localStorage (chave "kerigma:sb-auth")
 
  [GITHUB (repo do projeto)]
-   Remote origin           : https://github.com/darkscizzo-a11y/kerigma.git
+   Remote origin           : https://github.com/104dk/KerigmaOficial.github.io.git
    Branch                  : master
-   Observação              : PADRAO.txt cita anche o repo 104dk/kerigma-site
-                             (documentação divergente; remote real = darkscizzo-a11y)
+   Observação              : PADRAO.txt citava o repo 104dk/kerigma-site
+                             (documentação antiga corrigida; remote real = 104dk/KerigmaOficial.github.io)
 
  [VERCEL]
    Project ID              : prj_ZsMypdmVA28fHxPc0gc7NtSRd4ir
@@ -87,7 +87,7 @@
  - Editar conteúdo dos carrosséis: abrir configuracoes.html e logar com
    credencial de admin do Supabase (AUTH).
  - Ver o site: https://escoladeteologiakerigma.vercel.app
- - Repo/código-fonte: git origin https://github.com/darkscizzo-a11y/kerigma.git
+ - Repo/código-fonte: git origin https://github.com/104dk/KerigmaOficial.github.io.git
 ================================================================================
  FIM DO RELATÓRIO
 ================================================================================

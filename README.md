@@ -1,6 +1,6 @@
 # 🏛️ Escola de Teologia Kerigma — Site Institucional
 
-Site de página única com dois carrosséis 3D (CoverFlow de materiais + Stage de galeria), lightbox e painel de configuração via GitHub API.
+Site de página única com dois carrosséis 3D (CoverFlow de materiais + Stage de galeria), lightbox e painel de configuração via Supabase (Auth + REST).
 
 **Live:** https://escoladeteologiakerigma.vercel.app
 
@@ -11,13 +11,12 @@ Site de página única com dois carrosséis 3D (CoverFlow de materiais + Stage d
 ```
 Kerigma_site/
 ├── index.html              # Página principal (tudo em um arquivo)
-├── configuracoes.html      # Painel de configuração (abas, preview, GitHub)
-├── data/
-│   └── carousel-config.json # Dados dos carrosséis (versionado no GitHub)
+├── configuracoes.html      # Painel de configuração (abas, preview, Supabase)
 ├── hero_logo.jpeg           # Imagem de fundo do hero
 ├── card.js                  # (residual)
-├── .git/                    # Repositório Git (origin: 104dk/kerigma-site)
+├── .git/                    # Repositório Git (origin: 104dk/KerigmaOficial.github.io)
 ├── .vercel/                 # Config de deploy Vercel
+├── supabase/                # Migrations SQL (tabelas + RLS)
 └── PADRAO.txt               # Convenções do projeto
 ```
 
@@ -57,21 +56,16 @@ Kerigma_site/
 
 ---
 
-## ⚙️ Configuração (GitHub Backend)
+## ⚙️ Configuração (Supabase Backend)
 
-Os dados dos carrosséis ficam em `data/carousel-config.json` no próprio repositório.
+Os dados dos carrosséis ficam em duas tabelas no Supabase: `services` (materiais) e `gallery` (fotos).
 
 ### Como usar o painel de config
 
 1. Abra `configuracoes.html` (ou o link "⚙️" no rodapé do site)
-2. Crie um **Personal Access Token** no GitHub:
-   - https://github.com/settings/tokens/new?description=Kerigma+Config&scopes=repo
-   - Escopo: `public_repo` (repositório público) ou `repo` (privado)
-3. Cole o token no campo "Conexão com GitHub" e clique **Conectar**
-4. O token fica salvo no `localStorage` do navegador
-5. Use as abas **Materiais** e **Galeria** para gerenciar os itens
-6. Cada adição, edição, reordenação ou remoção faz **commit automático** no GitHub
-7. O commit dispara **auto-deploy** no Vercel (alguns segundos)
+2. Faça login com as credenciais de admin do Supabase (email + senha)
+3. Use as abas **Materiais** e **Galeria** para gerenciar os itens (CRUD no Supabase via REST)
+4. As mudanças são lidas pelo `index.html` automaticamente (fetch no Supabase REST)
 
 ### Funcionalidades do painel
 
@@ -84,7 +78,7 @@ Os dados dos carrosséis ficam em `data/carousel-config.json` no próprio reposi
 - ✅ Toast notifications (sucesso/erro/aviso)
 - ✅ Abas separadas para Materiais e Galeria
 - ✅ Botão "Limpar todos os itens"
-- ✅ Fallback para localStorage se GitHub falhar
+- ✅ Fallback para localStorage se o Supabase falhar
 
 ---
 
@@ -95,7 +89,7 @@ Os dados dos carrosséis ficam em `data/carousel-config.json` no próprio reposi
 - `safeIcon()` valida classe do ícone
 - `prefers-reduced-motion` desativa animações e autoplay
 - `aria-label`, `aria-pressed`, `focus-visible` em todos os controles
-- Token GitHub salvo apenas no `localStorage` (não enviado a servidores)
+- **Login**: a senha não é persistida no `localStorage` — apenas `email`, `access_token`, `refresh_token` e `expires_at`; a sessão é restaurada via `refresh_token`
 
 ---
 
@@ -103,23 +97,23 @@ Os dados dos carrosséis ficam em `data/carousel-config.json` no próprio reposi
 
 ```
                     ┌──────────────────────┐
-                    │  data/carousel-config │
-                    │  .json (repositório)  │
+                    │  Supabase DB         │
+                    │  services | gallery  │
                     └──────┬───────────────┘
                            │
               ┌────────────┼────────────┐
               ▼            ▼            ▼
         index.html    configuracoes    localStorage
-        (fetch())     (GitHub API)     (fallback)
+        (fetch REST)  (Auth + REST)    (fallback)
               │            │
               ▼            ▼
-         Defaults      Token salvo
-         hardcoded     no navegador
+         Defaults      Sessão salva
+         hardcoded     (sem senha)
 ```
 
-**index.html:** Busca o JSON via `fetch()`, mescla com defaults. Se falhar, tenta localStorage.
+**index.html:** Busca via Supabase REST (`/rest/v1/services`, `/rest/v1/gallery`), mescla com defaults. Se falhar, tenta localStorage.
 
-**configuracoes.html:** Lê via GitHub Contents API (GET) e escreve com PUT + commit.
+**configuracoes.html:** Autentica com Supabase Auth (REST) e faz CRUD nas tabelas via REST.
 
 ---
 
@@ -127,7 +121,7 @@ Os dados dos carrosséis ficam em `data/carousel-config.json` no próprio reposi
 
 O site pode ser testado localmente abrindo `index.html` no navegador.
 
-Para testar o painel de config, abra `configuracoes.html` — o token fica salvo no navegador, então só precisa conectar uma vez.
+Para testar o painel de config, abra `configuracoes.html` — faça login com as credenciais de admin do Supabase; a sessão é restaurada automaticamente via `refresh_token`.
 
 ---
 
@@ -136,8 +130,8 @@ Para testar o painel de config, abra `configuracoes.html` — o token fica salvo
 ### Materiais
 | Constante | Valor |
 |-----------|-------|
-| SPREAD | 240 |
-| Z_DEPTH | 320 |
+| SPREAD | 240 (responsive: 170 / 200) |
+| Z_DEPTH | 320 (responsive: 220 / 260) |
 | SCALE_MIN | 0.6 |
 | OPACITY_MIN | 0.3 |
 | rotateY | offset × -9° |
@@ -171,7 +165,9 @@ Para testar o painel de config, abra `configuracoes.html` — o token fica salvo
 - [x] Stage carousel (galeria)
 - [x] Lightbox
 - [x] Painel de config com abas
-- [x] GitHub API backend
-- [ ] Autenticação no painel de config
+- [x] Migração para Supabase (Auth + REST)
+- [x] Correção de segurança no login (não guarda senha)
+- [x] Layout responsivo (mobile) dos carrosséis e do painel
+- [ ] Aplicar migration `site_settings` (painel de Config do Site → index.html)
 - [ ] Upload de imagens para CDN (ao invés de base64 no JSON)
 - [ ] Suporte a fotos retrato/paisagem na galeria

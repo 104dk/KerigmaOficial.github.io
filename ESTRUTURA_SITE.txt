@@ -19,7 +19,7 @@
  |   |-- smoke-test.js           # Smoke tests (node tests/smoke-test.js)
  |-- .vercel\
  |   |-- project.json            # IDs do deploy Vercel
- |-- .git\                       # Repo (branch master, remote darkscizzo-a11y/kerigma)
+ |-- .git\                       # Repo (branch master, remote 104dk/KerigmaOficial.github.io)
  |-- .gitignore                  # ignora .vercel, .DS_Store, *.log
  |-- hero_logo.jpeg              # Imagem de fundo do hero + favicon/fallback
  |-- card.js                     # (residual, código GSAP órfão — não usado)

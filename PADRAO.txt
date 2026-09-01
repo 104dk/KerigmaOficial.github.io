@@ -63,6 +63,6 @@ SERVIÇOS (6)
   Sem campo "note"
 
 DEPLOY
-  GitHub: https://github.com/104dk/kerigma-site
+  GitHub: https://github.com/104dk/KerigmaOficial.github.io
   Vercel: https://escoladeteologiakerigma.vercel.app
   Auto-deploy on push to master
