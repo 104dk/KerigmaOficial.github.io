@@ -351,7 +351,6 @@
   <!-- Toast container -->
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://laeezgdaoogunanzzxmr.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_QdcVgMRnbH5fa4FBzH4aSA_9USvgGND';
@@ -359,7 +358,6 @@
     const DEFAULT_SERVICE_COUNT = 6;
     const DEFAULT_GALLERY_COUNT = 10;
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let session = null;
     let services = [];
     let gallery = [];
@@ -370,16 +368,54 @@
     let editingType = null;
     let editingId = null;
 
+    function sbHeaders(token) {
+      return { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + (token || SUPABASE_ANON_KEY), 'Content-Type': 'application/json' };
+    }
+
+    async function sbFetch(path, opts) {
+      const res = await fetch(SUPABASE_URL + path, opts);
+      if (!res.ok) {
+        let msg = 'Erro na requisição';
+        try { const e = await res.json(); msg = e.message || e.msg || msg; } catch {}
+        throw new Error(msg);
+      }
+      return res;
+    }
+
+    function saveSession(data, fallbackEmail) {
+      session = data;
+      localStorage.setItem(AUTH_KEY, JSON.stringify({
+        email: data.user?.email || fallbackEmail || '',
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_at || (data.expires_in ? Math.floor(Date.now() / 1000) + data.expires_in : null)
+      }));
+    }
+
+    async function refreshSession(saved) {
+      if (saved.password || !saved.refresh_token) {
+        localStorage.removeItem(AUTH_KEY);
+        throw new Error('Sessão antiga removida. Faça login novamente.');
+      }
+
+      const res = await sbFetch('/auth/v1/token?grant_type=refresh_token', {
+        method: 'POST',
+        headers: sbHeaders(),
+        body: JSON.stringify({ refresh_token: saved.refresh_token })
+      });
+      const data = await res.json();
+      saveSession(data, saved.email);
+      return data.user;
+    }
+
     async function loadData() {
       try {
         const [sRes, gRes] = await Promise.all([
-          supabase.from('services').select('*').order('sort_order', { ascending: true }),
-          supabase.from('gallery').select('*').order('sort_order', { ascending: true })
+          sbFetch('/rest/v1/services?order=sort_order.asc', { headers: sbHeaders() }),
+          sbFetch('/rest/v1/gallery?order=sort_order.asc', { headers: sbHeaders() })
         ]);
-        if (sRes.error) throw sRes.error;
-        if (gRes.error) throw gRes.error;
-        services = sRes.data || [];
-        gallery = gRes.data || [];
+        services = await sRes.json();
+        gallery = await gRes.json();
       } catch (e) {
         services = [];
         gallery = [];
@@ -388,15 +424,17 @@
     }
 
     async function login(email, password) {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      session = data.session;
-      localStorage.setItem(AUTH_KEY, JSON.stringify({ email, password }));
+      const res = await sbFetch('/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        headers: sbHeaders(),
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      saveSession(data, email);
       return data.user;
     }
 
     function logout() {
-      supabase.auth.signOut();
       session = null;
       services = [];
       gallery = [];
@@ -405,19 +443,27 @@
     }
 
     async function sbInsert(table, row) {
-      const { data, error } = await supabase.from(table).insert(row).select();
-      if (error) throw error;
-      return data;
+      const res = await sbFetch('/rest/v1/' + table, {
+        method: 'POST',
+        headers: sbHeaders(session?.access_token),
+        body: JSON.stringify(row)
+      });
+      return res.json();
     }
 
     async function sbUpdate(table, id, row) {
-      const { error } = await supabase.from(table).update(row).eq('id', id);
-      if (error) throw error;
+      await sbFetch('/rest/v1/' + table + '?id=eq.' + id, {
+        method: 'PATCH',
+        headers: sbHeaders(session?.access_token),
+        body: JSON.stringify(row)
+      });
     }
 
     async function sbDelete(table, id) {
-      const { error } = await supabase.from(table).delete().eq('id', id);
-      if (error) throw error;
+      await sbFetch('/rest/v1/' + table + '?id=eq.' + id, {
+        method: 'DELETE',
+        headers: sbHeaders(session?.access_token)
+      });
     }
 
     /* ── Toast ── */
@@ -519,7 +565,7 @@
       });
     }
 
-    let editingId = null;
+    editingId = null;
 
     /* ── Render ── */
     function renderList(key, containerId, label, defaultCount) {
@@ -561,15 +607,15 @@
               startEditing(key, idx);
             } else if (action === 'up' && idx > 0) {
               try {
-                await sbUpdate(key, arr[idx].id, { sort_order: idx });
-                await sbUpdate(key, arr[idx - 1].id, { sort_order: idx - 1 });
+                await sbUpdate(key, arr[idx].id, { sort_order: idx - 1 });
+                await sbUpdate(key, arr[idx - 1].id, { sort_order: idx });
                 await loadData(); renderAll();
                 toast('Reordenado.', 'success');
               } catch (e) { toast('Erro: ' + e.message, 'error'); }
             } else if (action === 'down' && idx < arr.length - 1) {
               try {
-                await sbUpdate(key, arr[idx].id, { sort_order: idx });
-                await sbUpdate(key, arr[idx + 1].id, { sort_order: idx + 1 });
+                await sbUpdate(key, arr[idx].id, { sort_order: idx + 1 });
+                await sbUpdate(key, arr[idx + 1].id, { sort_order: idx });
                 await loadData(); renderAll();
                 toast('Reordenado.', 'success');
               } catch (e) { toast('Erro: ' + e.message, 'error'); }
@@ -610,7 +656,7 @@
 
       if (key === 'services') {
         form.elements.title.value = item.title || '';
-        form.elements.desc.value = item.desc || '';
+        form.elements.desc.value = item.description || '';
         form.elements.icon.value = item.icon || 'fa-book-bible';
         form.elements.items.value = (item.items || []).join('\n');
         form.elements.whatsapp.value = item.whatsapp || '';
@@ -618,7 +664,7 @@
           $('#servicePreview').src = item.image; $('#servicePreview').style.display = 'block';
           updateServiceCardPreview(item.image);
           $('#cpTitle').textContent = item.title;
-          $('#cpDesc').textContent = item.desc;
+          $('#cpDesc').textContent = item.description;
           $('#cpItems').innerHTML = (item.items || []).slice(0, 3).map(t => '<li>' + escapeHtml(t) + '</li>').join('');
         }
       } else {
@@ -643,7 +689,7 @@
       if (!image) { toast('Selecione uma imagem.', 'error'); return; }
 
       const items = fields.items.value.split('\n').map(t => t.trim()).filter(Boolean);
-      const data = { icon: fields.icon.value, title: fields.title.value.trim(), desc: fields.desc.value.trim(), whatsapp: fields.whatsapp.value.trim() || 'Olá! Tenho interesse neste material.', items, image };
+      const data = { icon: fields.icon.value, title: fields.title.value.trim(), description: fields.desc.value.trim(), whatsapp: fields.whatsapp.value.trim() || 'Olá! Tenho interesse neste material.', items, image };
 
       try {
         if (editingType === 'services' && editingIndex >= 0 && editingId) {
@@ -787,6 +833,9 @@
           $('#sbInputRow').style.display = 'none';
           await setStatus('connected', '<i class="fas fa-check-circle"></i> Conectado como <strong>' + escapeHtml(email) + '</strong> · ' + services.length + ' materiais, ' + gallery.length + ' fotos');
           $('#sbLoginBtn').disabled = false;
+          if (!$('#sbStatus').nextElementSibling?.classList.contains('outline')) {
+            $('#sbStatus').after(discBtn);
+          }
           toast('Conectado!', 'success');
         } catch (e) {
           await setStatus('error', '<i class="fas fa-times-circle"></i> ' + escapeHtml(e.message));
@@ -811,21 +860,22 @@
       const savedAuth = localStorage.getItem(AUTH_KEY);
       if (savedAuth) {
         try {
-          const { email, password } = JSON.parse(savedAuth);
+          const saved = JSON.parse(savedAuth);
+          const { email } = saved;
           $('#sbEmailInput').value = email;
           $('#sbLoginBtn').disabled = true;
-          await setStatus('', '<span class="gh-spinner"></span> Conectando...');
-          const user = await login(email, password);
+          await setStatus('', '<span class="gh-spinner"></span> Restaurando sessão...');
+          const user = await refreshSession(saved);
           await loadData();
           renderAll();
           $('#sbInputRow').style.display = 'none';
           await setStatus('connected', '<i class="fas fa-check-circle"></i> Conectado como <strong>' + escapeHtml(user.email) + '</strong> · ' + services.length + ' materiais, ' + gallery.length + ' fotos');
           $('#sbLoginBtn').disabled = false;
           $('#sbStatus').after(discBtn);
-        } catch {
+        } catch (e) {
           $('#sbLoginBtn').disabled = false;
           $('#sbStatus').style.display = 'none';
-          toast('Sessão expirada. Faça login novamente.', 'warning');
+          toast(e.message || 'Sessão expirada. Faça login novamente.', 'warning');
         }
       }
 

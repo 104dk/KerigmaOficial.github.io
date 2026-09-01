@@ -1,0 +1,178 @@
+================================================================================
+ ESTRUTURA COMPLETA DO SITE — ESCOLA DE TEOLOGIA KERIGMA
+ Gerado em: 01/09/2026
+================================================================================
+
+--------------------------------------------------------------------------------
+ 1. ESTRUTURA DE ARQUIVOS / DIRETÓRIOS
+--------------------------------------------------------------------------------
+ Kerigma_site\
+ |-- index.html                  # Página principal (tudo em um arquivo)
+ |-- configuracoes.html          # Painel de configuração (login Supabase + CRUD)
+ |-- data\
+ |   |-- carousel-config.json    # Dados antigos (legado, arrays vazios)
+ |-- supabase\
+ |   |-- config.toml             # Config local Supabase (dev, portas locais)
+ |   |-- .gitignore
+ |   \-- .temp\
+ |-- tests\
+ |   |-- smoke-test.js           # Smoke tests (node tests/smoke-test.js)
+ |-- .vercel\
+ |   |-- project.json            # IDs do deploy Vercel
+ |-- .git\                       # Repo (branch master, remote darkscizzo-a11y/kerigma)
+ |-- .gitignore                  # ignora .vercel, .DS_Store, *.log
+ |-- hero_logo.jpeg              # Imagem de fundo do hero + favicon/fallback
+ |-- card.js                     # (residual, código GSAP órfão — não usado)
+ |-- PADRAO.txt                  # Convenções de design/constantes do projeto
+ |-- vercel.json                 # {"version": 2}
+ |-- README.md                   # Documentação (parcialmente desatualizada)
+ |-- RELATORIO_ACESSOS.txt       # (este irmão deste relatório)
+ +-- ESTRUTURA_SITE.txt          # ESTE ARQUIVO
+
+--------------------------------------------------------------------------------
+ 2. ARQUITETURA / FLUXO DE DADOS
+--------------------------------------------------------------------------------
+ index.html
+   |
+   |-- fetchRemoteConfig()  -> Supabase REST (services + gallery)
+   |        |-- sucesso   -> REMOTE_SERVICES / REMOTE_GALLERY preenchidos
+   |        \-- falha     -> tenta localStorage (kerigma:*-carousel-items)
+   |
+   |-- Arrays de defaults hardcoded:
+   |        services (6 itens)   -> carrossel 3D CoverFlow de materiais
+   |        gallery  (10 itens)  -> carrossel Stage de fotos
+   |
+   \-- Renderiza: build() carrossel + dots | buildGallery() + lightbox
+
+ configuracoes.html (admin)
+   |
+   |-- Supabase Auth (login) -> /auth/v1/token?grant_type=password
+   |-- CRUD REST:
+   |        sbInsert / sbUpdate / sbDelete / loadData
+   |        tabelas: services e gallery
+   |-- Upload de imagem -> resizeImage() (canvas, JPEG 82%, máx 1400px)
+   |-- Gravado no Supabase (com sort_order); o site recarrega via fetch
+   \-- Fallback antigo: GitHub API (removido)
+
+--------------------------------------------------------------------------------
+ 3. ANATOMIA DO index.html
+--------------------------------------------------------------------------------
+ TECNOLOGIAS
+ - HTML5 + CSS3 inline, JS vanilla inline
+ - CDN: GSAP 3.12.5 (animação), Font Awesome 6.5.0 (ícones), Google Fonts Inter
+ - JSON-LD (schema.org EducationalOrganization)
+
+ SEÇÕES (ordem no layout)
+ 1. Hero              : fundo hero_logo.jpeg, título, subtítulo, botão WhatsApp
+ 2. CarouselSection   : "Formação e materiais teológicos" - CoverFlow 3D
+ 3. GallerySection    : "Galeria de Fotos" - Stage carousel + lightbox
+ 4. TrustBar          : 3 itens de confiança
+ 5. CTASection        : "Comece sua jornada teológica hoje" + botão WhatsApp
+ 6. Footer            : copyright, endereço, icone engrenagem -> configuracoes.html
+ 7. WhatsApp FAB      : botão flutuante fixo
+
+ CARROSSEL 1 — MATERIAIS (CoverFlow 3D)
+ - Estrutura: 6 cards default + itens remotos do Supabase
+ - Card: thumb (imagem) + título + descrição + até 3 tópicos + CTA WhatsApp
+ - Constantes: SPREAD=240 | Z_DEPTH=320 | SCALE_MIN=0.6 | OPACITY_MIN=0.3
+              rotateY = offset * -9deg | autoplay 4500ms | GSAP 0.7s power3.out
+ - Navegação: setas, dots, swipe touch, teclado (esq/dir), autoplay circular
+ - Tamanhos: desktop 280x400 | 900px 230x330 | 640px 210x306
+ - Card ativo ganha borda #001a47 e sombra destacada
+
+ CARROSSEL 2 — GALERIA (Stage / CoverFlow de fotos)
+ - Estrutura: 10 fotos default + itens remotos do Supabase
+ - Posicionamento: translateX / translateZ / rotateY / scale
+ - Escalas: ativa 1.12 | lateral 0.78 | distante 0.55
+ - Rotação: 14deg (desktop) / 12deg (tablet) / 10deg (mobile)
+ - Autoplay 4000ms | GSAP 0.5s power3.out | contador "1 / N"
+ - Tamanhos: desktop 300x200 | 900px 220x150 | 640px 170x120
+ - Detecção de orientação via ratio (portrait se < 0.9, landscape se > 1.5)
+
+ LIGHTBOX
+ - Abre ao clicar na foto ativa | fullscreen overlay
+ - Setas prev/next, contador, fechar (x ou Esc), teclado esq/dir
+
+ SEGURANÇA FRONTEND
+ - escapeHtml() em todo dado dinâmico
+ - safeImage() valida URLs de imagem
+ - safeIcon() valida classe do ícone
+ - prefers-reduced-motion desativa animações/autoplay
+ - aria-label / aria-pressed / focus-visible
+
+--------------------------------------------------------------------------------
+ 4. ANATOMIA DO configuracoes.html (PAINEL ADMIN)
+--------------------------------------------------------------------------------
+ TOPO
+ - Header com "Voltar" (index.html) e "Ver no site"
+ - Cartão "Conexão com Supabase": email + senha + botão Entrar
+   -> email default preenchido: admin@kerigma.com
+   -> auto-login via localStorage "kerigma:sb-auth"
+   -> status: conectado/erro + botão Sair (desconecta e limpa localStorage)
+
+ ABAS
+ - Materiais | Galeria
+
+ ABA MATERIAIS (formulário)
+ - Título, Descrição, Ícone (select), Tópicos (textarea, 1/linha)
+ - Mensagem WhatsApp, Imagem (upload/drag&drop)
+ - Preview da imagem e preview do card em tempo real
+ - Lista de itens salvos: editar, mover cima/baixo, remover
+ - Contador: itens adicionados + 6 padrão + total no site
+
+ ABA GALERIA (formulário)
+ - Título da foto + upload de imagem (drag&drop)
+ - Preview da foto + preview na galeria
+ - Lista: editar, reordenar, remover
+
+ AÇÕES GERAIS
+ - Botão "Limpar todos os itens adicionados" (com modal de confirmação)
+ - Toasts de notificação (sucesso/erro/aviso/info)
+
+ CRUD (Supabase REST)
+ - loadData  : GET  /rest/v1/services|gallery?order=sort_order.asc
+ - sbInsert  : POST /rest/v1/<tabela>
+ - sbUpdate  : PATCH /rest/v1/<tabela>?id=eq.<id>
+ - sbDelete  : DELETE /rest/v1/<tabela>?id=eq.<id>
+ - Headers   : apikey + Authorization Bearer (token de sessão p/ escrita)
+ - Reordenação: troca sort_order entre itens adjacentes
+
+ UPLOAD DE IMAGEM
+ - resizeImage(): FileReader -> Image -> canvas -> toDataURL('image/jpeg', 0.82)
+ - Máx 1400px; avisos de tamanho (ideal 1MB) e de proporção
+
+--------------------------------------------------------------------------------
+ 5. DADOS DEFAULT (HARDCODED)
+--------------------------------------------------------------------------------
+ SERVIÇOS (6) — materiais
+  1. Livros Teológicos    (fa-book-bible)
+  2. E-books              (fa-tablet-alt)
+  3. Cursos Online        (fa-video)
+  4. Materiais de Estudo  (fa-pen-fancy)
+  5. Palestras            (fa-church)
+  6. Infantil             (fa-child)
+  Cada um: icon, title, desc, image (unsplash), whatsapp (mensagem), items[]
+
+ GALERIA (10 fotos) — títulos default
+  Culto de Louvor, Confraternização, Seminário 2025, Batismo,
+  Retiro Espiritual, Escola Bíblica, Formatura, Ação Social,
+  Palestra, Encontro de Jovens  (imagens Unsplash 900x600)
+
+--------------------------------------------------------------------------------
+ 6. PALETA DE CORES / DESIGN
+--------------------------------------------------------------------------------
+ Primary       : #001a47 (azul escuro) | dark #000d1f
+ WhatsApp      : #25D366 -> hover #128c7e
+ Text          : #1f2937 (título) | #6b7280 (desc) | #4b5563 (itens)
+ Card          : bg #fff | border #e5e7eb
+ Fonte         : Inter (Google Fonts)
+ Responsivo    : breakpoints 900px e 640px
+
+--------------------------------------------------------------------------------
+ 7. COMMANDS / TESTES
+--------------------------------------------------------------------------------
+ - Smoke tests : node tests/smoke-test.js  (valida arquivos e conteúdo)
+ - Deploy      : push na branch master -> Vercel auto-deploy
+================================================================================
+ FIM DO RELATÓRIO DE ESTRUTURA
+================================================================================

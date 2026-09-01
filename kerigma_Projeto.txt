@@ -1,0 +1,55 @@
+KERIGMA_PROJETO - ANDAMENTO
+Gerado em: 01/09/2026
+
+Projeto:
+- Nome: Kerigma_site / Escola de Teologia Kerigma
+- Caminho: C:\AA_Projetos_Concluidos\Kerigma_site
+- Tipo: site institucional estatico com painel administrativo
+- Stack atual: HTML, CSS, JavaScript inline, Supabase Auth/REST DB e Vercel
+
+Arquivos de referencia criados:
+- RELATORIO_ACESSOS.txt
+- ESTRUTURA_SITE.txt
+
+Resumo da arquitetura atual:
+- index.html renderiza o site principal.
+- configuracoes.html e o painel admin para editar materiais e galeria.
+- Dados principais vem do Supabase nas tabelas services e gallery.
+- localStorage permanece como fallback para carrosseis no site publico.
+- O painel usa Supabase Auth para login e chamadas REST para CRUD.
+
+Alteracao feita neste andamento:
+- Corrigido ponto critico de seguranca em configuracoes.html.
+- Antes: o painel salvava email, senha e access_token em texto puro no localStorage.
+- Agora: o painel nao salva mais senha no localStorage.
+- Agora sao persistidos apenas email, access_token, refresh_token e expires_at.
+- O auto-login foi trocado para restauracao de sessao via refresh_token.
+- Sessoes antigas que ainda contenham password sao removidas automaticamente e exigem novo login.
+
+Validacoes realizadas:
+- node tests\smoke-test.js
+- Resultado: 53 passed, 0 failed.
+- Sintaxe do JavaScript inline de configuracoes.html validada com Node.
+- Busca confirmou que password nao e mais persistido; aparece apenas no campo de login, no request de login e na limpeza de sessoes antigas.
+
+Mudancas ja existentes antes deste ajuste:
+- configuracoes.html ja tinha migracao parcial de supabase-js para chamadas REST.
+- index.html ja tinha correcao para aceitar description ou desc nos materiais.
+- vercel.json ja estava simplificado para somente {"version": 2}.
+- Esses pontos nao foram revertidos.
+
+Pontos de atencao proximos:
+- Verificar politicas RLS das tabelas services e gallery no Supabase.
+- Confirmar se o painel deve continuar publico por URL com noindex ou se precisa camada adicional de protecao.
+- Atualizar README.md, pois ainda descreve fluxo legado via GitHub Contents API.
+- Fazer teste visual do index.html e configuracoes.html no navegador.
+- Testar login real no painel e CRUD real no Supabase quando as credenciais estiverem disponiveis.
+
+Arquivos modificados no workspace neste momento:
+- configuracoes.html
+- index.html
+- vercel.json
+- RELATORIO_ACESSOS.txt
+- ESTRUTURA_SITE.txt
+- kerigma_Projeto.txt
+

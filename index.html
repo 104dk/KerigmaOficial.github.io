@@ -731,8 +731,6 @@
     function safeIcon(icon) {
       return /^[a-z0-9-]+$/i.test(icon || '') ? icon : 'fa-image';
     }
-      return /^[a-z0-9-]+$/i.test(icon || '') ? icon : 'fa-image';
-    }
 
     function safeImage(src, fallback) {
       const value = String(src || '');
@@ -1089,7 +1087,7 @@
       services.push(...REMOTE_SERVICES.map(item => ({
         icon: safeIcon(item.icon),
         title: item.title || 'Novo material',
-        desc: item.desc || 'Material adicionado nas configurações.',
+        desc: item.description || item.desc || 'Material adicionado nas configurações.',
         image: safeImage(item.image, 'hero_logo.jpeg'),
         whatsapp: item.whatsapp || 'Olá! Tenho interesse nesse material.',
         items: (item.items || []).slice(0, 3)

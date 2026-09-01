@@ -1,0 +1,93 @@
+================================================================================
+ RELATÓRIO DE ACESSOS E DADOS — ESCOLA DE TEOLOGIA KERIGMA
+ Gerado em: 01/09/2026
+================================================================================
+
+--------------------------------------------------------------------------------
+ 1. IDENTIFICAÇÃO DO PROJETO
+--------------------------------------------------------------------------------
+ Nome        : Kerigma_site (Escola de Teologia Kerigma)
+ Caminho     : C:\AA_Projetos_Concluidos\Kerigma_site
+ Tipo        : Site institucional de página única (HTML + CSS + JS inline)
+ Stack atual : Supabase (Auth + REST DB) + Vercel (deploy estático)
+
+--------------------------------------------------------------------------------
+ 2. ACESSOS E CREDENCIAIS ENCONTRADAS NO CÓDIGO
+--------------------------------------------------------------------------------
+
+ [SUPABASE]
+   URL                     : https://laeezgdaoogunanzzxmr.supabase.co
+   Publishable (anon) key  : sb_publishable_QdcVgMRnbH5fa4FBzH4aSA_9USvgGND
+   Fonte                   : index.html:693-694 e configuracoes.html:355-356
+   Observação              : é uma chave PUBLISHABLE (anon), não é secreta;
+                             usada nas chamadas REST /rest/v1/* e /auth/v1/*
+   Tabelas                 : services, gallery (ordenadas por sort_order)
+
+ [AUTH/PAINEL ADMIN]
+   Página do painel        : configuracoes.html ("noindex")
+   Fluxo de login          : POST /auth/v1/token?grant_type=password
+   Email admin (default)   : admin@kerigma.com   (hardcoded no campo, config:220)
+   Senha admin             : NÃO está no repositório
+   Observação de risco     : o painel salva { email, senha, access_token } em
+                             PLAINTEXT no localStorage (chave "kerigma:sb-auth")
+
+ [GITHUB (repo do projeto)]
+   Remote origin           : https://github.com/darkscizzo-a11y/kerigma.git
+   Branch                  : master
+   Observação              : PADRAO.txt cita anche o repo 104dk/kerigma-site
+                             (documentação divergente; remote real = darkscizzo-a11y)
+
+ [VERCEL]
+   Project ID              : prj_ZsMypdmVA28fHxPc0gc7NtSRd4ir
+   Org ID                  : team_fLiYdWlFzI0iWRdFw2jrQ6xI
+   Domínio (live)          : https://escoladeteologiakerigma.vercel.app
+   Deploy                  : push na branch master -> auto-deploy
+
+ [CONTATO / DADOS PÚBLICOS DO SITE]
+   WhatsApp (número)       : 5561981897079  (http://wa.me/5561981897079)
+   Endereço                : Rua 2, Quadra 34, Lote 30 - Jardim Europa
+                             Luziânia, GO - CEP 72855-852
+   Ano do copyright        : 2026
+
+--------------------------------------------------------------------------------
+ 3. ARMAZENAMENTO DE DADOS (BACKENDS)
+--------------------------------------------------------------------------------
+ A) SUPABASE (ATIVO / ATUAL)
+    - Fonte de verdade dos itens dos carrosséis.
+    - Tabelas: "services" (materiais) e "gallery" (fotos).
+    - Acesso: Supabase JS via REST com chave anon (RLS protege escrita).
+    - Painel de admin (configuracoes.html) usa token de auth para CRUD.
+
+ B) LOCALSTORAGE (FALLBACK E SESSÃO)
+    - kerigma:service-carousel-items   -> fallback dos materiais
+    - kerigma:gallery-carousel-items   -> fallback das fotos
+    - kerigma:sb-auth                  -> sessão de login (email/senha/token)
+      *** ATENÇÃO: guarda senha em texto puro no navegador ***
+
+ C) GITHUB API (LEGADO — REMOVIDO)
+    - README descreve sistema via GitHub Contents API + data/carousel-config.json,
+      mas o código atual foi migrado para Supabase (commit 7f8d681).
+    - data/carousel-config.json agora está com arrays vazios.
+
+--------------------------------------------------------------------------------
+ 4. SEGURANÇA — PONTOS DE ATENÇÃO
+--------------------------------------------------------------------------------
+ [1] CRÍTICO — Senha de admin persistida em plaintext no localStorage
+     (configuracoes.html:408) -> qualquer script no mesmo domínio lê a senha.
+ [2] MÉDIO   — Email admin default hardcoded (admin@kerigma.com) no HTML.
+ [3] MÉDIO   — A senha real não está versionada (bom), mas o painel tem acesso
+     total de escrita (CRUD) protegido APENAS por credenciais Supabase + RLS.
+ [4] INFO    — chave Supabase publishable é pública por natureza (seguro p/ anon),
+     desde que as políticas de RLS das tabelas estejam corretas.
+ [5] INFO    — página configuracoes.html usa meta "noindex, nofollow".
+
+--------------------------------------------------------------------------------
+ 5. COMO ACESSAR / GERENCIAR
+--------------------------------------------------------------------------------
+ - Editar conteúdo dos carrosséis: abrir configuracoes.html e logar com
+   credencial de admin do Supabase (AUTH).
+ - Ver o site: https://escoladeteologiakerigma.vercel.app
+ - Repo/código-fonte: git origin https://github.com/darkscizzo-a11y/kerigma.git
+================================================================================
+ FIM DO RELATÓRIO
+================================================================================
