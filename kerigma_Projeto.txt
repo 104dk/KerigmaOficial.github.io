@@ -11,6 +11,44 @@ Arquivos de referencia criados:
 - RELATORIO_ACESSOS.txt
 - ESTRUTURA_SITE.txt
 
+--------------------------------------------------------------------------------
+ NOVA ETAPA (01/09/2026) — REDESIGN v1.0001 (LOCAL)
+--------------------------------------------------------------------------------
+ Contexto: trabalho local com versionamento; produção fica para depois.
+ Se creó: versoes/v1.0001/ conteniendo el NUEVO panel de configuración.
+
+ Estructura de la versión:
+ - versoes/v1.0001/configuracoes.html   (NUEVO painel reediseñado)
+ - versoes/v1.0001/index.html           (cópia de referencia)
+ - versoes/v1.0001/LEIAME.txt           (resumen de la versión)
+
+ Cambios en configuracoes.html (v1.0001):
+ - Layout moderno con sidebar fija (desktop) + gaveta móvil (hamburguesa).
+ - Navegación por hash (#/dashboard, #/materiais, #/galeria, #/settings).
+ - Nueva sección Dashboard (contadores + accesos rápidos).
+ - Nueva sección Config del Site (persistencia en tabla site_settings).
+ - Respuesta móvil: sidebar colapsable, columnas únicas, botones full-width.
+ - CORRECCIÓN DE SEGURIDAD en el login: YA NO se guarda password en
+   localStorage; se persisten email, access_token, refresh_token y
+   expires_at. Auto-login via refresh_token y limpieza de sesiones legadas.
+
+ Base de datos:
+ - NUEVA migration: supabase/migrations/002_site_settings.sql (tabla
+   site_settings línea única + RLS: lectura pública, escritura admin).
+   Aún NO aplicada al proyecto remoto; pendiente de aplicar.
+
+ Validaciones:
+ - node tests/smoke-test.js  -> 69 passed, 0 failed.
+ - Sintaxis JS de configuracoes.html validada con Node (OK).
+ - Tests actualizados para cubrir la nueva estructura v1.0001.
+
+ Pendiente (próximos pasos):
+ - Aplicar migration site_settings en Supabase.
+ - Aplicar los valores de site_settings en index.html (etapa futura).
+ - Teste visual manual en navegador (desktop y móvil).
+ - Promover v1.0001 a la raíz cuando sea validada, y subir a producción.
+--------------------------------------------------------------------------------
+
 Resumo da arquitetura atual:
 - index.html renderiza o site principal.
 - configuracoes.html e o painel admin para editar materiais e galeria.

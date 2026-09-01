@@ -9,7 +9,8 @@ const BASE = path.resolve(__dirname, '..');
 const FILES = {
   index: 'index.html',
   config: 'configuracoes.html',
-  data: 'data/carousel-config.json'
+  data: 'data/carousel-config.json',
+  configV1001: 'versoes/v1.0001/configuracoes.html'
 };
 
 let passed = 0;
@@ -99,6 +100,25 @@ test('Tabs (Materiais/Galeria)', hasContent(cfgPath, 'data-tab'));
 test('Clear all button', hasContent(cfgPath, 'clearAllBtn'));
 test('Supabase CRUD (sbInsert)', hasContent(cfgPath, 'function sbInsert'));
 test('Edit/reorder/remove buttons', hasContent(cfgPath, 'data-action'));
+
+/* ── v1.0001 configuracoes.html ── */
+console.log('\n🚀 v1.0001 configuracoes.html:');
+const v1Path = path.join(BASE, FILES.configV1001);
+test('File exists', fs.existsSync(v1Path));
+test('DOCTYPE', hasContent(v1Path, '<!DOCTYPE html>'));
+test('Sidebar layout', hasContent(v1Path, 'class="sidebar"'));
+test('Dashboard section', hasContent(v1Path, 'id="view-dashboard"'));
+test('Materiais section', hasContent(v1Path, 'id="view-materiais"'));
+test('Gallery section', hasContent(v1Path, 'id="view-galeria"'));
+test('Settings section (site_settings)', hasContent(v1Path, 'id="view-settings"'));
+test('Hash navigation', hasContent(v1Path, 'location.hash'));
+test('Mobile menu toggle', hasContent(v1Path, 'menuToggle'));
+test('Sidebar overlay (mobile)', hasContent(v1Path, 'sidebarOverlay'));
+test('Responsive media (900px)', hasContent(v1Path, 'max-width: 900px'));
+test('Login does not persist password', hasContent(v1Path, 'JSON.stringify(toStore)') && !/JSON.stringify\(toStore\)[\s\S]{0,160}password/s.test(fs.readFileSync(v1Path, 'utf-8')));
+test('Legacy session cleanup', hasContent(v1Path, 'parsed.password'));
+test('Settings save function', hasContent(v1Path, 'saveSettings'));
+test('Supabase CRUD preserved', hasContent(v1Path, 'function sbInsert'));
 
 /* ── data/carousel-config.json ── */
 console.log('\n📊 data/carousel-config.json:');

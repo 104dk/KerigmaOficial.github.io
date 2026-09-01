@@ -1,0 +1,68 @@
+================================================================================
+ KERIGMA — VERSÃO v1.0001
+ Painel de Configurações Redesenhado
+================================================================================
+
+ PROYECTO      : Escola de Teologia Kerigma (Kerigma_site)
+ CREADO       : 01/09/2026
+ RUTA         : C:\AA_Projetos_Concluidos\Kerigma_site\versoes\v1.0001
+
+ CONTENIDO
+ - configuracoes.html   : NUEVO painel de configuración (reinferido por completo)
+ - index.html           : Cópia de referencia del site público (sin cambios)
+
+--------------------------------------------------------------------------------
+ QUÉ CAMBIÓ EN ESTA VERSIÓN (configuracoes.html)
+--------------------------------------------------------------------------------
+
+ 1. DESEÑO / LAYOUT
+ - Nuevo layout MODERNO con sidebar lateral fija (desktop ≥ 900px).
+ - Áreas: Dashboard, Materiais, Galeria, Config del Site.
+ - Navegación por hash (#/dashboard, #/materiais, #/galeria, #/settings).
+ - Sidebar con branding "Kerigma Admin", menú de navegación, estado de
+   conexión y accesos (Ver site, Voltar, Sair).
+
+ 2. RESPONSIVO (MOBILE)
+ - En pantallas < 900px la sidebar se oculta y se abre como gaveta
+   deslizante mediante un menú hamburguesa (☰) en la topbar.
+ - Overlay oscuro para cerrar la gaveta.
+ - Layout en columna única, formularios apilados, botones full-width < 480px.
+ - Sección móvil optimizada para toque (área mínima 44px).
+
+ 3. CORRECCIÓN DE SEGURIDAD (LOGIN)
+ - ANTES (bug): se guardaba { email, password, access_token } en texto
+   puro en localStorage (clave "kerigma:sb-auth").
+ - AHORA: solo se persisten email, access_token, refresh_token y expires_at.
+ - El auto-login restaura la sesión con refresh_token (grant_type=refresh_token).
+ - Las sesiones antiguas que aún contengan "password" se eliminan
+   automáticamente y exigen nuevo login.
+
+ 4. NUEVA SECCIÓN: CONFIG DEL SITE (site_settings)
+ - Campos: hero_title, hero_subtitle, whatsapp, email, cta_title, cta_text,
+   address, whatsapp_text.
+ - Se persisten en la tabla Supabase "site_settings" (línea única).
+ - NOTA: la aplicación de estos valores en index.html queda para una
+   próxima etapa (se combinó antes de empezar).
+
+ 5. NUEVA SECCIÓN: DASHBOARD
+ - Resumen con contadores de materiais, galería y estado de conexión.
+ - Accesos rápidos a las secciones.
+
+--------------------------------------------------------------------------------
+ PERSISTENCIA / REQUISITOS
+--------------------------------------------------------------------------------
+ - Supabase: tabla "site_settings" necesaria (ver supabase/migrations/
+   002_site_settings.sql). Aplicar en el dashboard o con CLI.
+ - Credenciales actuales (anon key + URL) se mantienen iguales que en la
+   versión raíz.
+ - Los datos de services y gallery siguen leyéndose de Supabase como antes.
+
+--------------------------------------------------------------------------------
+ CÓMO PROBAR
+--------------------------------------------------------------------------------
+ - Abrir configuracoes.html en el navegador (modo desktop y móvil / DevTools).
+ - Login con credenciales de admin de Supabase.
+ - CRUD de materiais y galería, y guardar configuración del sitio.
+================================================================================
+ FIN DE LEIAME — v1.0001
+================================================================================

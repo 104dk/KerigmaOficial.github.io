@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escola de Teologia Kerigma</title>
+  <meta name="description" content="Escola de Teologia Kerigma: livros, e-books, cursos online e materiais de estudo para formação bíblica e crescimento cristão.">
+  <meta name="theme-color" content="#001a47">
+  <meta property="og:title" content="Escola de Teologia Kerigma">
+  <meta property="og:description" content="Formação teológica, livros, e-books e cursos para aprofundar o conhecimento bíblico.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="hero_logo.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:url" content="https://escoladeteologiakerigma.vercel.app">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23001a47'/%3E%3Ctext y='27' font-size='26' fill='%23fff' text-anchor='middle' x='16'%3E⛪%3C/text%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Escola de Teologia Kerigma",
+    "description": "Formação teológica, livros, e-books e cursos para aprofundar o conhecimento bíblico.",
+    "url": "https://escoladeteologiakerigma.vercel.app",
+    "logo": "https://escoladeteologiakerigma.vercel.app/hero_logo.jpeg",
+    "sameAs": ["https://wa.me/5561981897079"]
+  }
+  </script>
+  <link rel="preload" as="image" href="hero_logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    :root {
+      --color-primary: #001a47;
+      --color-primary-dark: #000d1f;
+      --color-text: #1f2937;
+      --color-muted: #6b7280;
+      --color-border: #e5e7eb;
+      --color-whatsapp: #25D366;
+      --color-whatsapp-dark: #128c7e;
+      --gallery-radius: 420px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--color-text);
+      background: #fafafa;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 380px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('hero_logo.jpeg') center 20%/cover no-repeat;
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background:
+        radial-gradient(circle at 20% 50%, #fbbf24 1px, transparent 1px),
+        radial-gradient(circle at 80% 30%, #fbbf24 1px, transparent 1px),
+        radial-gradient(circle at 50% 80%, #fbbf24 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      background: #ffffff;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .hero-content h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 12px; line-height: 1.2; color: var(--color-primary); }
+    .hero-content p { font-size: 1.125rem; color: var(--color-muted); margin-bottom: 32px; line-height: 1.6; }
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-whatsapp);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s, background .2s;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+    }
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      background: var(--color-whatsapp-dark);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+    }
+
+    .section { padding: 60px 16px; max-width: 1200px; margin: 0 auto; }
+    #carouselSection { max-width: 100%; padding: 36px 0 28px; }
+    #carouselSection .section-title,
+    #carouselSection .section-subtitle,
+    #carouselSection .carousel3d-controls {
+      padding: 0 16px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #gallerySection { max-width: 100%; padding: 36px 0 28px; }
+    #gallerySection .section-title,
+    #gallerySection .section-subtitle,
+    #gallerySection .cylinder-controls {
+      padding: 0 16px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 6px;
+      color: var(--color-primary);
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--color-muted);
+      margin-bottom: 32px;
+      font-size: 1rem;
+    }
+
+    /* ── Carrossel 3D (Cover Flow) ── */
+    .carousel3d-wrap {
+      position: relative;
+      height: 440px;
+      perspective: 1600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .carousel3d-wrap .carousel3d {
+      position: relative;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+    }
+      .carousel3d-wrap .carousel3d .card3d {
+        position: absolute;
+        width: 280px;
+        height: 400px;
+        left: -140px;
+        top: -200px;
+        border-radius: 18px;
+        background: #fff;
+        border: 2px solid var(--color-border);
+        box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        backface-visibility: hidden;
+        user-select: none;
+        overflow: hidden;
+        transition: border-color .3s;
+      }
+      .carousel3d-wrap .carousel3d .card3d .thumb {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        flex-shrink: 0;
+        display: block;
+        background: var(--color-primary);
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body {
+        flex: 1;
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--color-text);
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title i {
+        width: 16px;
+        color: var(--color-primary);
+        margin-right: 6px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-desc {
+        font-size: 0.7rem;
+        color: var(--color-muted);
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 2px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items {
+        list-style: none;
+        margin: 2px 0;
+        padding: 0;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li {
+        font-size: 0.65rem;
+        color: #4b5563;
+        padding: 1px 0;
+        line-height: 1.3;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li::before {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 0.55rem;
+        color: var(--color-primary);
+        margin-right: 5px;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: var(--color-whatsapp);
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background .2s, transform .2s;
+      }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta:hover { background: var(--color-whatsapp-dark); transform: translateY(-1px); }
+      .carousel3d-wrap .carousel3d .card3d.active {
+        border-color: var(--color-primary);
+        box-shadow: 0 10px 40px rgba(0,26,71,0.22);
+      }
+      .carousel3d-wrap .carousel3d .card3d.active .thumb { filter: brightness(1.05); }
+
+    .carousel3d-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 0;
+    }
+    .carousel3d-controls .arr {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: #fff;
+      color: #4b5563;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .25s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .carousel3d-controls .arr:hover { border-color: var(--color-primary); color: #fff; background: var(--color-primary); box-shadow: 0 4px 12px rgba(0,26,71,0.2); }
+    .carousel3d-controls .dots { display: flex; gap: 6px; }
+    .carousel3d-controls .dots .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #d1d5db;
+      cursor: pointer;
+      transition: all .3s;
+      border: 0;
+      padding: 0;
+    }
+    .carousel3d-controls .dots .dot.active { background: var(--color-primary); width: 20px; border-radius: 4px; }
+    .carousel3d-controls .dots .dot:hover { background: var(--color-primary); }
+
+    /* ── Stage Carousel (Galeria) ── */
+    .cylinder-wrap {
+      position: relative;
+      height: 420px;
+      perspective: 1200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .cylinder-wrap .cylinder {
+      position: relative;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+    }
+    .cylinder-wrap .cylinder .photo-card {
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      left: -150px;
+      top: -100px;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      backface-visibility: hidden;
+      border: 3px solid var(--color-border);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .cylinder-wrap .cylinder .photo-card.active {
+      border-color: var(--color-primary);
+      box-shadow: 0 12px 48px rgba(0,26,71,0.35);
+      cursor: zoom-in;
+    }
+    .cylinder-wrap .cylinder .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: var(--color-primary);
+    }
+    .cylinder-wrap .cylinder .photo-card.portrait img {
+      object-fit: contain;
+    }
+    .cylinder-wrap .cylinder .photo-card.portrait {
+      border-color: rgba(245,158,11,0.4);
+    }
+    .cylinder-wrap .cylinder .photo-card .photo-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 12px 8px;
+      background: linear-gradient(transparent 20%, rgba(0,0,0,0.7));
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-align: center;
+      opacity: 0.35;
+      transition: opacity .4s, font-size .3s;
+    }
+    .cylinder-wrap .cylinder .photo-card.active .photo-label {
+      opacity: 1;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 14px 16px 10px;
+      letter-spacing: 0.5px;
+    }
+    .cylinder-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .cylinder-controls .arr {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: #fff;
+      color: #4b5563;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .25s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .cylinder-controls .arr:hover { border-color: var(--color-primary); color: #fff; background: var(--color-primary); box-shadow: 0 4px 12px rgba(0,26,71,0.2); }
+    .cylinder-controls .dots { display: flex; gap: 5px; }
+    .cylinder-controls .dots .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d1d5db;
+      cursor: pointer;
+      transition: all .3s;
+      border: 0;
+      padding: 0;
+    }
+    .cylinder-controls .dots .dot.active { background: var(--color-primary); width: 16px; border-radius: 3px; }
+    .cylinder-controls .dots .dot:hover { background: var(--color-primary); }
+    .gal-counter {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      min-width: 36px;
+      text-align: center;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox .lb-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity .2s;
+      background: none;
+      border: 0;
+      line-height: 1;
+    }
+    .lightbox .lb-close:hover { opacity: 1; }
+    .lightbox .lb-img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 8px;
+      object-fit: contain;
+      display: block;
+    }
+    .lightbox .lb-arr {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 0;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .lightbox .lb-arr:hover { background: rgba(255,255,255,0.25); }
+    .lightbox .lb-arr.lb-prev { left: 20px; }
+    .lightbox .lb-arr.lb-next { right: 20px; }
+    .lightbox .lb-counter {
+      position: absolute;
+      bottom: 24px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .trust-bar {
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 40px 24px;
+    }
+    .trust-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      text-align: center;
+    }
+    .trust-item i { font-size: 28px; color: var(--color-primary); margin-bottom: 8px; }
+    .trust-item h4 { font-size: 1.125rem; font-weight: 600; }
+    .trust-item p { color: var(--color-muted); font-size: 0.875rem; }
+
+    .cta-section {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      text-align: center;
+      padding: 64px 24px;
+    }
+    .cta-section h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 12px; }
+    .cta-section p { color: rgba(255,255,255,0.85); margin-bottom: 28px; }
+
+    .whatsapp-fab {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--color-whatsapp);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      z-index: 999;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .whatsapp-fab:hover {
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+    }
+
+    footer {
+      position: relative;
+      background: #111827;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.875rem;
+    }
+    footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+    footer a:hover { color: white; }
+    .footer-address { margin-top: 4px; }
+    .footer-gear {
+      position: absolute;
+      right: 18px;
+      bottom: 16px;
+      color: rgba(255,255,255,0.28);
+      font-size: 14px;
+      line-height: 1;
+      text-decoration: none;
+      transition: color .2s, transform .2s;
+    }
+    .footer-gear:hover,
+    .footer-gear:focus-visible {
+      color: rgba(255,255,255,0.72);
+      transform: rotate(24deg);
+    }
+    .arr:focus-visible,
+    .dot:focus-visible,
+    .btn-whatsapp:focus-visible,
+    .whatsapp-fab:focus-visible,
+    .footer-gear:focus-visible {
+      outline: 3px solid rgba(251,191,36,0.85);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 900px) {
+      :root { --gallery-radius: 300px; }
+      #carouselSection { padding-top: 24px; padding-bottom: 22px; }
+      #gallerySection { padding-top: 28px; padding-bottom: 24px; }
+      .carousel3d-wrap { height: 390px; perspective: 1200px; }
+      .carousel3d-wrap .carousel3d .card3d { width: 230px; height: 330px; left: -115px; top: -165px; border-radius: 14px; }
+      .carousel3d-wrap .carousel3d .card3d .thumb { height: 118px; }
+      .carousel3d-wrap .carousel3d .card3d .card-body { padding: 8px 10px 10px; gap: 2px; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title { font-size: 0.72rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-desc { font-size: 0.6rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li { font-size: 0.56rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta { font-size: 0.6rem; padding: 5px 10px; }
+      .cylinder-wrap { height: 360px; perspective: 1400px; }
+      .cylinder-wrap .cylinder .photo-card { width: 220px; height: 150px; left: -110px; top: -75px; border-radius: 10px; }
+      .cylinder-controls { margin-top: 8px; }
+    }
+    @media (max-width: 640px) {
+      :root { --gallery-radius: 240px; }
+      .hero { min-height: 240px; }
+      .hero-content h1 { font-size: 1.75rem; }
+      .section { padding: 40px 12px; }
+      #carouselSection { padding-top: 16px; padding-bottom: 16px; }
+      #gallerySection { padding-top: 22px; padding-bottom: 20px; }
+      .section-subtitle { margin-bottom: 20px; }
+      .carousel3d-wrap { height: 350px; perspective: 1000px; }
+      .carousel3d-wrap .carousel3d .card3d { width: 210px; height: 306px; left: -105px; top: -153px; }
+      .carousel3d-wrap .carousel3d .card3d .thumb { height: 108px; }
+      .cylinder-wrap { height: 280px; perspective: 1200px; }
+      .cylinder-wrap .cylinder .photo-card { width: 170px; height: 120px; left: -85px; top: -60px; }
+      .cylinder-controls { margin-top: 6px; }
+      .footer-gear { right: 12px; bottom: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-overlay"></div>
+  </section>
+  <div class="hero-content">
+    <h1>Escola de Teologia Kerigma</h1>
+    <p>Transformando vidas através do conhecimento bíblico. Livros, e-books e cursos teológicos.</p>
+    <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+      <i class="fab fa-whatsapp"></i> Fale conosco
+    </a>
+  </div>
+
+  <section class="section" id="carouselSection">
+    <h2 class="section-title">Formação e materiais teológicos</h2>
+    <p class="section-subtitle">Escolha o formato ideal para estudar com profundidade e praticidade</p>
+    <div class="carousel3d-wrap" id="carouselWrap">
+      <div class="carousel3d" id="carousel3d"></div>
+    </div>
+    <div class="carousel3d-controls">
+      <button class="arr" id="prevBtn" type="button" aria-label="Item anterior do carrossel de materiais"><i class="fas fa-chevron-left"></i></button>
+      <div class="dots" id="dots"></div>
+      <button class="arr" id="nextBtn" type="button" aria-label="Próximo item do carrossel de materiais"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </section>
+
+  <section class="section" id="gallerySection">
+    <h2 class="section-title">Galeria de Fotos</h2>
+    <p class="section-subtitle">Registros dos nossos eventos e encontros</p>
+    <div class="cylinder-wrap" id="cylinderWrap">
+      <div class="cylinder" id="cylinder"></div>
+    </div>
+    <div class="cylinder-controls">
+      <button class="arr" id="galPrev" type="button" aria-label="Foto anterior da galeria"><i class="fas fa-chevron-left"></i></button>
+      <div class="dots" id="galDots"></div>
+      <span class="gal-counter" id="galCounter"></span>
+      <button class="arr" id="galNext" type="button" aria-label="Próxima foto da galeria"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose" aria-label="Fechar">&times;</button>
+    <button class="lb-arr lb-prev" id="lbPrev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <button class="lb-arr lb-next" id="lbNext" aria-label="Próximo"><i class="fas fa-chevron-right"></i></button>
+    <span class="lb-counter" id="lbCounter"></span>
+  </div>
+
+  <section class="trust-bar">
+    <div class="trust-grid">
+      <div class="trust-item">
+        <i class="fas fa-certificate"></i>
+        <h4>Conteúdo de qualidade</h4>
+        <p>Material revisado por teólogos capacitados</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-hand-holding-heart"></i>
+        <h4>Ensino cristocêntrico</h4>
+        <p>Todo conteúdo baseado na Palavra de Deus</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-users"></i>
+        <h4>Suporte ao aluno</h4>
+        <p>Acompanhamento e mentoria durante os cursos</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Comece sua jornada teológica hoje</h2>
+    <p>Entre em contato e descubra como podemos ajudar no seu crescimento espiritual e acadêmico.</p>
+    <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+      <i class="fab fa-whatsapp"></i> Quero saber mais
+    </a>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Escola de Teologia Kerigma — Todos os direitos reservados</p>
+    <p class="footer-address"><i class="fas fa-map-marker-alt"></i> Rua 2, Quadra 34, Lote 30 — Jardim Europa — Luziânia, GO — CEP 72855-852</p>
+    <a class="footer-gear" href="configuracoes.html" aria-label="Abrir configurações dos carrosséis">
+      <i class="fas fa-gear"></i>
+    </a>
+  </footer>
+
+  <a href="https://wa.me/5561981897079?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20Escola%20de%20Teologia%20Kerigma." target="_blank" rel="noopener noreferrer" class="whatsapp-fab" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script>
+    let REMOTE_SERVICES = [];
+    let REMOTE_GALLERY = [];
+
+    const SUPABASE_URL = 'https://laeezgdaoogunanzzxmr.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_QdcVgMRnbH5fa4FBzH4aSA_9USvgGND';
+
+    async function fetchRemoteConfig() {
+      try {
+        const [sRes, gRes] = await Promise.all([
+          fetch(SUPABASE_URL + '/rest/v1/services?order=sort_order.asc', {
+            headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+          }),
+          fetch(SUPABASE_URL + '/rest/v1/gallery?order=sort_order.asc', {
+            headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+          })
+        ]);
+        if (!sRes.ok || !gRes.ok) throw new Error('Supabase fetch failed');
+        REMOTE_SERVICES = await sRes.json();
+        REMOTE_GALLERY = await gRes.json();
+      } catch {
+        REMOTE_SERVICES = [];
+        REMOTE_GALLERY = [];
+        try {
+          const s = JSON.parse(localStorage.getItem('kerigma:service-carousel-items') || '[]');
+          const g = JSON.parse(localStorage.getItem('kerigma:gallery-carousel-items') || '[]');
+          if (Array.isArray(s)) REMOTE_SERVICES = s;
+          if (Array.isArray(g)) REMOTE_GALLERY = g;
+        } catch {}
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+    }
+
+    function safeIcon(icon) {
+      return /^[a-z0-9-]+$/i.test(icon || '') ? icon : 'fa-image';
+    }
+
+    function safeImage(src, fallback) {
+      const value = String(src || '');
+      return /^(https?:\/\/|data:image\/|[\w./-]+$)/i.test(value) ? value : fallback;
+    }
+
+    function shouldReduceMotion() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    let services = [
+      { icon: 'fa-book-bible', title: 'Livros Teol\u00f3gicos', desc: 'Livros teol\u00f3gicos para aprofundar seu conhecimento da Palavra.', image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=720&q=80', whatsapp: 'Ol\u00e1! Tenho interesse nos Livros Teol\u00f3gicos. Poderia me enviar mais informa\u00e7\u00f5es?', items: ['B\u00edblias de estudo','Teologia sistem\u00e1tica','Hist\u00f3ria da Igreja','Hermen\u00eautica b\u00edblica','Aconselhamento pastoral'] },
+      { icon: 'fa-tablet-alt', title: 'E-books', desc: 'E-books pr\u00e1ticos e acess\u00edveis para estudo em qualquer lugar.', image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=720&q=80', whatsapp: 'Ol\u00e1! Tenho interesse nos E-books. Poderia me enviar mais informa\u00e7\u00f5es?', items: ['E-books de teologia','Guias de estudo b\u00edblico','Devocionais','Apostilas de cursos','Lideran\u00e7a crist\u00e3'] },
+      { icon: 'fa-video', title: 'Cursos Online', desc: 'Cursos online com certificado para sua forma\u00e7\u00e3o teol\u00f3gica.', image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=720&q=80', whatsapp: 'Ol\u00e1! Tenho interesse nos Cursos Online. Poderia me enviar mais informa\u00e7\u00f5es?', items: ['Teologia B\u00e1sica','Hermen\u00eautica','Lideran\u00e7a','Hist\u00f3ria da Igreja','Escatologia'] },
+      { icon: 'fa-pen-fancy', title: 'Materiais de Estudo', desc: 'Materiais complementares para grupos de estudo.', image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=720&q=80', whatsapp: 'Ol\u00e1! Tenho interesse nos Materiais de Estudo.', items: ['Guias para grupos','Li\u00e7\u00f5es','Mapas b\u00edblicos','Discipulado','Plano de leitura'] },
+      { icon: 'fa-church', title: 'Palestras', desc: 'Palestras e semin\u00e1rios ao vivo.', image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=720&q=80', whatsapp: 'Ol\u00e1! Tenho interesse nas Palestras.', items: ['Semin\u00e1rios','Palestras fam\u00edlia','Congressos','Encontros','Workshops'] },
+      { icon: 'fa-child', title: 'Infantil', desc: 'Conte\u00fado crist\u00e3o para crian\u00e7as.', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=720&q=80', whatsapp: 'Ol\u00e1! Tenho interesse no Infantil.', items: ['Livros infantis','Devocionais','Revistas','Jovens','Atividades'] }
+    ];
+
+    let N = services.length;
+    const SPREAD = 240;
+    const Z_DEPTH = 320;
+    const SCALE_MIN = 0.6;
+    const OPACITY_MIN = 0.3;
+    const reduceMotion = shouldReduceMotion();
+
+    let active = 0;
+    let isAnimating = false;
+    let autoTimer = null;
+
+    const $ = s => document.querySelector(s);
+    const carousel = $('#carousel3d');
+    const dotsEl = $('#dots');
+
+    function build() {
+      for (let i = 0; i < N; i++) {
+        const d = services[i];
+        const el = document.createElement('div');
+        el.className = 'card3d' + (i === 0 ? ' active' : '');
+        el.dataset.index = i;
+        const title = escapeHtml(d.title);
+        const desc = escapeHtml(d.desc);
+        const image = safeImage(d.image, 'hero_logo.jpeg');
+        const icon = safeIcon(d.icon);
+        el.innerHTML = '<img class="thumb" src="' + image + '" alt="' + title + '" width="520" height="400" loading="lazy" decoding="async">' +
+          '<div class="card-body">' +
+            '<div class="card-title"><i class="fas ' + icon + '"></i>' + title + '</div>' +
+            '<div class="card-desc">' + desc + '</div>' +
+            '<ul class="card-items">' + d.items.slice(0, 3).map(it => '<li>' + escapeHtml(it) + '</li>').join('') + '</ul>' +
+            '<a class="card-cta" href="https://wa.me/5561981897079?text=' + encodeURIComponent(d.whatsapp) + '" target="_blank" rel="noopener noreferrer">' +
+              '<i class="fab fa-whatsapp"></i> Saiba mais</a>' +
+          '</div>';
+        el.addEventListener('click', (e) => {
+          if (e.target.closest('.card-cta')) return;
+          select(i);
+        });
+        carousel.appendChild(el);
+
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Ver ' + d.title);
+        dot.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+        dot.addEventListener('click', () => select(i));
+        dotsEl.appendChild(dot);
+      }
+    }
+
+    function circularDist(i, pivot) {
+      let d = i - pivot;
+      if (d > N / 2) d -= N;
+      if (d < -N / 2) d += N;
+      return d;
+    }
+
+    function positionAll(animate) {
+      for (let i = 0; i < N; i++) {
+        const el = carousel.children[i];
+        const offset = circularDist(i, active);
+        const absOff = Math.abs(offset);
+        const maxOff = N / 2;
+        const x = offset * SPREAD;
+        const z = absOff * Z_DEPTH;
+        const t = Math.min(1, absOff / maxOff);
+        const scale = 1 - (1 - SCALE_MIN) * t;
+        const opacity = 1 - (1 - OPACITY_MIN) * t;
+        const rotateY = offset * -9;
+        const zIndex = 100 - absOff;
+
+        const transform = 'translateX(' + x + 'px) translateZ(-' + z + 'px) rotateY(' + rotateY + 'deg) scale(' + scale + ')';
+
+        if (animate && !reduceMotion && window.gsap) {
+          gsap.to(el, { transform: transform, opacity: opacity, zIndex: zIndex, duration: 0.7, ease: 'power3.out' });
+        } else {
+          el.style.transform = transform;
+          el.style.opacity = opacity;
+          el.style.zIndex = zIndex;
+        }
+      }
+    }
+
+    function select(index) {
+      if (isAnimating || index === active) return;
+      isAnimating = true;
+      active = index;
+      updateUI(true);
+      isAnimating = false;
+      resetAuto();
+    }
+
+    function updateUI(animate) {
+      const cards = carousel.querySelectorAll('.card3d');
+      cards.forEach((el, i) => el.classList.toggle('active', i === active));
+      dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === active);
+        d.setAttribute('aria-pressed', i === active ? 'true' : 'false');
+      });
+      positionAll(animate);
+    }
+
+    function next() { select((active + 1) % N); }
+    function prev() { select((active + N - 1) % N); }
+
+    function startAuto() {
+      if (reduceMotion) return;
+      autoTimer = setInterval(next, 4500);
+    }
+    function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+    function resetAuto() { stopAuto(); startAuto(); }
+
+    function initTouch() {
+      const wrap = $('#carouselWrap');
+      let sx, sy, lastX;
+      wrap.addEventListener('touchstart', e => {
+        if (isAnimating) return;
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        lastX = sx;
+        stopAuto();
+      }, { passive: true });
+      wrap.addEventListener('touchmove', e => {
+        if (!sx || isAnimating) return;
+        const t = e.touches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (Math.abs(dy) > Math.abs(dx) * 1.3 && Math.abs(dy) > 10) { sx = null; return; }
+        lastX = t.clientX;
+      }, { passive: true });
+      wrap.addEventListener('touchend', () => {
+        if (!sx) return;
+        const moved = lastX - sx;
+        sx = null;
+        if (Math.abs(moved) > 50) { if (moved < 0) next(); else prev(); }
+      }, { passive: true });
+    }
+
+    function init() {
+      build();
+      positionAll(false);
+
+      initTouch();
+      $('#nextBtn').addEventListener('click', () => { stopAuto(); next(); });
+      $('#prevBtn').addEventListener('click', () => { stopAuto(); prev(); });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') { stopAuto(); next(); }
+        if (e.key === 'ArrowLeft') { stopAuto(); prev(); }
+      });
+      startAuto();
+    }
+
+    /* ── Stage Carousel (Galeria) ── */
+    let gallery = [
+      { title: 'Culto de Louvor', img: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Confraternização', img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Seminário 2025', img: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Batismo', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Retiro Espiritual', img: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Escola Bíblica', img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Formatura', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Ação Social', img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Palestra', img: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80' },
+      { title: 'Encontro de Jovens', img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80' }
+    ];
+
+    let GN = gallery.length;
+    function galConsts() {
+      const w = window.innerWidth;
+      if (w <= 640) return { spread: 150, zDepth: 80, rotation: 10, visible: 2 };
+      if (w <= 900) return { spread: 240, zDepth: 110, rotation: 12, visible: 2 };
+      return { spread: 320, zDepth: 140, rotation: 14, visible: 2 };
+    }
+    let gActive = 0;
+    let gIsAnimating = false;
+    let gAutoTimer = null;
+    const gal = $('#cylinder');
+    const galDots = $('#galDots');
+    const galCounter = $('#galCounter');
+    const lb = $('#lightbox');
+    const lbImg = $('#lbImg');
+    const lbCounter = $('#lbCounter');
+
+    function galCircularDist(i, pivot) {
+      let d = i - pivot;
+      if (d > GN / 2) d -= GN;
+      if (d < -GN / 2) d += GN;
+      return d;
+    }
+
+    function buildGallery() {
+      for (let i = 0; i < GN; i++) {
+        const el = document.createElement('div');
+        el.className = 'photo-card';
+        const title = escapeHtml(gallery[i].title);
+        const image = safeImage(gallery[i].img, 'hero_logo.jpeg');
+        el.dataset.index = i;
+        el.innerHTML = '<img src="' + image + '" alt="' + title + '" width="900" height="600" loading="lazy" decoding="async"><span class="photo-label">' + title + '</span>';
+        el.querySelector('img').addEventListener('load', function() {
+          const ratio = this.naturalWidth / this.naturalHeight;
+          if (ratio < 0.9) el.classList.add('portrait');
+          else if (ratio > 1.5) el.classList.add('landscape');
+        });
+        el.addEventListener('click', (e) => {
+          if (Number(el.dataset.index) === gActive) { openLightbox(gActive); }
+          else { galSelect(Number(el.dataset.index)); }
+        });
+        gal.appendChild(el);
+
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Ver foto: ' + gallery[i].title);
+        dot.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+        dot.addEventListener('click', () => galSelect(i));
+        galDots.appendChild(dot);
+      }
+    }
+
+    function galPosition(animate) {
+      const c = galConsts();
+      for (let i = 0; i < GN; i++) {
+        const el = gal.children[i];
+        const offset = galCircularDist(i, gActive);
+        const absOff = Math.abs(offset);
+
+        if (absOff > c.visible + 0.5) {
+          if (animate) gsap.to(el, { opacity: 0, scale: 0.5, duration: 0.3 });
+          else { el.style.opacity = 0; el.style.transform = 'scale(0.5)'; }
+          el.style.pointerEvents = 'none';
+          el.style.zIndex = 0;
+          continue;
+        }
+
+        const x = offset * c.spread;
+        const z = absOff * c.zDepth;
+        const rotY = offset * c.rotation;
+        let scale, opacity;
+        if (absOff === 0) { scale = 1.12; opacity = 1; }
+        else if (absOff === 1) { scale = 0.78; opacity = 0.65; }
+        else { scale = 0.55; opacity = 0.25; }
+
+        const transform = 'translateX(' + x + 'px) translateZ(-' + z + 'px) rotateY(' + rotY + 'deg) scale(' + scale + ')';
+
+        if (animate) {
+          gsap.to(el, { transform: transform, opacity: opacity, zIndex: 100 - absOff, duration: 0.5, ease: 'power3.out' });
+        } else {
+          el.style.transform = transform;
+          el.style.opacity = opacity;
+          el.style.zIndex = 100 - absOff;
+        }
+        el.style.pointerEvents = 'auto';
+      }
+    }
+
+    function galSelect(i) {
+      if (gIsAnimating || i === gActive) return;
+      gIsAnimating = true;
+      gActive = i;
+      gal.querySelectorAll('.photo-card').forEach((c, j) => c.classList.toggle('active', j === gActive));
+      galDots.querySelectorAll('.dot').forEach((d, j) => {
+        d.classList.toggle('active', j === gActive);
+        d.setAttribute('aria-pressed', j === gActive ? 'true' : 'false');
+      });
+      galCounter.textContent = (gActive + 1) + ' / ' + GN;
+      galPosition(true);
+      gIsAnimating = false;
+      galResetAuto();
+    }
+
+    function galNext() { galSelect((gActive + 1) % GN); }
+    function galPrev() { galSelect((gActive + GN - 1) % GN); }
+
+    function galStartAuto() {
+      if (reduceMotion) return;
+      gAutoTimer = setInterval(galNext, 4000);
+    }
+    function galStopAuto() { if (gAutoTimer) { clearInterval(gAutoTimer); gAutoTimer = null; } }
+    function galResetAuto() { galStopAuto(); galStartAuto(); }
+
+    /* ── Lightbox ── */
+    function openLightbox(index) {
+      if (lb.classList.contains('open')) return;
+      lb.classList.add('open');
+      lbImg.src = gallery[index].img;
+      lbImg.alt = gallery[index].title;
+      lbCounter.textContent = (index + 1) + ' / ' + GN;
+      lb.dataset.index = index;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function lbNavigate(dir) {
+      const cur = Number(lb.dataset.index);
+      const next = (cur + dir + GN) % GN;
+      lb.dataset.index = next;
+      lbImg.src = gallery[next].img;
+      lbImg.alt = gallery[next].title;
+      lbCounter.textContent = (next + 1) + ' / ' + GN;
+    }
+
+    function initGalTouch() {
+      const wrap = $('#cylinderWrap');
+      let sx, sy, lastX;
+      wrap.addEventListener('touchstart', e => {
+        if (gIsAnimating) return;
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        lastX = sx;
+        galStopAuto();
+      }, { passive: true });
+      wrap.addEventListener('touchmove', e => {
+        if (!sx || gIsAnimating) return;
+        const t = e.touches[0];
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (Math.abs(dy) > Math.abs(dx) * 1.3 && Math.abs(dy) > 10) { sx = null; return; }
+        lastX = t.clientX;
+      }, { passive: true });
+      wrap.addEventListener('touchend', () => {
+        if (!sx) return;
+        const moved = lastX - sx;
+        sx = null;
+        if (Math.abs(moved) > 50) { if (moved < 0) galNext(); else galPrev(); }
+      }, { passive: true });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await fetchRemoteConfig();
+
+      services.push(...REMOTE_SERVICES.map(item => ({
+        icon: safeIcon(item.icon),
+        title: item.title || 'Novo material',
+        desc: item.description || item.desc || 'Material adicionado nas configurações.',
+        image: safeImage(item.image, 'hero_logo.jpeg'),
+        whatsapp: item.whatsapp || 'Olá! Tenho interesse nesse material.',
+        items: (item.items || []).slice(0, 3)
+      })));
+      N = services.length;
+
+      gallery.push(...REMOTE_GALLERY.map(item => ({
+        title: item.title || 'Nova foto',
+        img: safeImage(item.image, 'hero_logo.jpeg')
+      })));
+      GN = gallery.length;
+
+      init();
+      buildGallery();
+      gal.querySelectorAll('.photo-card')[0].classList.add('active');
+      galCounter.textContent = '1 / ' + GN;
+      galPosition(false);
+      initGalTouch();
+      $('#galNext').addEventListener('click', () => { galStopAuto(); galNext(); });
+      $('#galPrev').addEventListener('click', () => { galStopAuto(); galPrev(); });
+      $('#lbClose').addEventListener('click', closeLightbox);
+      $('#lbPrev').addEventListener('click', () => lbNavigate(-1));
+      $('#lbNext').addEventListener('click', () => lbNavigate(1));
+      lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+      document.addEventListener('keydown', e => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') lbNavigate(1);
+        if (e.key === 'ArrowLeft') lbNavigate(-1);
+      });
+      window.addEventListener('resize', () => { galPosition(false); });
+      galStartAuto();
+    });
+  </script>
+</body>
+</html>

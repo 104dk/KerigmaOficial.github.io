@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações | Kerigma Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --color-primary: #001a47;
+      --color-primary-dark: #000d1f;
+      --color-accent: #fbbf24;
+      --color-text: #1f2937;
+      --color-muted: #6b7280;
+      --color-border: #e5e7eb;
+      --color-surface: #ffffff;
+      --color-page: #f4f7fb;
+      --color-success: #128c7e;
+      --color-danger: #dc2626;
+      --color-danger-bg: #fee2e2;
+      --color-danger-text: #991b1b;
+      --color-github: #24292f;
+      --sidebar-w: 260px;
+      --radius: 12px;
+      --shadow-card: 0 8px 24px rgba(0,26,71,0.06);
+      --toast-r: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--color-page);
+      color: var(--color-text);
+      min-height: 100vh;
+    }
+    button { font: inherit; cursor: pointer; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ═══ SIDEBAR ═══ */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--color-primary), var(--color-primary-dark));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      transition: transform .3s ease;
+    }
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 22px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .sidebar-brand .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--color-accent);
+      color: var(--color-primary);
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sidebar-brand .brand-text { line-height: 1.15; }
+    .sidebar-brand .brand-text strong { display: block; font-size: 1rem; }
+    .sidebar-brand .brand-text span { font-size: 0.7rem; opacity: 0.7; }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      color: rgba(255,255,255,0.78);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      background: none;
+      border: 0;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item i { width: 20px; text-align: center; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-item.active { background: var(--color-accent); color: var(--color-primary); }
+    .sidebar-status { padding: 12px 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; font-size: 0.78rem; }
+    .sidebar-status .dot { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; flex-shrink: 0; transition: background .3s; }
+    .sidebar-status.connected .dot { background: #22c55e; }
+    .sidebar-status.connected { color: #bbf7d0; }
+    .sidebar-footer { padding: 14px 12px; border-top: 1px solid rgba(255,255,255,0.08); display: grid; gap: 6px; flex-shrink: 0; }
+    .sidebar-footer a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background .2s, color .2s;
+    }
+    .sidebar-footer a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .sidebar-footer a i { width: 18px; text-align: center; }
+    .logout-btn { color: #fca5a5 !important; }
+    .logout-btn:hover { background: rgba(252,165,165,0.12) !important; color: #fecaca !important; }
+    .connect-btn:hover { background: rgba(251,191,36,0.15) !important; color: #fde68a !important; }
+
+    /* ═══ MAIN ═══ */
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .menu-toggle { display: none; width: 42px; height: 42px; border-radius: 8px; border: 1px solid var(--color-border); background: #fff; color: var(--color-primary); font-size: 18px; align-items: center; justify-content: center; }
+    .topbar h1 { font-size: 1.15rem; font-weight: 700; color: var(--color-primary); flex: 1; min-width: 0; }
+    .breadcrumb { font-size: 0.8rem; color: var(--color-muted); margin-top: 2px; }
+    .topbar-actions { display: flex; gap: 8px; }
+    .topbar-actions .btn-header {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 14px; border-radius: 8px; border: 1px solid var(--color-border);
+      background: #fff; color: var(--color-text); font-weight: 700; font-size: 0.85rem;
+      min-height: 44px; transition: all .2s; white-space: nowrap;
+    }
+    .topbar-actions .btn-header:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+    .content { flex: 1; padding: 24px; max-width: 1000px; width: 100%; }
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ═══ CARDS ═══ */
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card + .card { margin-top: 0; }
+    .card h2 { color: var(--color-primary); font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .card .sub { color: var(--color-muted); font-size: 0.82rem; margin-bottom: 16px; line-height: 1.5; }
+    .counter { font-size: 0.82rem; color: var(--color-muted); margin-bottom: 14px; }
+
+    /* ═══ DASHBOARD ═══ */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+    .stat-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .stat-card .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; flex-shrink: 0; }
+    .stat-card .stat-icon.cube { background: var(--color-primary); }
+    .stat-card .stat-icon.images { background: #059669; }
+    .stat-card .stat-icon.wifi { background: var(--color-accent); }
+    .stat-card .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--color-primary); line-height: 1; }
+    .stat-card .stat-label { font-size: 0.8rem; color: var(--color-muted); margin-top: 4px; }
+    .stat-card .stat-sub { font-size: 0.72rem; color: var(--color-muted); margin-top: 2px; }
+
+    /* ═══ FORMS ═══ */
+    form { display: grid; gap: 14px; }
+    label { display: grid; gap: 6px; font-size: 0.85rem; font-weight: 700; color: #344054; }
+    input, select, textarea {
+      width: 100%; min-height: 44px; border: 1px solid var(--color-border);
+      border-radius: 8px; padding: 10px 12px; font: inherit; color: var(--color-text); background: #fff;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(251,191,36,0.85); outline-offset: 2px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Dropzone */
+    .drop-zone {
+      position: relative; border: 2px dashed var(--color-border); border-radius: 8px;
+      padding: 28px 16px; text-align: center; transition: border-color .2s, background .2s; cursor: pointer;
+    }
+    .drop-zone.dragover { border-color: var(--color-primary); background: rgba(0,26,71,0.04); }
+    .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .drop-zone .dz-icon { font-size: 2rem; color: var(--color-muted); margin-bottom: 6px; }
+    .drop-zone .dz-text { font-weight: 500; }
+    .drop-zone .dz-hint { font-size: 0.8rem; color: var(--color-muted); margin-top: 4px; }
+    .drop-zone .dz-info { font-size: 0.78rem; color: var(--color-success); margin-top: 6px; display: none; }
+    .drop-zone .dz-info.show { display: block; }
+    .drop-zone .dz-size-warn { font-size: 0.78rem; color: var(--color-danger); margin-top: 4px; display: none; }
+    .drop-zone .dz-size-warn.show { display: block; }
+
+    .preview-area { display: flex; gap: 16px; flex-wrap: wrap; }
+    .preview-col { flex: 1; min-width: 200px; }
+    .preview-col h3 { font-size: 0.82rem; font-weight: 600; color: var(--color-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .preview-img { width: 100%; aspect-ratio: 16/9; border-radius: 8px; object-fit: cover; border: 1px solid var(--color-border); background: #eef2f7; display: none; }
+    .card-preview { width: 210px; border-radius: 10px; overflow: hidden; border: 1px solid var(--color-border); background: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.06); font-size: 0.72rem; line-height: 1.4; }
+    .card-preview .cp-thumb { width: 100%; aspect-ratio: 520/400; object-fit: cover; display: block; background: #eef2f7; }
+    .card-preview .cp-body { padding: 8px 10px 10px; display: grid; gap: 4px; }
+    .card-preview .cp-title { font-size: 0.82rem; font-weight: 700; color: var(--color-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-preview .cp-desc { font-size: 0.65rem; color: var(--color-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-preview .cp-items { display: flex; flex-wrap: wrap; gap: 2px 6px; list-style: none; padding: 0; }
+    .card-preview .cp-items li { font-size: 0.6rem; color: var(--color-muted); }
+    .card-preview .cp-items li::before { content: '✓ '; color: var(--color-success); font-weight: 700; }
+    .card-preview .cp-cta { background: var(--color-primary); color: #fff; text-align: center; border-radius: 6px; padding: 6px 10px; font-size: 0.6rem; font-weight: 600; margin-top: 4px; }
+    .photo-preview { width: 220px; border-radius: 10px; overflow: hidden; border: 1px solid var(--color-border); background: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .photo-preview img { width: 100%; aspect-ratio: 900/600; object-fit: cover; display: block; background: #eef2f7; }
+    .photo-preview .pp-label { padding: 6px 10px; background: linear-gradient(transparent 20%, rgba(0,0,0,0.6)); color: #fff; font-size: 0.7rem; font-weight: 600; text-align: center; }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 10px 18px; border-radius: 8px; border: 0;
+      font-weight: 700; font-size: 0.88rem; transition: all .2s; white-space: nowrap;
+    }
+    .btn-primary { background: var(--color-primary); color: #fff; }
+    .btn-primary:hover { background: var(--color-primary-dark); }
+    .btn-outline { background: transparent; border: 1px solid var(--color-border); color: var(--color-text); }
+    .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .btn-danger { background: var(--color-danger-bg); color: var(--color-danger-text); }
+    .btn-danger:hover { background: #fecaca; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ═══ LISTA SALVA ═══ */
+    .saved { display: grid; gap: 10px; margin-top: 16px; }
+    .saved-empty { color: var(--color-muted); font-size: 0.88rem; padding: 8px 0; }
+    .saved-item {
+      display: grid; grid-template-columns: 72px 1fr auto; gap: 12px; align-items: center;
+      padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; background: #fbfcfe;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .saved-item:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .saved-item img { width: 72px; height: 50px; object-fit: cover; border-radius: 6px; background: #e5e7eb; }
+    .saved-item .si-info strong { display: block; color: var(--color-primary); font-size: 0.88rem; }
+    .saved-item .si-info span { color: var(--color-muted); font-size: 0.78rem; }
+    .saved-item .si-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+    .si-btn { min-height: 34px; padding: 6px 10px; border-radius: 6px; border: 0; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; background: #eef2f7; color: var(--color-text); transition: background .15s; }
+    .si-btn:hover { background: #e2e8f0; }
+    .si-btn.danger { background: var(--color-danger-bg); color: var(--color-danger-text); }
+    .si-btn.danger:hover { background: #fecaca; }
+    .si-btn.primary { background: var(--color-primary); color: #fff; }
+    .si-btn.primary:hover { background: var(--color-primary-dark); }
+
+    /* ═══ LOGIN ═══ */
+    .login-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: #fff; border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+    }
+    .login-banner .lb-text h2 { font-size: 1.05rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .login-banner .lb-text p { font-size: 0.85rem; opacity: 0.85; }
+    .login-banner .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .gh-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .gh-row input { flex: 1; min-width: 180px; min-height: 44px; border: 1px solid var(--color-border); border-radius: 8px; padding: 10px 12px; font: inherit; color: var(--color-text); }
+    .gh-status { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; margin-top: 12px; padding: 10px 14px; border-radius: 8px; }
+    .gh-status.connected { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    .gh-status.error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .gh-status .gh-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ═══ CONFIRM MODAL ═══ */
+    .confirm-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.4); align-items: center; justify-content: center; padding: 20px; }
+    .confirm-overlay.open { display: flex; }
+    .confirm-box { background: #fff; border-radius: 12px; padding: 28px 24px 20px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .confirm-box h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .confirm-box p { font-size: 0.9rem; color: var(--color-muted); margin-bottom: 18px; line-height: 1.5; }
+    .confirm-box .actions { display: flex; gap: 10px; justify-content: center; }
+    .confirm-box .actions .btn { flex: 1; max-width: 150px; }
+
+    /* ═══ TOAST ═══ */
+    .toast-container { position: fixed; top: 16px; right: 16px; z-index: 10001; display: grid; gap: 8px; max-width: 360px; width: calc(100% - 32px); }
+    .toast { padding: 14px 18px; border-radius: 10px; font-weight: 600; font-size: 0.88rem; box-shadow: 0 8px 28px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 10px; animation: slideIn .3s ease, fadeOut .4s ease 3.6s forwards; }
+    .toast i { font-size: 1rem; }
+    .toast.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    .toast.error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .toast.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .toast.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateX(30px); } }
+
+    /* ═══ MOBILE MENU (overlay) ═══ */
+    .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; display: none; opacity: 0; transition: opacity .3s; }
+    .sidebar-overlay.open { display: block; opacity: 1; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 0px; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .menu-toggle { display: inline-flex; }
+      .main { margin-left: 0; }
+      .topbar { padding: 12px 16px; }
+      .content { padding: 16px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .topbar-actions { display: none; }
+      .preview-area { flex-direction: column; }
+      .saved-item { grid-template-columns: 56px 1fr; }
+      .saved-item .si-actions { grid-column: 1 / -1; justify-content: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .content { padding: 12px; }
+      .stat-grid { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .login-banner { flex-direction: column; align-items: stretch; }
+      .topbar h1 { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- OVERLAY (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="sidebar" aria-label="Navegação do painel">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fas fa-church"></i></div>
+      <div class="brand-text">
+        <strong>Kerigma</strong>
+        <span>Painel Admin</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="dashboard"><i class="fas fa-th-large"></i> Dashboard</button>
+      <button class="nav-item" data-view="materiais"><i class="fas fa-cube"></i> Materiais</button>
+      <button class="nav-item" data-view="galeria"><i class="fas fa-images"></i> Galeria</button>
+      <button class="nav-item" data-view="settings"><i class="fas fa-cog"></i> Config do Site</button>
+    </nav>
+
+    <div class="sidebar-status" id="sbStatusBar">
+      <span class="dot"></span>
+      <span id="sbStatusText">Desconectado</span>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="#" class="connect-btn" id="sidebarConnect" data-goto="materiais"><i class="fas fa-sign-in-alt"></i> Conectar</a>
+      <a href="index.html" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Ver site</a>
+      <a href="index.html"><i class="fas fa-arrow-left"></i> Voltar</a>
+      <a href="#" class="logout-btn" id="sidebarLogout" style="display:none"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+  </aside>
+
+  <!-- ═══ CONTEÚDO ═══ -->
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu"><i class="fas fa-bars"></i></button>
+      <div>
+        <h1 id="viewTitle">Dashboard</h1>
+        <div class="breadcrumb" id="viewBreadcrumb">Visão geral</div>
+      </div>
+      <div class="topbar-actions">
+        <a class="btn-header" href="index.html" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Ver site</a>
+        <a class="btn-header" href="index.html"><i class="fas fa-arrow-left"></i> Voltar</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ═══ VIEW: DASHBOARD ═══ -->
+      <section class="view active" id="view-dashboard">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon cube"><i class="fas fa-cube"></i></div>
+            <div>
+              <div class="stat-num" id="statServices">–</div>
+              <div class="stat-label">Materiais adicionados</div>
+              <div class="stat-sub">&nbsp;na aba Materiais</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon images"><i class="fas fa-images"></i></div>
+            <div>
+              <div class="stat-num" id="statGallery">–</div>
+              <div class="stat-label">Fotos adicionadas</div>
+              <div class="stat-sub">&nbsp;na aba Galeria</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon wifi"><i class="fas fa-plug"></i></div>
+            <div>
+              <div class="stat-num" id="statConn">–</div>
+              <div class="stat-label">Situação</div>
+              <div class="stat-sub" id="statConnSub">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card">
+          <h2><i class="fas fa-compass"></i> Acesso rápido</h2>
+          <div class="sub">Gerencie o conteúdo dos carrosséis e as configurações do site.</div>
+          <div class="actions">
+            <button class="btn btn-primary" data-goto="materiais"><i class="fas fa-cube"></i> Materiais</button>
+            <button class="btn btn-outline" data-goto="galeria"><i class="fas fa-images"></i> Galeria</button>
+            <button class="btn btn-outline" data-goto="settings"><i class="fas fa-cog"></i> Config do Site</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fas fa-info-circle"></i> Sobre a conexão</h2>
+          <div class="sub">O conteúdo é lido do Supabase e renderizado no site. O painel usa autenticação para proteger as operações de escrita.</div>
+          <div class="gh-status connected" id="dashConnNote" style="margin-top:0"><i class="fas fa-check-circle"></i> Conexão padrão por Supabase REST</div>
+        </div>
+      </section>
+
+      <!-- ═══ VIEW: MATERIAIS ═══ -->
+      <section class="view" id="view-materiais">
+        <div class="card">
+          <h2><i class="fas fa-database"></i> Conexão com Supabase</h2>
+          <div class="sub">Faça login para gerenciar o conteúdo dos carrosséis.</div>
+          <div class="gh-row" id="sbInputRow">
+            <input type="email" id="sbEmailInput" placeholder="Email de admin" autocomplete="email" value="admin@kerigma.com">
+            <input type="password" id="sbPassInput" placeholder="Senha" autocomplete="current-password">
+            <button class="btn btn-primary" id="sbLoginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+          </div>
+          <div class="gh-status" id="sbStatus" style="display:none"></div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fas fa-cube"></i> Materiais</h2>
+          <p class="counter" id="serviceCounter">—</p>
+          <form id="serviceForm">
+            <label>Título <input name="title" type="text" maxlength="60" required placeholder="Ex.: Curso de Teologia Básica"></label>
+            <label>Descrição <textarea name="desc" maxlength="160" required placeholder="Resumo curto do material ou curso."></textarea></label>
+            <label>Ícone
+              <select name="icon">
+                <option value="fa-book-bible">Bíblia</option>
+                <option value="fa-video">Vídeo</option>
+                <option value="fa-tablet-alt">E-book</option>
+                <option value="fa-pen-fancy">Estudo</option>
+                <option value="fa-church">Igreja</option>
+                <option value="fa-image">Imagem</option>
+              </select>
+            </label>
+            <label>Tópicos <textarea name="items" placeholder="Um tópico por linha&#10;Ex.: Certificado&#10;Aulas online&#10;Material incluso"></textarea></label>
+            <label>Mensagem WhatsApp <input name="whatsapp" type="text" maxlength="180" placeholder="Olá! Tenho interesse neste material."></label>
+            <label>Imagem
+              <div class="drop-zone" id="serviceDropZone">
+                <input name="image" type="file" accept="image/*">
+                <div class="dz-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <div class="dz-text">Clique ou arraste uma imagem aqui</div>
+                <div class="dz-hint">Recomendado: 520×400px · JPEG ou PNG</div>
+                <div class="dz-info" id="serviceFileInfo"></div>
+                <div class="dz-size-warn" id="serviceSizeWarn"></div>
+              </div>
+            </label>
+            <div class="preview-area">
+              <div class="preview-col">
+                <h3>Imagem enviada</h3>
+                <img class="preview-img" id="servicePreview" alt="">
+              </div>
+              <div class="preview-col">
+                <h3>Preview no carrossel</h3>
+                <div class="card-preview" id="serviceCardPreview">
+                  <img class="cp-thumb" id="cpThumb" src="" alt="" style="display:none">
+                  <div class="cp-body">
+                    <div class="cp-title" id="cpTitle">Título do material</div>
+                    <div class="cp-desc" id="cpDesc">Descrição do material aparecerá aqui.</div>
+                    <ul class="cp-items" id="cpItems">
+                      <li>Tópico 1</li>
+                      <li>Tópico 2</li>
+                      <li>Tópico 3</li>
+                    </ul>
+                    <div class="cp-cta"><i class="fab fa-whatsapp"></i> Chamada para ação</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit" id="serviceSubmit"><i class="fas fa-plus"></i> <span>Adicionar material</span></button>
+              <button class="btn btn-outline" type="reset">Limpar</button>
+            </div>
+          </form>
+          <div class="saved" id="serviceList"></div>
+        </div>
+      </section>
+
+      <!-- ═══ VIEW: GALERIA ═══ -->
+      <section class="view" id="view-galeria">
+        <div class="card">
+          <h2><i class="fas fa-images"></i> Galeria de Fotos</h2>
+          <p class="counter" id="galleryCounter">—</p>
+          <form id="galleryForm">
+            <label>Título da foto <input name="title" type="text" maxlength="60" required placeholder="Ex.: Seminário Kerigma 2026"></label>
+            <label>Imagem
+              <div class="drop-zone" id="galleryDropZone">
+                <input name="image" type="file" accept="image/*">
+                <div class="dz-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <div class="dz-text">Clique ou arraste uma imagem aqui</div>
+                <div class="dz-hint">Recomendado: 900×600px · JPEG ou PNG</div>
+                <div class="dz-info" id="galleryFileInfo"></div>
+                <div class="dz-size-warn" id="gallerySizeWarn"></div>
+              </div>
+            </label>
+            <div class="preview-area">
+              <div class="preview-col">
+                <h3>Imagem enviada</h3>
+                <img class="preview-img" id="galleryPreview" alt="">
+              </div>
+              <div class="preview-col">
+                <h3>Preview na galeria</h3>
+                <div class="photo-preview" id="galleryCardPreview">
+                  <img id="gpThumb" src="" alt="" style="display:none">
+                  <div class="pp-label" id="gpLabel">Título da foto</div>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit" id="gallerySubmit"><i class="fas fa-plus"></i> <span>Adicionar foto</span></button>
+              <button class="btn btn-outline" type="reset">Limpar</button>
+            </div>
+          </form>
+          <div class="saved" id="galleryList"></div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-end">
+          <button class="btn btn-danger" id="clearAllBtn" disabled><i class="fas fa-trash-alt"></i> Limpar todos os itens adicionados</button>
+        </div>
+      </section>
+
+      <!-- ═══ VIEW: CONFIG DO SITE ═══ -->
+      <section class="view" id="view-settings">
+        <div class="card">
+          <h2><i class="fas fa-cog"></i> Configurações do Site</h2>
+          <div class="sub">Edite os textos e contatos exibidos no site. As mudanças são salvas no Supabase (tabela <strong>site_settings</strong>) e serão aplicadas ao index.html em uma próxima etapa.</div>
+          <form id="settingsForm">
+            <div class="form-grid">
+              <label>Título principal (hero) <input name="heroTitle" type="text" maxlength="80" placeholder="Escola de Teologia Kerigma"></label>
+              <label>Subtítulo do hero <input name="heroSubtitle" type="text" maxlength="160" placeholder="Transformando vidas através do conhecimento bíblico..."></label>
+              <label>WhatsApp (número) <input name="whatsapp" type="text" maxlength="20" placeholder="5561981897079"></label>
+              <label>E-mail de contato <input name="email" type="email" maxlength="120" placeholder="contato@kerigma.com"></label>
+              <label>Texto da CTA <input name="ctaTitle" type="text" maxlength="80" placeholder="Comece sua jornada teológica hoje"></label>
+              <label>Texto do CTA <input name="ctaText" type="text" maxlength="180" placeholder="Entre em contato e descubra como podemos ajudar..."></label>
+            </div>
+            <label>Endereço <textarea name="address" maxlength="180" placeholder="Rua 2, Quadra 34, Lote 30 — Jardim Europa — Luziânia, GO — CEP 72855-852"></textarea></label>
+            <label>Mensagem padrão do WhatsApp <textarea name="whatsappText" maxlength="200" placeholder="Olá! Gostaria de saber mais sobre a Escola de Teologia Kerigma."></textarea></label>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit" id="settingsSubmit"><i class="fas fa-save"></i> Salvar configurações</button>
+              <button class="btn btn-outline" type="button" id="settingsReset">Descartar alterações</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ═══ CONFIRM MODAL ═══ -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <h3 id="confirmTitle">Confirmar</h3>
+      <p id="confirmMsg">Tem certeza?</p>
+      <div class="actions">
+        <button class="btn btn-outline" id="confirmCancel">Cancelar</button>
+        <button class="btn btn-danger" id="confirmOk">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST CONTAINER ═══ -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script>
+    /* ═════════════ CONFIGURAÇÕES GLOBAIS ═════════════ */
+    const SUPABASE_URL = 'https://laeezgdaoogunanzzxmr.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_QdcVgMRnbH5fa4FBzH4aSA_9USvgGND';
+    const AUTH_KEY = 'kerigma:sb-auth';
+    const DEFAULT_SERVICE_COUNT = 6;
+    const DEFAULT_GALLERY_COUNT = 10;
+
+    /* ── Nova (segurança): sessão não guarda senha ── */
+    const session = { data: null };
+    let services = [];
+    let gallery = [];
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    let editingIndex = -1;
+    let editingType = null;
+    let editingId = null;
+
+    /* ═════════════ NAVEGAÇÃO (views por hash) ═════════════ */
+    const VIEW_TITLES = {
+      dashboard: { title: 'Dashboard', crumb: 'Visão geral' },
+      materiais: { title: 'Materiais', crumb: 'Início / Materiais' },
+      galeria:   { title: 'Galeria', crumb: 'Início / Galeria' },
+      settings:  { title: 'Config do Site', crumb: 'Início / Configurações' }
+    };
+    const openOverlay = $('#sidebarOverlay');
+    const sidebar = $('#sidebar');
+
+    function gotoView(name) {
+      if (name === 'materiais') {
+        // garantir que a área de login exista
+      }
+      $$('.view').forEach(v => v.classList.remove('active'));
+      const view = $('#view-' + name);
+      if (view) view.classList.add('active');
+      $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
+      const meta = VIEW_TITLES[name] || { title: name, crumb: '' };
+      $('#viewTitle').textContent = meta.title;
+      $('#viewBreadcrumb').textContent = meta.crumb;
+      location.hash = '#/' + name;
+      closeMobile();
+      window.scrollTo(0, 0);
+    }
+
+    function openMobile() {
+      sidebar.classList.add('open');
+      openOverlay.classList.add('open');
+    }
+    function closeMobile() {
+      sidebar.classList.remove('open');
+      openOverlay.classList.remove('open');
+    }
+
+    function parseHash() {
+      const h = location.hash.replace(/^#\//, '');
+      if (VIEW_TITLES[h]) return h;
+      return 'dashboard';
+    }
+
+    function bindNavigation() {
+      $$('.nav-item').forEach(btn => btn.addEventListener('click', () => gotoView(btn.dataset.view)));
+      $$('[data-goto]').forEach(btn => btn.addEventListener('click', () => gotoView(btn.dataset.goto)));
+      $('#menuToggle').addEventListener('click', openMobile);
+      openOverlay.addEventListener('click', closeMobile);
+      window.addEventListener('hashchange', () => {
+        const v = parseHash();
+        $$('.view').forEach(x => x.classList.remove('active'));
+        const el = $('#view-' + v);
+        if (el) el.classList.add('active');
+        $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === v));
+        const meta = VIEW_TITLES[v];
+        $('#viewTitle').textContent = meta.title;
+        $('#viewBreadcrumb').textContent = meta.crumb;
+      });
+    }
+
+    /* ═════════════ SUPABASE REST ═════════════ */
+    function sbHeaders(token) {
+      return { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + (token || SUPABASE_ANON_KEY), 'Content-Type': 'application/json' };
+    }
+    async function sbFetch(path, opts) {
+      const res = await fetch(SUPABASE_URL + path, opts);
+      if (!res.ok) {
+        let msg = 'Erro na requisição';
+        try { const e = await res.json(); msg = e.message || e.msg || msg; } catch {}
+        throw new Error(msg);
+      }
+      return res;
+    }
+
+    /* ── Login (segurança: remove sessões legadas com senha) ── */
+    function loginWithPassword(email, password) {
+      return sbFetch('/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        headers: sbHeaders(),
+        body: JSON.stringify({ email, password })
+      }).then(r => r.json());
+    }
+    function restoreWithRefreshToken(refreshToken) {
+      return sbFetch('/auth/v1/token?grant_type=refresh_token', {
+        method: 'POST',
+        headers: sbHeaders(),
+        body: JSON.stringify({ refresh_token: refreshToken })
+      }).then(r => r.json());
+    }
+    function persistSession(data, email) {
+      const toStore = {
+        email: email || (data.user && data.user.email) || '',
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_at || (Date.now() + (data.expires_in || 3600) * 1000)
+      };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(toStore));
+      session.data = data;
+    }
+    function logout() {
+      session.data = null;
+      services = [];
+      gallery = [];
+      localStorage.removeItem(AUTH_KEY);
+      $('#sbInputRow').style.display = 'flex';
+      $('#sbStatus').style.display = 'none';
+      $('#sbPassInput').value = '';
+      $('#sidebarLogout').style.display = 'none';
+      updateStatusBar(false);
+      renderAll();
+      toast('Desconectado.', 'info');
+    }
+
+    function updateStatusBar(connected) {
+      const bar = $('#sbStatusBar');
+      if (connected) {
+        bar.classList.add('connected');
+        $('#sbStatusText').textContent = 'Conectado';
+      } else {
+        bar.classList.remove('connected');
+        $('#sbStatusText').textContent = 'Desconectado';
+      }
+      $('#sidebarLogout').style.display = connected ? 'flex' : 'none';
+      $('#sidebarConnect').style.display = connected ? 'none' : 'flex';
+      $('#statConn').textContent = connected ? 'OK' : 'OFF';
+      $('#statConnSub').textContent = connected ? 'Painel conectado' : 'Faça login para editar';
+    }
+
+    async function loadData() {
+      const h = session.data ? sbHeaders(session.data.access_token) : sbHeaders();
+      const [sRes, gRes] = await Promise.all([
+        sbFetch('/rest/v1/services?order=sort_order.asc', { headers: h }),
+        sbFetch('/rest/v1/gallery?order=sort_order.asc', { headers: h })
+      ]);
+      services = await sRes.json();
+      gallery = await gRes.json();
+    }
+
+    async function sbInsert(table, row) {
+      const res = await sbFetch('/rest/v1/' + table, {
+        method: 'POST',
+        headers: sbHeaders(session.data ? session.data.access_token : null),
+        body: JSON.stringify(row)
+      });
+      return res.json();
+    }
+    async function sbUpdate(table, id, row) {
+      await sbFetch('/rest/v1/' + table + '?id=eq.' + id, {
+        method: 'PATCH',
+        headers: sbHeaders(session.data ? session.data.access_token : null),
+        body: JSON.stringify(row)
+      });
+    }
+    async function sbDelete(table, id) {
+      await sbFetch('/rest/v1/' + table + '?id=eq.' + id, {
+        method: 'DELETE',
+        headers: sbHeaders(session.data ? session.data.access_token : null)
+      });
+    }
+
+    /* ═════════════ SETTINGS (site_settings) ═════════════ */
+    async function loadSettings() {
+      try {
+        const res = await sbFetch('/rest/v1/site_settings?limit=1', { headers: sbHeaders() });
+        const rows = await res.json();
+        const row = Array.isArray(rows) && rows[0] ? rows[0] : {};
+        const f = $('#settingsForm').elements;
+        const fields = ['heroTitle','heroSubtitle','whatsapp','email','ctaTitle','ctaText','address','whatsappText'];
+        fields.forEach(k => { if (row[k] != null) f[k].value = row[k]; });
+        return row;
+      } catch {
+        return {};
+      }
+    }
+    async function saveSettings() {
+      const f = $('#settingsForm').elements;
+      const data = {
+        hero_title: f.heroTitle.value.trim(),
+        hero_subtitle: f.heroSubtitle.value.trim(),
+        whatsapp: f.whatsapp.value.trim(),
+        email: f.email.value.trim(),
+        cta_title: f.ctaTitle.value.trim(),
+        cta_text: f.ctaText.value.trim(),
+        address: f.address.value.trim(),
+        whatsapp_text: f.whatsappText.value.trim(),
+        updated_at: new Date().toISOString()
+      };
+      try {
+        const existing = await loadSettings();
+        const idField = existing.id;
+        if (idField) {
+          await sbUpdate('site_settings', idField, data);
+        } else {
+          data.id = crypto.randomUUID ? crypto.randomUUID() : undefined;
+          await sbInsert('site_settings', data);
+        }
+        toast('Configurações salvas!', 'success');
+      } catch (e) {
+        toast('Erro: ' + e.message, 'error');
+        throw e;
+      }
+    }
+
+    /* ═════════════ TOAST ═════════════ */
+    function toast(message, type = 'success') {
+      const container = $('#toastContainer');
+      const el = document.createElement('div');
+      el.className = 'toast ' + type;
+      const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+      el.innerHTML = '<i class="fas ' + (icons[type] || icons.success) + '"></i> ' + escapeHtml(message);
+      container.appendChild(el);
+      setTimeout(() => { if (el.parentNode) el.remove(); }, 4000);
+    }
+    function escapeHtml(v) {
+      return String(v ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+    }
+
+    /* ═════════════ IMAGE RESIZE ═════════════ */
+    function resizeImage(file, maxW = 1400, quality = 0.82) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Não foi possível ler a imagem.'));
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = () => reject(new Error('Imagem inválida.'));
+          img.onload = () => {
+            const s = Math.min(1, maxW / img.width);
+            const c = document.createElement('canvas');
+            c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+            c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+            resolve(c.toDataURL('image/jpeg', quality));
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    /* ═════════════ DROP ZONE + PREVIEW ═════════════ */
+    function setupDropZone(dropZoneId, previewId, infoId, warnId, cardPreviewFn, expectedRatio) {
+      const zone = $(dropZoneId);
+      const input = zone.querySelector('input');
+      const info = $(infoId);
+      const warn = $(warnId);
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault(); zone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) { input.files = e.dataTransfer.files; handleFile(input.files[0], previewId, info, warn, cardPreviewFn, expectedRatio); }
+      });
+      input.addEventListener('change', () => { if (input.files.length) handleFile(input.files[0], previewId, info, warn, cardPreviewFn, expectedRatio); });
+    }
+
+    async function handleFile(file, previewId, info, warn, cardPreviewFn, expectedRatio) {
+      const img = $(previewId);
+      info.classList.remove('show'); warn.classList.remove('show');
+      if (file.size > 5 * 1048576) { warn.textContent = 'Imagem muito grande (' + formatSize(file.size) + '). O ideal é até 1 MB.'; warn.classList.add('show'); }
+      else if (file.size < 10240) { warn.textContent = 'Imagem muito pequena (' + formatSize(file.size) + '). Pode ficar borrada.'; warn.classList.add('show'); }
+      try {
+        const dataUrl = await resizeImage(file);
+        const loadCheck = new Image();
+        loadCheck.src = dataUrl;
+        await new Promise((resolve, reject) => { loadCheck.onload = resolve; loadCheck.onerror = reject; });
+        const actualRatio = loadCheck.width / loadCheck.height;
+        const diff = Math.abs(actualRatio - expectedRatio) / expectedRatio;
+        let sizeMsg = formatSize(file.size) + ' → ≈' + formatSize(Math.round(dataUrl.length * 0.75));
+        if (diff > 0.3) sizeMsg += ' · Proporção ' + loadCheck.width + '×' + loadCheck.height + ' (ideal ≈' + expectedRatio.toFixed(1) + ':1)';
+        img.src = dataUrl; img.style.display = 'block';
+        info.textContent = sizeMsg; info.classList.add('show');
+        if (cardPreviewFn) cardPreviewFn(dataUrl, file.name);
+      } catch { toast('Erro ao processar imagem.', 'error'); }
+    }
+
+    function updateServiceCardPreview(imageUrl) {
+      const thumb = $('#cpThumb');
+      if (imageUrl) { thumb.src = imageUrl; thumb.style.display = 'block'; }
+    }
+    function updateGalleryCardPreview(imageUrl, title) {
+      const thumb = $('#gpThumb');
+      if (imageUrl) { thumb.src = imageUrl; thumb.style.display = 'block'; }
+      if (title) $('#gpLabel').textContent = title;
+    }
+
+    /* ═════════════ CONFIRM ═════════════ */
+    function confirmBox(title, msg) {
+      return new Promise(resolve => {
+        $('#confirmTitle').textContent = title;
+        $('#confirmMsg').textContent = msg;
+        $('#confirmOverlay').classList.add('open');
+        $('#confirmOk').onclick = () => { $('#confirmOverlay').classList.remove('open'); resolve(true); };
+        $('#confirmCancel').onclick = () => { $('#confirmOverlay').classList.remove('open'); resolve(false); };
+        $('#confirmOverlay').onclick = e => { if (e.target === $('#confirmOverlay')) { $('#confirmOverlay').classList.remove('open'); resolve(false); } };
+      });
+    }
+
+    /* ═════════════ RENDER ═════════════ */
+    function renderList(key, containerId, label) {
+      const items = key === 'services' ? services : gallery;
+      const container = $(containerId);
+      container.innerHTML = '';
+      if (!items.length) {
+        container.innerHTML = '<div class="saved-empty">Nenhum item salvo.</div>';
+        return;
+      }
+      items.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'saved-item';
+        const thumb = item.image ? '<img src="' + item.image + '" alt="">' : '<div style="width:72px;height:50px;border-radius:6px;background:#e5e7eb"></div>';
+        row.innerHTML = thumb +
+          '<div class="si-info"><strong>' + escapeHtml(item.title) + '</strong><span>' + label + ' #' + (i + 1) + '</span></div>' +
+          '<div class="si-actions">' +
+            '<button class="si-btn" data-action="edit" data-index="' + i + '"><i class="fas fa-pen"></i></button>' +
+            '<button class="si-btn" data-action="up" data-index="' + i + '" ' + (i === 0 ? 'disabled style="opacity:0.4"' : '') + '><i class="fas fa-chevron-up"></i></button>' +
+            '<button class="si-btn" data-action="down" data-index="' + i + '" ' + (i === items.length - 1 ? 'disabled style="opacity:0.4"' : '') + '><i class="fas fa-chevron-down"></i></button>' +
+            '<button class="si-btn danger" data-action="remove" data-index="' + i + '"><i class="fas fa-trash-alt"></i></button>' +
+          '</div>';
+
+        row.querySelectorAll('[data-action]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const idx = Number(btn.dataset.index);
+            const action = btn.dataset.action;
+            const arr = key === 'services' ? services : gallery;
+            if (action === 'remove') {
+              const ok = await confirmBox('Remover item', 'Tem certeza que deseja remover "' + item.title + '"?');
+              if (!ok) return;
+              try {
+                await sbDelete(key, item.id);
+                await loadData(); renderAll();
+                toast('Removido com sucesso.', 'success');
+              } catch (e) { toast('Erro: ' + e.message, 'error'); }
+            } else if (action === 'edit') {
+              startEditing(key, idx);
+            } else if (action === 'up' && idx > 0) {
+              try {
+                await sbUpdate(key, arr[idx].id, { sort_order: idx - 1 });
+                await sbUpdate(key, arr[idx - 1].id, { sort_order: idx });
+                await loadData(); renderAll();
+                toast('Reordenado.', 'success');
+              } catch (e) { toast('Erro: ' + e.message, 'error'); }
+            } else if (action === 'down' && idx < arr.length - 1) {
+              try {
+                await sbUpdate(key, arr[idx].id, { sort_order: idx + 1 });
+                await sbUpdate(key, arr[idx + 1].id, { sort_order: idx });
+                await loadData(); renderAll();
+                toast('Reordenado.', 'success');
+              } catch (e) { toast('Erro: ' + e.message, 'error'); }
+            }
+          });
+        });
+        container.appendChild(row);
+      });
+    }
+
+    function updateCounter(key, elId, defaultCount) {
+      const items = key === 'services' ? services : gallery;
+      const el = $(elId);
+      el.textContent = items.length + ' item(ns) · ' + defaultCount + ' padrão · ' + (defaultCount + items.length) + ' total no site';
+    }
+
+    function renderAll() {
+      renderList('services', '#serviceList', 'Material');
+      renderList('gallery', '#galleryList', 'Foto');
+      updateCounter('services', '#serviceCounter', DEFAULT_SERVICE_COUNT);
+      updateCounter('gallery', '#galleryCounter', DEFAULT_GALLERY_COUNT);
+      $('#clearAllBtn').disabled = !session.data || (services.length === 0 && gallery.length === 0);
+      $('#statServices').textContent = services.length;
+      $('#statGallery').textContent = gallery.length;
+      if (session.data) {
+        updateStatusBar(true);
+      } else {
+        updateStatusBar(false);
+      }
+      editingIndex = -1; editingType = null; editingId = null;
+    }
+
+    /* ═════════════ EDIT ═════════════ */
+    function startEditing(key, index) {
+      const items = key === 'services' ? services : gallery;
+      const item = items[index];
+      if (!item) return;
+      editingIndex = index;
+      editingType = key;
+      editingId = item.id;
+      const formId = key === 'services' ? '#serviceForm' : '#galleryForm';
+      const form = $(formId);
+      const submitBtn = formId === '#serviceForm' ? $('#serviceSubmit') : $('#gallerySubmit');
+      submitBtn.innerHTML = '<i class="fas fa-save"></i> <span>Salvar alterações</span>';
+
+      if (key === 'services') {
+        form.elements.title.value = item.title || '';
+        form.elements.desc.value = item.description || '';
+        form.elements.icon.value = item.icon || 'fa-book-bible';
+        form.elements.items.value = (item.items || []).join('\n');
+        form.elements.whatsapp.value = item.whatsapp || '';
+        if (item.image) {
+          $('#servicePreview').src = item.image; $('#servicePreview').style.display = 'block';
+          updateServiceCardPreview(item.image);
+          $('#cpTitle').textContent = item.title;
+          $('#cpDesc').textContent = item.description;
+          $('#cpItems').innerHTML = (item.items || []).slice(0, 3).map(t => '<li>' + escapeHtml(t) + '</li>').join('');
+        }
+      } else {
+        form.elements.title.value = item.title || '';
+        if (item.image) {
+          $('#galleryPreview').src = item.image; $('#galleryPreview').style.display = 'block';
+          updateGalleryCardPreview(item.image, item.title);
+        }
+      }
+      toast('Editando "' + item.title + '".', 'info');
+    }
+
+    /* ═════════════ FORMS (submit) ═════════════ */
+    async function handleServiceSubmit(e) {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const fields = form.elements;
+      let image = $('#servicePreview').src && $('#servicePreview').style.display !== 'none' ? $('#servicePreview').src : '';
+      if (fields.image.files && fields.image.files[0]) {
+        try { image = await resizeImage(fields.image.files[0]); } catch { toast('Erro ao processar imagem.', 'error'); return; }
+      }
+      if (!image) { toast('Selecione uma imagem.', 'error'); return; }
+      const items = fields.items.value.split('\n').map(t => t.trim()).filter(Boolean);
+      const data = { icon: fields.icon.value, title: fields.title.value.trim(), description: fields.desc.value.trim(), whatsapp: fields.whatsapp.value.trim() || 'Olá! Tenho interesse neste material.', items, image };
+      try {
+        if (editingType === 'services' && editingIndex >= 0 && editingId) {
+          await sbUpdate('services', editingId, { ...data, updated_at: new Date().toISOString() });
+          await loadData(); renderAll();
+          toast('Material atualizado!', 'success');
+        } else {
+          data.sort_order = services.length;
+          await sbInsert('services', data);
+          await loadData(); renderAll();
+          toast('Material adicionado!', 'success');
+        }
+      } catch (err) { toast('Erro: ' + err.message, 'error'); }
+      form.reset();
+      $('#servicePreview').removeAttribute('src'); $('#servicePreview').style.display = 'none';
+      $('#cpThumb').removeAttribute('src'); $('#cpThumb').style.display = 'none';
+      $('#cpTitle').textContent = 'Título do material';
+      $('#cpDesc').textContent = 'Descrição do material aparecerá aqui.';
+      $('#cpItems').innerHTML = '<li>Tópico 1</li><li>Tópico 2</li><li>Tópico 3</li>';
+      editingIndex = -1; editingType = null; editingId = null;
+      $('#serviceSubmit').innerHTML = '<i class="fas fa-plus"></i> <span>Adicionar material</span>';
+    }
+
+    async function handleGallerySubmit(e) {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const fields = form.elements;
+      let image = $('#galleryPreview').src && $('#galleryPreview').style.display !== 'none' ? $('#galleryPreview').src : '';
+      if (fields.image.files && fields.image.files[0]) {
+        try { image = await resizeImage(fields.image.files[0]); } catch { toast('Erro ao processar imagem.', 'error'); return; }
+      }
+      if (!image) { toast('Selecione uma imagem.', 'error'); return; }
+      const data = { title: fields.title.value.trim(), image };
+      try {
+        if (editingType === 'gallery' && editingIndex >= 0 && editingId) {
+          await sbUpdate('gallery', editingId, { ...data, updated_at: new Date().toISOString() });
+          await loadData(); renderAll();
+          toast('Foto atualizada!', 'success');
+        } else {
+          data.sort_order = gallery.length;
+          await sbInsert('gallery', data);
+          await loadData(); renderAll();
+          toast('Foto adicionada!', 'success');
+        }
+      } catch (err) { toast('Erro: ' + err.message, 'error'); }
+      form.reset();
+      $('#galleryPreview').removeAttribute('src'); $('#galleryPreview').style.display = 'none';
+      $('#gpThumb').removeAttribute('src'); $('#gpThumb').style.display = 'none';
+      $('#gpLabel').textContent = 'Título da foto';
+      editingIndex = -1; editingType = null; editingId = null;
+      $('#gallerySubmit').innerHTML = '<i class="fas fa-plus"></i> <span>Adicionar foto</span>';
+    }
+
+    /* ═════════════ CLEAR ALL ═════════════ */
+    async function clearAll() {
+      const ok = await confirmBox('Limpar todos os itens', 'Isso removerá TODOS os itens dos carrosséis. Os itens padrão serão restaurados após recarregar o site.');
+      if (!ok) return;
+      try {
+        for (const s of services) await sbDelete('services', s.id);
+        for (const g of gallery) await sbDelete('gallery', g.id);
+        await loadData(); renderAll();
+        toast('Todos os itens removidos.', 'success');
+      } catch (e) { toast('Erro: ' + e.message, 'error'); }
+    }
+
+    /* ═════════════ LIVE PREVIEW ═════════════ */
+    function setupLivePreview() {
+      const titleInput = $('#serviceForm').elements.title;
+      const descInput = $('#serviceForm').elements.desc;
+      const itemsInput = $('#serviceForm').elements.items;
+      titleInput.addEventListener('input', () => { $('#cpTitle').textContent = titleInput.value || 'Título do material'; });
+      descInput.addEventListener('input', () => { $('#cpDesc').textContent = descInput.value || 'Descrição do material aparecerá aqui.'; });
+      itemsInput.addEventListener('input', () => {
+        const lines = itemsInput.value.split('\n').map(t => t.trim()).filter(Boolean);
+        $('#cpItems').innerHTML = lines.slice(0, 3).map(t => '<li>' + escapeHtml(t) + '</li>').join('') || '<li>Tópico 1</li><li>Tópico 2</li><li>Tópico 3</li>';
+      });
+      const galTitleInput = $('#galleryForm').elements.title;
+      galTitleInput.addEventListener('input', () => { $('#gpLabel').textContent = galTitleInput.value || 'Título da foto'; });
+    }
+
+    /* ═════════════ AUTH UI ═════════════ */
+    async function setStatus(type, msg) {
+      const el = $('#sbStatus');
+      el.style.display = 'flex';
+      el.className = 'gh-status ' + type;
+      el.innerHTML = msg;
+    }
+
+    async function afterLogin(email) {
+      await loadData();
+      renderAll();
+      $('#sbInputRow').style.display = 'none';
+      await setStatus('connected', '<i class="fas fa-check-circle"></i> Conectado como <strong>' + escapeHtml(email) + '</strong> · ' + services.length + ' materiais, ' + gallery.length + ' fotos');
+      $('#sidebarLogout').style.display = 'flex';
+      updateStatusBar(true);
+      toast('Conectado!', 'success');
+    }
+
+    async function handleLogin() {
+      const email = $('#sbEmailInput').value.trim();
+      const password = $('#sbPassInput').value;
+      if (!email || !password) { toast('Informe email e senha.', 'error'); return; }
+      $('#sbLoginBtn').disabled = true;
+      await setStatus('', '<span class="gh-spinner"></span> Conectando...');
+      try {
+        const data = await loginWithPassword(email, password);
+        persistSession(data, email);
+        await afterLogin(email);
+      } catch (e) {
+        await setStatus('error', '<i class="fas fa-times-circle"></i> ' + escapeHtml(e.message));
+        toast('Erro: ' + e.message, 'error');
+      } finally {
+        $('#sbLoginBtn').disabled = false;
+      }
+    }
+
+    async function tryRestoreSession() {
+      const saved = localStorage.getItem(AUTH_KEY);
+      if (!saved) return;
+      let parsed;
+      try { parsed = JSON.parse(saved); } catch { localStorage.removeItem(AUTH_KEY); return; }
+      // Segurança: sessões antigas que guardam senha são removidas e exigem novo login
+      if (parsed.password || !parsed.refresh_token) {
+        localStorage.removeItem(AUTH_KEY);
+        toast('Sessão antiga removida. Faça login novamente.', 'warning');
+        return;
+      }
+      $('#sbEmailInput').value = parsed.email || '';
+      $('#sbLoginBtn').disabled = true;
+      await setStatus('', '<span class="gh-spinner"></span> Conectando...');
+      try {
+        const data = await restoreWithRefreshToken(parsed.refresh_token);
+        persistSession(data, parsed.email);
+        await afterLogin(parsed.email);
+      } catch {
+        localStorage.removeItem(AUTH_KEY);
+        $('#sbLoginBtn').disabled = false;
+        $('#sbStatus').style.display = 'none';
+        $('#sbInputRow').style.display = 'flex';
+        toast('Sessão expirada. Faça login novamente.', 'warning');
+        updateStatusBar(false);
+      }
+    }
+
+    /* ═════════════ INIT ═════════════ */
+    document.addEventListener('DOMContentLoaded', async () => {
+      bindNavigation();
+      gotoView(parseHash());
+
+      setupDropZone('#serviceDropZone', '#servicePreview', '#serviceFileInfo', '#serviceSizeWarn', updateServiceCardPreview, 520/400);
+      setupDropZone('#galleryDropZone', '#galleryPreview', '#galleryFileInfo', '#gallerySizeWarn', (url) => { updateGalleryCardPreview(url, $('#galleryForm').elements.title.value); }, 900/600);
+      setupLivePreview();
+
+      $('#serviceForm').addEventListener('submit', handleServiceSubmit);
+      $('#galleryForm').addEventListener('submit', handleGallerySubmit);
+
+      $('#serviceForm').addEventListener('reset', () => {
+        $('#servicePreview').removeAttribute('src'); $('#servicePreview').style.display = 'none';
+        $('#cpThumb').removeAttribute('src'); $('#cpThumb').style.display = 'none';
+        $('#cpTitle').textContent = 'Título do material';
+        $('#cpDesc').textContent = 'Descrição do material aparecerá aqui.';
+        $('#cpItems').innerHTML = '<li>Tópico 1</li><li>Tópico 2</li><li>Tópico 3</li>';
+        if (editingIndex >= 0) { editingIndex = -1; editingType = null; editingId = null; $('#serviceSubmit').innerHTML = '<i class="fas fa-plus"></i> <span>Adicionar material</span>'; }
+      });
+      $('#galleryForm').addEventListener('reset', () => {
+        $('#galleryPreview').removeAttribute('src'); $('#galleryPreview').style.display = 'none';
+        $('#gpThumb').removeAttribute('src'); $('#gpThumb').style.display = 'none';
+        $('#gpLabel').textContent = 'Título da foto';
+        if (editingIndex >= 0) { editingIndex = -1; editingType = null; editingId = null; $('#gallerySubmit').innerHTML = '<i class="fas fa-plus"></i> <span>Adicionar foto</span>'; }
+      });
+
+      $('#settingsForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        $('#settingsSubmit').disabled = true;
+        try { await saveSettings(); } finally { $('#settingsSubmit').disabled = false; }
+      });
+      $('#settingsReset').addEventListener('click', () => { $('#settingsForm').reset(); loadSettings(); toast('Alterações descartadas.', 'info'); });
+
+      $('#clearAllBtn').addEventListener('click', clearAll);
+      $('#sbLoginBtn').addEventListener('click', handleLogin);
+      $('#sidebarLogout').addEventListener('click', e => { e.preventDefault(); logout(); });
+      $('#sidebarConnect').addEventListener('click', e => { e.preventDefault(); closeMobile(); });
+      $('#sbPassInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+      $('#sbEmailInput').addEventListener('keydown', e => { if (e.key === 'Enter') { $('#sbPassInput').focus(); } });
+
+      renderAll();
+      try { await loadSettings(); } catch {}
+
+      await tryRestoreSession();
+    });
+  </script>
+</body>
+</html>
