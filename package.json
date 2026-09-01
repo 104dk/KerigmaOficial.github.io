@@ -1,0 +1,12 @@
+{
+  "name": "kerigma-site",
+  "version": "1.0.2",
+  "private": true,
+  "scripts": {
+    "test:smoke": "node tests/smoke-test.js",
+    "setup:supabase": "node scripts/setup-do-novo-supabase.js"
+  },
+  "dependencies": {
+    "pg": "8.23.0"
+  }
+}

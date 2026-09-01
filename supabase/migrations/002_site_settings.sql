@@ -43,16 +43,17 @@ drop policy if exists "site_settings_insert" on public.site_settings;
 create policy "site_settings_insert"
   on public.site_settings for insert
   to authenticated
-  using (auth.jwt() ->> 'role' = 'admin');
+  with check (auth.jwt() -> 'app_metadata' ->> 'role' = 'admin');
 
 drop policy if exists "site_settings_update" on public.site_settings;
 create policy "site_settings_update"
   on public.site_settings for update
   to authenticated
-  using (auth.jwt() ->> 'role' = 'admin');
+  using (auth.jwt() -> 'app_metadata' ->> 'role' = 'admin')
+  with check (auth.jwt() -> 'app_metadata' ->> 'role' = 'admin');
 
 drop policy if exists "site_settings_delete" on public.site_settings;
 create policy "site_settings_delete"
   on public.site_settings for delete
   to authenticated
-  using (auth.jwt() ->> 'role' = 'admin');
+  using (auth.jwt() -> 'app_metadata' ->> 'role' = 'admin');

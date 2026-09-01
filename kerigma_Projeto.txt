@@ -12,6 +12,64 @@ Arquivos de referencia criados:
 - ESTRUTURA_SITE.txt
 
 --------------------------------------------------------------------------------
+ NOVA ETAPA (01/09/2026) - E-COMMERCE v1.0002 (LOCAL)
+--------------------------------------------------------------------------------
+ Contexto: retomada do processo registrado em parou.txt.
+
+ Estrutura criada:
+ - versoes/v1.0002/configuracoes.html
+ - versoes/v1.0002/css/admin.css
+ - versoes/v1.0002/js/config.js
+ - versoes/v1.0002/js/supabase.js
+ - versoes/v1.0002/js/ui.js
+ - versoes/v1.0002/js/router.js
+ - versoes/v1.0002/js/dashboard.js
+ - versoes/v1.0002/js/venda.js
+ - versoes/v1.0002/js/produtos.js
+ - versoes/v1.0002/js/relatorio.js
+ - versoes/v1.0002/js/configuracoes.js
+ - versoes/v1.0002/LEIAME.txt
+
+ Modulos definidos:
+ - Dashboard
+ - Venda
+ - Produtos
+ - Relatorio
+ - Configuracoes
+
+ Banco de dados:
+ - supabase/migrations/003_ecommerce_core.sql preparado.
+ - Migration agora cria products, sales, sale_items e site_settings.
+ - RLS corrigido para usar app_metadata.role = admin.
+ - site_settings ganhou allow_hard_delete, currency, default_payment_method e
+   default_sale_status.
+
+ Ajustes de qualidade feitos na retomada:
+ - sbInsert passou a usar Prefer: return=representation para receber o registro
+   criado pelo PostgREST.
+ - Corrigida regra de media de ticket no Dashboard.
+ - Corrigida mensagem de exclusao definitiva de produto para preservar historico
+   de sale_items com product_id nulo.
+ - Script scripts/setup-do-novo-supabase.js preparado e dependencia pg
+   registrada em package.json/package-lock.json.
+ - node_modules/ adicionado ao .gitignore.
+
+ Validacoes realizadas:
+ - npm run test:smoke -> 120 passed, 0 failed.
+ - Sintaxe de todos os JS de versoes/v1.0002/js validada com Node.
+ - REST publica do novo Supabase em /rest/v1/products respondeu 404, confirmando
+   que a migration remota ainda nao foi aplicada.
+
+ Pendencias:
+ - Aplicar migration 003 com PG_PASSWORD ou PG_CONN quando a conexao do banco
+   estiver disponivel.
+ - Testar login real e CRUD real no painel v1.0002.
+ - Testar fluxo real de venda criando sales e sale_items.
+ - Fazer validacao visual; o navegador interno nao estava disponivel nesta
+   sessao.
+ - Promover v1.0002 para a raiz apenas depois dos testes reais.
+
+--------------------------------------------------------------------------------
  NOVA ETAPA (01/09/2026) — REDESIGN v1.0001 (LOCAL)
 --------------------------------------------------------------------------------
  Contexto: trabalho local com versionamento; produção fica para depois.
@@ -90,4 +148,3 @@ Arquivos modificados no workspace neste momento:
 - RELATORIO_ACESSOS.txt
 - ESTRUTURA_SITE.txt
 - kerigma_Projeto.txt
-

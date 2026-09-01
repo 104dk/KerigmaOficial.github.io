@@ -1,0 +1,742 @@
+================================================================================
+ KERIGMA - PLANO DE EXECUCAO v1.0002
+ Novo painel de configuracoes para e-commerce de e-books teologicos
+ Gerado em: 01/09/2026
+================================================================================
+
+OBJETIVO PRINCIPAL
+--------------------------------------------------------------------------------
+Criar uma nova estrutura completa de configuracoes.html, dentro da versao
+v1.0002, voltada para um segmento de e-commerce de venda de e-books, apostilas,
+cursos e materiais de estudos teologicos.
+
+O painel atual nao sera usado como base visual. A nova versao deve ser pensada
+como um sistema administrativo real, modular, responsivo, seguro e pronto para
+crescer.
+
+Por enquanto, o index.html continua como modulo publico unico de venda/vitrine
+de materiais de estudo. Em etapa posterior, ele sera reestruturado para consumir
+os dados reais do novo painel de produtos e configuracoes.
+
+
+ESCOPO DA VERSAO v1.0002
+--------------------------------------------------------------------------------
+Criar em:
+
+  C:\AA_Projetos_Concluidos\Kerigma_site\versoes\v1.0002
+
+Arquivos planejados:
+
+  configuracoes.html
+  index.html                       (copia de referencia, se necessario)
+  PLANO_EXECUCAO_v1.0002.txt       (este arquivo)
+  LEIAME.txt                       (resumo final da versao, ao concluir)
+
+Arquivos de banco planejados:
+
+  supabase/migrations/003_ecommerce_core.sql
+
+
+PRINCIPIO DE ARQUITETURA
+--------------------------------------------------------------------------------
+O painel sera dividido em modulos, acessados por navegacao interna via hash:
+
+  configuracoes.html#/dashboard
+  configuracoes.html#/venda
+  configuracoes.html#/produtos
+  configuracoes.html#/relatorio
+  configuracoes.html#/configuracoes
+
+Cada modulo deve funcionar como uma area independente, mas compartilhando:
+
+  - sessao autenticada Supabase
+  - cliente REST Supabase
+  - sistema de toast
+  - modal de confirmacao
+  - layout base
+  - estado global simples em JavaScript
+  - utilitarios de formatacao, seguranca e validacao
+
+
+MODULOS DO PAINEL
+================================================================================
+
+1. MODULO DASHBOARD
+--------------------------------------------------------------------------------
+Objetivo:
+Dar uma visao rapida da operacao da loja Kerigma.
+
+Componentes:
+
+  - Card: produtos cadastrados
+  - Card: produtos ativos
+  - Card: vendas do dia
+  - Card: receita do mes
+  - Card: pedidos pendentes
+  - Card: ticket medio
+  - Lista: ultimas vendas
+  - Lista: produtos mais vendidos
+  - Area: atalhos rapidos
+
+Atalhos rapidos:
+
+  - Nova venda
+  - Novo produto
+  - Ver relatorio
+  - Configurar site
+
+Experiencia desejada:
+
+  - Interface limpa, operacional e facil de escanear.
+  - Visual de painel profissional, sem cara de landing page.
+  - Cards compactos, tabelas claras e bons estados vazios.
+
+Estados previstos:
+
+  - Carregando dados
+  - Sem vendas ainda
+  - Sem produtos cadastrados
+  - Falha ao carregar dados
+  - Sessao expirada
+
+
+2. MODULO VENDA
+--------------------------------------------------------------------------------
+Objetivo:
+Funcionar como um mini PDV para vender e-books e materiais teologicos.
+
+Fluxo principal:
+
+  1. Buscar produto
+  2. Adicionar ao carrinho
+  3. Informar dados do cliente
+  4. Escolher forma de pagamento
+  5. Aplicar desconto, se houver
+  6. Finalizar venda
+  7. Gerar resumo do pedido
+  8. Copiar mensagem para WhatsApp
+
+Campos da venda:
+
+  - Nome do cliente
+  - WhatsApp do cliente
+  - Email do cliente
+  - Produtos selecionados
+  - Quantidade
+  - Subtotal
+  - Desconto
+  - Total
+  - Forma de pagamento
+  - Status da venda
+  - Observacoes
+
+Formas de pagamento:
+
+  - Pix
+  - Cartao
+  - Dinheiro
+  - Link externo
+  - WhatsApp
+
+Status da venda:
+
+  - pendente
+  - pago
+  - cancelado
+  - reembolsado
+
+Funcionalidades criativas:
+
+  - Carrinho lateral no desktop.
+  - Carrinho em gaveta no mobile.
+  - Botao para copiar resumo do pedido.
+  - Botao para abrir WhatsApp com mensagem pronta.
+  - Recibo simples exibido ao final.
+  - Indicador visual de venda pendente/paga.
+
+
+3. MODULO PRODUTOS
+--------------------------------------------------------------------------------
+Objetivo:
+Gerenciar o catalogo de e-books, apostilas, cursos e materiais teologicos.
+
+Funcionalidades:
+
+  - Criar produto
+  - Editar produto
+  - Duplicar produto
+  - Ativar/desativar produto
+  - Excluir produto com confirmacao
+  - Ordenar produtos
+  - Marcar como destaque
+  - Filtrar por categoria
+  - Buscar por titulo
+  - Alternar visual tabela/cards
+
+Campos do produto:
+
+  - titulo
+  - slug
+  - descricao curta
+  - descricao completa
+  - categoria
+  - preco
+  - preco promocional
+  - imagem de capa
+  - link de entrega/download
+  - mensagem padrao de WhatsApp
+  - ativo/inativo
+  - destaque
+  - ordem de exibicao
+
+Categorias iniciais:
+
+  - Teologia Basica
+  - Doutrina
+  - E-book
+  - Apostila
+  - Curso
+  - Pregacao
+  - Familia Crista
+  - Infantil
+  - Devocional
+  - Lideranca
+
+Experiencia desejada:
+
+  - Preview do card do produto em tempo real.
+  - Campos com validacao clara.
+  - Filtro rapido por status: todos, ativos, inativos, destaque.
+  - Botao "Novo produto" sempre facil de encontrar.
+  - Upload de capa com compressao em canvas, como ja existe no projeto.
+
+
+4. MODULO RELATORIO
+--------------------------------------------------------------------------------
+Objetivo:
+Mostrar desempenho comercial e ajudar na tomada de decisao.
+
+Relatorios:
+
+  - Vendas por periodo
+  - Receita por periodo
+  - Produtos mais vendidos
+  - Clientes recentes
+  - Vendas por forma de pagamento
+  - Vendas pendentes
+  - Vendas canceladas
+  - Ticket medio
+
+Filtros:
+
+  - Hoje
+  - 7 dias
+  - 30 dias
+  - Mes atual
+  - Periodo personalizado
+  - Status
+  - Forma de pagamento
+  - Produto
+
+Visual:
+
+  - Cards de totais
+  - Tabela de vendas
+  - Ranking de produtos
+  - Grafico simples usando CSS/HTML ou canvas leve
+
+Exportacoes futuras:
+
+  - Copiar resumo
+  - Exportar CSV
+  - Imprimir
+  - Gerar PDF simples
+
+
+5. MODULO CONFIGURACOES
+--------------------------------------------------------------------------------
+Objetivo:
+Controlar identidade, contato, mensagens e comportamento basico da loja.
+
+Configuracoes do site:
+
+  - Nome da escola
+  - Titulo do hero
+  - Subtitulo do hero
+  - Texto do CTA
+  - WhatsApp principal
+  - Email
+  - Endereco
+  - Imagem/logo do hero
+  - Texto padrao de venda pelo WhatsApp
+  - Mensagem pos-compra
+
+Configuracoes comerciais:
+
+  - Moeda
+  - Permitir preco promocional
+  - Forma de pagamento padrao
+  - Status inicial da venda
+  - Mostrar produtos inativos apenas no admin
+
+Configuracoes de seguranca:
+
+  - Sessao via refresh_token
+  - Botao sair
+  - Limpeza de sessao expirada
+  - Nunca salvar senha no navegador
+  - Avisos claros de erro de login
+
+
+LAYOUT E UX
+================================================================================
+
+Estrutura visual:
+
+  - Sidebar fixa em desktop
+  - Topbar compacta em mobile
+  - Menu hamburguer em telas pequenas
+  - Conteudo principal em largura total
+  - Modais apenas para confirmacoes e formularios longos quando fizer sentido
+  - Tabelas responsivas com versao compacta no mobile
+  - Botoes com icones Font Awesome
+
+Tonalidade visual:
+
+  - Profissional, leve e confiavel
+  - Inspirado em painel SaaS/operacional
+  - Paleta Kerigma mantida, mas com mais respiro:
+      azul escuro #001a47
+      verde WhatsApp #25D366
+      branco #ffffff
+      cinzas neutros
+      detalhes dourados discretos, se combinarem com o tema teologico
+
+Regras de UX:
+
+  - Nao esconder a acao principal.
+  - Toda exclusao precisa de confirmacao.
+  - Todo salvamento precisa de feedback.
+  - Todo formulario precisa de estado carregando.
+  - Todo modulo precisa ter estado vazio bem resolvido.
+  - Mobile deve ser tao usavel quanto desktop.
+
+
+BANCO DE DADOS PROPOSTO
+================================================================================
+
+Tabela: products
+--------------------------------------------------------------------------------
+Finalidade:
+Catalogo de produtos digitais e materiais de estudo.
+
+Campos sugeridos:
+
+  id uuid primary key
+  title text not null
+  slug text unique
+  short_description text
+  description text
+  category text
+  price numeric not null default 0
+  promo_price numeric
+  cover_image text
+  delivery_url text
+  whatsapp_message text
+  is_active boolean default true
+  is_featured boolean default false
+  sort_order integer default 0
+  created_at timestamptz default now()
+  updated_at timestamptz default now()
+
+
+Tabela: sales
+--------------------------------------------------------------------------------
+Finalidade:
+Registro principal de cada venda.
+
+Campos sugeridos:
+
+  id uuid primary key
+  customer_name text
+  customer_phone text
+  customer_email text
+  subtotal numeric not null default 0
+  discount numeric not null default 0
+  total numeric not null default 0
+  payment_method text
+  status text default 'pendente'
+  notes text
+  created_at timestamptz default now()
+  updated_at timestamptz default now()
+
+
+Tabela: sale_items
+--------------------------------------------------------------------------------
+Finalidade:
+Itens de cada venda.
+
+Campos sugeridos:
+
+  id uuid primary key
+  sale_id uuid references sales(id) on delete cascade
+  product_id uuid references products(id)
+  product_title text
+  unit_price numeric not null default 0
+  quantity integer not null default 1
+  total numeric not null default 0
+  created_at timestamptz default now()
+
+
+Tabela: site_settings
+--------------------------------------------------------------------------------
+Finalidade:
+Configuracoes publicas e comerciais do site.
+
+Campos sugeridos:
+
+  id integer primary key default 1
+  site_name text
+  hero_title text
+  hero_subtitle text
+  cta_title text
+  cta_text text
+  whatsapp text
+  email text
+  address text
+  hero_image text
+  default_whatsapp_message text
+  after_purchase_message text
+  currency text default 'BRL'
+  default_payment_method text default 'pix'
+  default_sale_status text default 'pendente'
+  updated_at timestamptz default now()
+
+
+RLS / SEGURANCA
+--------------------------------------------------------------------------------
+Politicas esperadas:
+
+  products:
+    - leitura publica apenas de produtos ativos
+    - leitura admin de todos os produtos
+    - escrita apenas admin
+
+  sales:
+    - sem leitura publica
+    - leitura/escrita apenas admin
+
+  sale_items:
+    - sem leitura publica
+    - leitura/escrita apenas admin
+
+  site_settings:
+    - leitura publica
+    - escrita apenas admin
+
+Observacao:
+Como o projeto usa Supabase diretamente no frontend, a seguranca depende das
+politicas RLS. Antes de publicar qualquer painel com vendas reais, validar RLS
+no banco e testar acesso anonimo manualmente.
+
+
+FASES DE EXECUCAO
+================================================================================
+
+FASE 1 - Preparacao da versao
+--------------------------------------------------------------------------------
+Objetivo:
+Criar a base da v1.0002 sem mexer na producao.
+
+Tarefas:
+
+  - Criar versoes/v1.0002/
+  - Criar PLANO_EXECUCAO_v1.0002.txt
+  - Criar configuracoes.html novo
+  - Copiar index.html apenas como referencia, se necessario
+  - Criar LEIAME.txt ao final da etapa
+
+Criterio de pronto:
+
+  - Pasta criada
+  - Plano documentado
+  - Nenhuma alteracao destrutiva na raiz
+
+
+FASE 2 - Shell visual do painel
+--------------------------------------------------------------------------------
+Objetivo:
+Montar a estrutura visual completa.
+
+Tarefas:
+
+  - Criar HTML base
+  - Criar CSS responsivo
+  - Criar sidebar desktop
+  - Criar menu mobile
+  - Criar topbar
+  - Criar roteamento por hash
+  - Criar areas vazias dos 5 modulos
+  - Criar sistema de toast
+  - Criar modal de confirmacao
+
+Criterio de pronto:
+
+  - Todos os modulos acessiveis
+  - Layout funcional em desktop e mobile
+  - Nenhum texto sobreposto
+  - Navegacao por hash funcionando
+
+
+FASE 3 - Autenticacao e cliente Supabase
+--------------------------------------------------------------------------------
+Objetivo:
+Conectar o painel com Supabase de forma segura.
+
+Tarefas:
+
+  - Implementar login por email/senha
+  - Salvar somente tokens de sessao
+  - Restaurar sessao com refresh_token
+  - Remover sessoes antigas com password
+  - Criar sbFetch, sbHeaders e helpers CRUD
+  - Criar protecao visual para areas admin
+
+Criterio de pronto:
+
+  - Login funcionando
+  - Logout funcionando
+  - Auto-login via refresh_token funcionando
+  - Nenhuma senha persistida no localStorage
+
+
+FASE 4 - Banco e migration ecommerce
+--------------------------------------------------------------------------------
+Objetivo:
+Preparar o schema do e-commerce.
+
+Tarefas:
+
+  - Criar migration 003_ecommerce_core.sql
+  - Criar tabela products
+  - Criar tabela sales
+  - Criar tabela sale_items
+  - Revisar/ajustar tabela site_settings
+  - Criar triggers de updated_at
+  - Criar RLS
+  - Criar politicas admin/publicas
+
+Criterio de pronto:
+
+  - Migration revisada
+  - RLS revisado
+  - Aplicacao remota somente apos aprovacao/teste
+
+
+FASE 5 - Modulo Produtos
+--------------------------------------------------------------------------------
+Objetivo:
+Implementar CRUD completo de produtos.
+
+Tarefas:
+
+  - Listar produtos
+  - Criar produto
+  - Editar produto
+  - Duplicar produto
+  - Ativar/desativar
+  - Remover
+  - Filtrar por categoria/status
+  - Busca por texto
+  - Upload/compressao de capa
+  - Preview de card
+
+Criterio de pronto:
+
+  - Produto criado aparece na lista
+  - Produto editado reflete no Supabase
+  - Produto inativo nao deve aparecer futuramente no index publico
+  - Estados vazios e erros tratados
+
+
+FASE 6 - Modulo Venda
+--------------------------------------------------------------------------------
+Objetivo:
+Criar fluxo de venda administrativo.
+
+Tarefas:
+
+  - Buscar produto
+  - Adicionar/remover item do carrinho
+  - Calcular subtotal
+  - Aplicar desconto
+  - Calcular total
+  - Capturar dados do cliente
+  - Escolher pagamento/status
+  - Criar registro em sales
+  - Criar itens em sale_items
+  - Gerar resumo/recibo
+  - Gerar mensagem WhatsApp
+
+Criterio de pronto:
+
+  - Venda salva corretamente
+  - Itens vinculados a venda
+  - Total calculado corretamente
+  - Mensagem WhatsApp pronta
+
+
+FASE 7 - Modulo Relatorio
+--------------------------------------------------------------------------------
+Objetivo:
+Dar visao comercial com filtros e indicadores.
+
+Tarefas:
+
+  - Carregar vendas
+  - Carregar itens
+  - Calcular receita
+  - Calcular ticket medio
+  - Calcular vendas por status
+  - Ranking de produtos
+  - Filtros por periodo/status/pagamento
+  - Exportacao CSV simples
+
+Criterio de pronto:
+
+  - Relatorio bate com vendas salvas
+  - Filtros funcionam
+  - Estados vazios claros
+
+
+FASE 8 - Modulo Configuracoes
+--------------------------------------------------------------------------------
+Objetivo:
+Permitir edicao das configuracoes globais da loja.
+
+Tarefas:
+
+  - Carregar site_settings
+  - Editar dados da escola
+  - Editar WhatsApp/email/endereco
+  - Editar textos comerciais
+  - Editar mensagens padrao
+  - Salvar configuracoes
+
+Criterio de pronto:
+
+  - Configuracoes salvas no Supabase
+  - Dados recarregam corretamente
+  - Preparado para index.html consumir depois
+
+
+FASE 9 - Testes e validacao local
+--------------------------------------------------------------------------------
+Objetivo:
+Garantir qualidade antes de promover versao.
+
+Tarefas:
+
+  - Atualizar tests/smoke-test.js para v1.0002
+  - Validar sintaxe JS inline
+  - Testar layout desktop
+  - Testar layout mobile
+  - Testar navegacao por teclado
+  - Testar contraste visual
+  - Testar login/logout
+  - Testar CRUD real, quando Supabase estiver pronto
+
+Criterio de pronto:
+
+  - Smoke tests passando
+  - Sintaxe JS OK
+  - Teste visual aprovado
+  - Fluxos principais verificados
+
+
+FASE 10 - Promocao futura para raiz
+--------------------------------------------------------------------------------
+Objetivo:
+Depois de validada, substituir o painel raiz.
+
+Tarefas:
+
+  - Fazer backup do configuracoes.html atual
+  - Promover versoes/v1.0002/configuracoes.html para raiz
+  - Atualizar README.md
+  - Atualizar kerigma_Projeto.txt
+  - Testar novamente
+  - Commitar
+  - Push para master somente quando aprovado
+
+Criterio de pronto:
+
+  - Raiz atualizada
+  - Documentacao atualizada
+  - Deploy preparado
+
+
+FUTURA REESTRUTURACAO DO index.html
+================================================================================
+O index.html sera tratado posteriormente como modulo publico de venda.
+
+Direcao futura:
+
+  - Hero comercial da Escola Kerigma
+  - Produtos em destaque vindos de products
+  - Catalogo de e-books e apostilas
+  - Busca/filtro por categoria
+  - Cards com preco, promocao e CTA
+  - Compra via WhatsApp ou fluxo interno
+  - Galeria institucional secundaria
+  - CTA final
+  - Leitura de site_settings
+
+Importante:
+Nesta v1.0002, o foco principal e o painel administrativo. O index.html fica
+para uma etapa posterior, para evitar misturar duas grandes reestruturacoes ao
+mesmo tempo.
+
+
+CHECKLIST DE QUALIDADE
+================================================================================
+
+Antes de considerar a v1.0002 pronta:
+
+  [ ] Layout desktop validado
+  [ ] Layout mobile validado
+  [ ] Modulos navegaveis por hash
+  [ ] Dashboard renderizando dados
+  [ ] Produtos com CRUD completo
+  [ ] Venda criando sales e sale_items
+  [ ] Relatorio calculando totais
+  [ ] Configuracoes salvando site_settings
+  [ ] Login sem salvar senha
+  [ ] Logout limpando sessao
+  [ ] RLS revisado
+  [ ] Smoke tests passando
+  [ ] Sintaxe JS validada
+  [ ] LEIAME.txt atualizado
+  [ ] kerigma_Projeto.txt atualizado
+
+
+DECISAO DE IMPLEMENTACAO
+================================================================================
+Comecar pela construcao do shell visual e da autenticacao. Depois implementar
+Produtos, porque Produtos sera a base para Venda e Relatorio.
+
+Ordem recomendada:
+
+  1. Shell visual
+  2. Auth Supabase
+  3. Migration ecommerce
+  4. Produtos
+  5. Venda
+  6. Relatorio
+  7. Configuracoes
+  8. Testes
+  9. Promocao futura
+
+================================================================================
+ FIM DO PLANO v1.0002
+================================================================================

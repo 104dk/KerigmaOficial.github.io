@@ -1,0 +1,143 @@
+================================================================================
+ KERIGMA — VERSÃO v1.0002
+ Painel E-commerce de Venda de E-books/Apostilas/Cursos Teológicos
+================================================================================
+
+ PROJETO     : Escola de Teologia Kerigma (Kerigma_site)
+ CRIADO      : 01/09/2026
+ ROTA        : C:\AA_Projetos_Concluidos\Kerigma_site\versoes\v1.0002
+
+ SUPABASE    : NOVO projeto — vkrtogskkhumqphiftcz
+               (URL: https://vkrtogskkhumqphiftcz.supabase.co)
+               Anon key configurada em js/config.js (não versionar secrets).
+               O projeto antigo laeezgdaoogunanzzxmr foi perdido/pausado.
+
+--------------------------------------------------------------------------------
+ OBJETIVO
+--------------------------------------------------------------------------------
+Transformar o painel admin em um sistema gerencial de e-commerce para venda
+  de materiais teológicos (e-books, apostilas, cursos). Novo módulo Venda (mini-PDV),
+  gestão de Produtos com CRUD completo, Relatório com exportação CSV e
+  Configurações (site + comerciais). Arquitetura MODULAR (um arquivo por módulo)
+  adotando o MODELO JILO: topbar + abas data-tab + bottom-nav mobile + aba admin
+  dedicada. A vitrine pública de vendas vive na RAIZ (index.html), separada do painel.
+
+--------------------------------------------------------------------------------
+  ESTRUTURA (um arquivo por módulo — MODELO JILO: abas data-tab)
+ --------------------------------------------------------------------------------
+  configuracoes.html     : Shell (topbar + abas data-tab + bottom-nav mobile + login)
+  css/admin.css          : Estilos globais + responsivo (paleta navy/dourado/creme)
+  js/config.js           : Constantes globais (URL, key, categorias, métodos, status)
+  js/supabase.js         : Cliente REST + sessão segura (sem senha) + helpers CRUD
+  js/ui.js               : toast, modal confirmação, escapeHtml, formatMoney, badge
+  js/router.js           : Navegação por ABAS data-tab + bootstrap + login modal
+  js/dashboard.js        : Módulo tab=dashboard (KPIs, últimas vendas, top, atalhos)
+  js/venda.js            : Módulo tab=venda (mini-PDV + carrinho + recibo + WhatsApp)
+  js/produtos.js         : Módulo tab=produtos (CRUD + preview + exclusão parametrizada)
+  js/relatorio.js        : Módulo tab=relatorio (filtros + totais + export CSV)
+  js/configuracoes.js    : Módulo tab=configuracoes (site + comerciais)
+  js/admin.js            : Módulo tab=admin (login + export/import + categorias + sessão)
+
+  Navegação: topbar com botões .tab-btn + bottom-nav mobile (.bn-item), ambos data-tab.
+  Abas: dashboard, venda, produtos, relatorio, configuracoes + admin (oculta).
+  Cada módulo expõe window.KerigmaModule_<nome> com mount(content, helpers).
+  O router injeta os helpers ($, $$, toast, confirmBox, formatMoney, ...).
+
+--------------------------------------------------------------------------------
+ MÓDULOS / FUNCIONALIDADES
+--------------------------------------------------------------------------------
+ 1. DASHBOARD
+  - KPIs: produtos ativos, vendas hoje, receita do mês, ticket médio, pedidos pendentes.
+  - Últimas vendas (tabela), produtos mais vendidos (ranking) e ações rápidas.
+
+ 2. VENDA (mini-PDV)
+  - Busca/categoria de produtos ativos → clique adiciona ao carrinho.
+  - Carrinho lateral (gaveta) com quantidade, desconto e taxa de cartão.
+  - Cliente: nome, WhatsApp, email.
+  - Pagamento: pix, dinheiro, cartão (taxa vai para o cliente — 3,49%), link, whatsapp.
+  - Finalizar → grava sale + sale_items → recibo (copiar / enviar por WhatsApp).
+
+ 3. PRODUTOS
+  - CRUD completo: criar, editar, duplicar, ativar/desativar, destaque, ordenar.
+  - Filtros (busca, categoria, status) e preview do card em tempo real.
+  - EXCLUSÃO PARAMETRIZADA (ver Configurações → allow_hard_delete):
+    * Sem vendas vinculadas → pode excluir definitivamente.
+    * Com vendas vinculadas + allow_hard_delete=OFF → só desativa (preserva relatório).
+    * Com vendas vinculadas + allow_hard_delete=ON → exclui em cascata (avisa risco).
+
+ 4. RELATÓRIO
+  - Filtros por período, forma de pagamento e status.
+  - Totais: nº pedidos, receita (pagos), ticket médio, distribuição por pagamento.
+  - Lista detalhada de vendas + exportação em CSV (UTF-8 BOM p/ Excel).
+
+5. CONFIGURAÇÕES
+   - Site (público): nome, subtítulo, WhatsApp, email, CTA, endereço, mensagem WA.
+   - Comerciais: moeda (BRL/USD), forma de pagamento padrão,
+     status padrão e ALLOW_HARD_DELETE (exclusão definitiva de produto com vendas).
+
+  6. ADMIN (aba dedicada, modelo Jilo)
+   - Login com as credenciais do painel (Supabase, role=admin).
+   - Exportar produtos/vendas em CSV e backup completo em JSON.
+   - Importar produtos a partir de JSON de backup.
+   - Gerenciar categorias de produto (adicionar/remover).
+   - Sessão e manutenção (recarregar, limpar localStorage).
+   NOTA: categorias/preferências são mantidas em memória (window.APP_CONFIG);
+         para persistência entre sessões, edite js/config.js.
+
+--------------------------------------------------------------------------------
+ BANCO DE DADOS (migration 003_ecommerce_core.sql)
+--------------------------------------------------------------------------------
+ Tabelas novas:
+  products      : title, slug, short_description, description, category, price,
+                  promo_price, cover_image, delivery_url, whatsapp_message,
+                  is_active, is_featured, sort_order + timestamps.
+  sales         : customer_name, customer_phone, customer_email, subtotal, discount,
+                  total, payment_method, card_fee, status, notes + timestamps.
+  sale_items    : sale_id (FK cascade), product_id (FK set null), title, unit_price,
+                  quantity, total.
+ site_settings atualizada com: allow_hard_delete (bool), currency,
+                  default_payment_method, default_sale_status.
+
+ RLS:
+  products      : leitura pública (só ativos) + escrita admin.
+  sales/sale_items : somente admin.
+  site_settings : leitura pública + escrita admin.
+
+ Formas de pagamento (sales.payment_method): pix, dinheiro, cartao, link, whatsapp.
+ Status de venda (sales.status): pendente, pago, cancelado, reembolsado.
+
+--------------------------------------------------------------------------------
+ USUÁRIO ADMIN
+--------------------------------------------------------------------------------
+ Criado no novo Supabase via service_role (Auth REST):
+  Email : admin@kerigma.com
+  role  : admin (app_metadata) — necessário para o RLS (auth.jwt() ->> 'role' = 'admin').
+
+--------------------------------------------------------------------------------
+ STATUS ATUAL / PENDÊNCIAS
+--------------------------------------------------------------------------------
+[OK ] Código do painel completo (10 JS + CSS + shell no modelo Jilo, abas data-tab).
+  [OK ] Migration 003 escrita e versionada em supabase/migrations/.
+  [OK ] config.js apontando para o novo Supabase vkrtogskkhumqphiftcz.
+  [OK ] Usuário admin criado.
+  [OK ] Vitrine de vendas criada na raiz (index.html): catálogo de produtos + compra por WhatsApp.
+  [OK ] Smoke-test atualizado — 127 passed / 0 failed (inclui seção v1.0002 + vitrine).
+  [PEND] Aplicação da migration 003 no banco do novo projeto. O banco (db/pooler)
+         estava ainda em provisionamento quando este LEIAME foi escrito. Quando
+         disponível, aplicar via:
+           node scripts/setup-do-novo-supabase.js
+         (ou SQL Editor no dashboard colando o conteúdo de 003_ecommerce_core.sql).
+  [PEND] Promoção da v1.0002 para a raiz (index.html público + configuracoes.html raiz)
+         após aprovação e aplicação da migration.
+  [PEND] Upload de imagens para CDN (hoje usa URL ou capa via link).
+
+--------------------------------------------------------------------------------
+ NOTAS DE SEGURANÇA
+--------------------------------------------------------------------------------
+ - Senha NUNCA persiste no localStorage: só email, access_token, refresh_token, expires_at.
+ - Sessão antiga com "password" é removida e exige novo login.
+ - Credenciais (anon key) no config.js; service_role/secret NUNCA no frontend.
+ - Secrets (service_role, senha db) não versionados.
+================================================================================
+ FIN DE LEIAME — v1.0002
+================================================================================
