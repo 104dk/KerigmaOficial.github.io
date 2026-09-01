@@ -85,9 +85,9 @@ Transformar o painel admin em um sistema gerencial de e-commerce para venda
          para persistência entre sessões, edite js/config.js.
 
 --------------------------------------------------------------------------------
- BANCO DE DADOS (migration 003_ecommerce_core.sql)
---------------------------------------------------------------------------------
- Tabelas novas:
+  BANCO DE DADOS (migration 003_ecommerce_core.sql + 004_seed_products.sql)
+ --------------------------------------------------------------------------------
+ Tabelas novas (003):
   products      : title, slug, short_description, description, category, price,
                   promo_price, cover_image, delivery_url, whatsapp_message,
                   is_active, is_featured, sort_order + timestamps.
@@ -95,8 +95,14 @@ Transformar o painel admin em um sistema gerencial de e-commerce para venda
                   total, payment_method, card_fee, status, notes + timestamps.
   sale_items    : sale_id (FK cascade), product_id (FK set null), title, unit_price,
                   quantity, total.
- site_settings atualizada com: allow_hard_delete (bool), currency,
-                  default_payment_method, default_sale_status.
+  site_settings atualizada com: allow_hard_delete (bool), currency,
+                   default_payment_method, default_sale_status.
+
+ Seed inicial de produtos (004):
+  Insere ~10 produtos PLACEHOLDER (editáveis no painel, aba Produtos) quando o
+  catálogo estiver vazio. IDEMPOTENTE: não duplica nem sobrescreve produtos já
+  cadastrados/editados. Preços: e-books/apostilas/devocional 49.49; cursos/combo 199.
+  Títulos/descrições/capas reais devem ser preenchidos no painel (aba Produtos).
 
  RLS:
   products      : leitura pública (só ativos) + escrita admin.
@@ -121,12 +127,14 @@ Transformar o painel admin em um sistema gerencial de e-commerce para venda
   [OK ] config.js apontando para o novo Supabase vkrtogskkhumqphiftcz.
   [OK ] Usuário admin criado.
   [OK ] Vitrine de vendas criada na raiz (index.html): catálogo de produtos + compra por WhatsApp.
-  [OK ] Smoke-test atualizado — 127 passed / 0 failed (inclui seção v1.0002 + vitrine).
-  [PEND] Aplicação da migration 003 no banco do novo projeto. O banco (db/pooler)
+  [OK ] Smoke-test atualizado — 137 passed / 0 failed (inclui seção v1.0002 + vitrine + seed 004).
+  [PEND] Aplicação da migration 003+004 no banco do novo projeto. O banco (db/pooler)
          estava ainda em provisionamento quando este LEIAME foi escrito. Quando
          disponível, aplicar via:
            node scripts/setup-do-novo-supabase.js
-         (ou SQL Editor no dashboard colando o conteúdo de 003_ecommerce_core.sql).
+         (ou SQL Editor no dashboard colando o conteúdo de 003_ecommerce_core.sql
+         e depois 004_seed_products.sql). Monitor em background faz a aplicação
+         automática assim que o banco provisionar.
   [PEND] Promoção da v1.0002 para a raiz (index.html público + configuracoes.html raiz)
          após aprovação e aplicação da migration.
   [PEND] Upload de imagens para CDN (hoje usa URL ou capa via link).

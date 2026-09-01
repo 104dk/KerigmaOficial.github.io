@@ -13,7 +13,9 @@ const FILES = {
   configV1001: 'versoes/v1.0001/configuracoes.html',
   v1002Html: 'versoes/v1.0002/configuracoes.html',
   v1002Css: 'versoes/v1.0002/css/admin.css',
-  v1002Admin: 'versoes/v1.0002/js/admin.js'
+  v1002Admin: 'versoes/v1.0002/js/admin.js',
+  mig004: 'supabase/migrations/004_seed_products.sql',
+  setupScript: 'scripts/setup-do-novo-supabase.js'
 };
 
 let passed = 0;
@@ -202,6 +204,19 @@ console.log('\n📖 README.md:');
 const readmePath = path.join(BASE, 'README.md');
 test('README exists', fs.existsSync(readmePath));
 test('README has content', hasContent(readmePath, 'Kerigma'));
+
+/* ── Seed 004 ── */
+console.log('\n🌱 Seed de produtos (004):');
+const mig004Path = path.join(BASE, FILES.mig004);
+const setupPath = path.join(BASE, FILES.setupScript);
+test('004_seed_products.sql exists', fs.existsSync(mig004Path));
+test('004: idempotent guard', hasContent(mig004Path, 'if not exists'));
+test('004: seed products table', hasContent(mig004Path, 'insert into public.products'));
+test('004: placeholder e-books (49.49)', hasContent(mig004Path, '49.49'));
+test('004: placeholder cursos (199)', hasContent(mig004Path, '199.00'));
+test('setup: applies 003', hasContent(setupPath, '003_ecommerce_core.sql'));
+test('setup: applies 004', hasContent(setupPath, '004_seed_products.sql'));
+test('setup: sequential migrations', hasContent(setupPath, 'Aplicando migrations em sequencia'));
 
 /* ── Summary ── */
 console.log('\n' + '─'.repeat(40));

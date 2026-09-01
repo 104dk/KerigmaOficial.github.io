@@ -35,16 +35,21 @@ const PG_CONN = process.env.PG_CONN || (DB_PASSWORD
   ? null
   : null);
 
-const SQL_PATH = path.resolve(__dirname, '..', 'supabase', 'migrations', '003_ecommerce_core.sql');
+const SQL_PATHS = [
+  path.resolve(__dirname, '..', 'supabase', 'migrations', '003_ecommerce_core.sql'),
+  path.resolve(__dirname, '..', 'supabase', 'migrations', '004_seed_products.sql')
+];
 
 (async () => {
   if (!PG_CONN && !DB_PASSWORD) {
     console.error('Defina a senha do banco via PG_PASSWORD (ou PG_CONN) para conectar.');
     process.exit(2);
   }
-  if (!fs.existsSync(SQL_PATH)) {
-    console.error('Migration não encontrada: ' + SQL_PATH);
-    process.exit(2);
+  for (const p of SQL_PATHS) {
+    if (!fs.existsSync(p)) {
+      console.error('Migration não encontrada: ' + p);
+      process.exit(2);
+    }
   }
   let Client;
   try {
@@ -53,7 +58,7 @@ const SQL_PATH = path.resolve(__dirname, '..', 'supabase', 'migrations', '003_ec
     console.error('Dependencia ausente: pg. Instale antes com: npm install pg');
     process.exit(2);
   }
-  const sql = fs.readFileSync(SQL_PATH, 'utf-8');
+  const sqls = SQL_PATHS.map(p => fs.readFileSync(p, 'utf-8'));
   const attempts = PG_CONN
     ? [{ label: 'PG_CONN', connectionString: PG_CONN }]
     : FALLBACK_HOSTS.map(h => ({ ...h, password: DB_PASSWORD, database: DB_NAME, port: 5432 }));
@@ -66,9 +71,11 @@ const SQL_PATH = path.resolve(__dirname, '..', 'supabase', 'migrations', '003_ec
     try {
       console.log('Tentando conexao: ' + attempt.label);
       await client.connect();
-      console.log('Conectado. Aplicando migration 003...');
-      await client.query(sql);
-      console.log('Migration 003 aplicada com sucesso.');
+      console.log('Conectado. Aplicando migrations em sequencia...');
+      for (let i = 0; i < sqls.length; i++) {
+        await client.query(sqls[i]);
+        console.log('Migration ' + (i === 0 ? '003 (schema)' : '004 (seed)') + ' aplicada com sucesso.');
+      }
       await client.end().catch(() => {});
       return;
     } catch (e) {
