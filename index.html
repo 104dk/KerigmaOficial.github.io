@@ -564,10 +564,13 @@
       .carousel3d-wrap .carousel3d .card3d .card-body .card-title { font-size: 0.72rem; }
       .carousel3d-wrap .carousel3d .card3d .card-body .card-desc { font-size: 0.6rem; }
       .carousel3d-wrap .carousel3d .card3d .card-body .card-items li { font-size: 0.56rem; }
-      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta { font-size: 0.6rem; padding: 5px 10px; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta { font-size: 0.6rem; padding: 7px 10px; min-height: 34px; }
       .cylinder-wrap { height: 360px; perspective: 1400px; }
       .cylinder-wrap .cylinder .photo-card { width: 220px; height: 150px; left: -110px; top: -75px; border-radius: 10px; }
       .cylinder-controls { margin-top: 8px; }
+      .carousel3d-controls .arr, .cylinder-controls .arr { width: 44px; height: 44px; font-size: 16px; }
+      .carousel3d-controls .dots .dot, .cylinder-controls .dots .dot { width: 10px; height: 10px; }
+      .carousel3d-controls .dots .dot.active, .cylinder-controls .dots .dot.active { width: 24px; }
     }
     @media (max-width: 640px) {
       :root { --gallery-radius: 240px; }
@@ -580,9 +583,16 @@
       .carousel3d-wrap { height: 350px; perspective: 1000px; }
       .carousel3d-wrap .carousel3d .card3d { width: 210px; height: 306px; left: -105px; top: -153px; }
       .carousel3d-wrap .carousel3d .card3d .thumb { height: 108px; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-title { font-size: 0.78rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-desc { font-size: 0.64rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-items li { font-size: 0.62rem; }
+      .carousel3d-wrap .carousel3d .card3d .card-body .card-cta { font-size: 0.68rem; }
       .cylinder-wrap { height: 280px; perspective: 1200px; }
       .cylinder-wrap .cylinder .photo-card { width: 170px; height: 120px; left: -85px; top: -60px; }
+      .cylinder-wrap .cylinder .photo-card .photo-label { font-size: 0.62rem; }
       .cylinder-controls { margin-top: 6px; }
+      .whatsapp-fab { width: 56px; height: 56px; font-size: 26px; bottom: 16px; right: 16px; top: auto; transform: none; box-shadow: 0 4px 18px rgba(37,211,102,0.45); }
+      .whatsapp-fab:hover { transform: scale(1.08); }
       .footer-gear { right: 12px; bottom: 12px; }
     }
 
@@ -751,8 +761,6 @@
     ];
 
     let N = services.length;
-    const SPREAD = 240;
-    const Z_DEPTH = 320;
     const SCALE_MIN = 0.6;
     const OPACITY_MIN = 0.3;
     const reduceMotion = shouldReduceMotion();
@@ -807,13 +815,15 @@
     }
 
     function positionAll(animate) {
+      const spread = window.innerWidth <= 640 ? 170 : window.innerWidth <= 900 ? 200 : 240;
+      const zDepth = window.innerWidth <= 640 ? 220 : window.innerWidth <= 900 ? 260 : 320;
       for (let i = 0; i < N; i++) {
         const el = carousel.children[i];
         const offset = circularDist(i, active);
         const absOff = Math.abs(offset);
         const maxOff = N / 2;
-        const x = offset * SPREAD;
-        const z = absOff * Z_DEPTH;
+        const x = offset * spread;
+        const z = absOff * zDepth;
         const t = Math.min(1, absOff / maxOff);
         const scale = 1 - (1 - SCALE_MIN) * t;
         const opacity = 1 - (1 - OPACITY_MIN) * t;
@@ -1119,6 +1129,7 @@
         if (e.key === 'ArrowLeft') lbNavigate(-1);
       });
       window.addEventListener('resize', () => { galPosition(false); });
+      window.addEventListener('resize', () => { positionAll(false); });
       galStartAuto();
     });
   </script>
